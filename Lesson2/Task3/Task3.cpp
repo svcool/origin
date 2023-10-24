@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 
 struct address {
 	std::string city;
@@ -9,19 +9,19 @@ struct address {
 	};
 
 void out_address(address a){
-std::cout << "Ãîğîä: " << a.city << std::endl;
-std::cout << "Óëèöà: " << a.street << std::endl;
-std::cout << "Íîìåğ äîìà: " << a.house_number << std::endl;
-std::cout << "Íîìåğ êâàğòèğû: " << a.apartment << std::endl;
-std::cout << "Èíäåêñ: " << a.index << std::endl;
+std::cout << "Ğ“Ğ¾Ñ€Ğ¾Ğ´: " << a.city << std::endl;
+std::cout << "Ğ£Ğ»Ğ¸Ñ†Ğ°: " << a.street << std::endl;
+std::cout << "ĞĞ¾Ğ¼ĞµÑ€ Ğ´Ğ¾Ğ¼Ğ°: " << a.house_number << std::endl;
+std::cout << "ĞĞ¾Ğ¼ĞµÑ€ ĞºĞ²Ğ°Ñ€Ñ‚Ğ¸Ñ€Ñ‹: " << a.apartment << std::endl;
+std::cout << "Ğ˜Ğ½Ğ´ĞµĞºÑ: " << a.index << std::endl;
 std::cout << std::endl;
 }
 
 
 int main() {
 	setlocale(LC_ALL, "Russian");
-	address n1 = {"Ìîñêâà", "Àğáàò", 12, 8, 123456};
-	address n2 = { "Èæåâñê", "Ïóøêèíà", 59, 143, 953769};
+	address n1 = {"ĞœĞ¾ÑĞºĞ²Ğ°", "ĞÑ€Ğ±Ğ°Ñ‚", 12, 8, 123456};
+	address n2 = { "Ğ˜Ğ¶ĞµĞ²ÑĞº", "ĞŸÑƒÑˆĞºĞ¸Ğ½Ğ°", 59, 143, 953769};
 	out_address(n1);
 	out_address(n2);
 }

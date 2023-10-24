@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 struct person {
 		std::string name;
 		int count;
@@ -12,16 +12,16 @@ int main() {
 	system("chcp 1251");
 	person p;
 	double new_balance;
-	std::cout << "Ââåäèòå íîìåð ñ÷åòà: ";
+	std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð¾Ð¼ÐµÑ€ ÑÑ‡ÐµÑ‚Ð°: ";
 	std::cin >> p.count;
-	std::cout << "Ââåäèòå èìÿ âëàäåëüöà: ";
+	std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð¸Ð¼Ñ Ð²Ð»Ð°Ð´ÐµÐ»ÑŒÑ†Ð°: ";
 	std::cin >> p.name;
-	std::cout << "Ââåäèòå áàëàíñ: ";
+	std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð±Ð°Ð»Ð°Ð½Ñ: ";
 	std::cin >> p.balance;
-	std::cout << "Ââåäèòå íîâûé áàëàíñ : ";
+	std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð¾Ð²Ñ‹Ð¹ Ð±Ð°Ð»Ð°Ð½Ñ : ";
 	std::cin >> new_balance;
 	change_balance(p, new_balance);
-	std::cout << "Âàø ñ÷åò: " << p.name << ", " << p.count << ", " << p.balance;
+	std::cout << "Ð’Ð°Ñˆ ÑÑ‡ÐµÑ‚: " << p.name << ", " << p.count << ", " << p.balance;
 
 }
 void change_balance(person& p, double new_balance) {
