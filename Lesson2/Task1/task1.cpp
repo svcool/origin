@@ -1,0 +1,45 @@
+#include <iostream>
+
+enum class months {
+	€нварь = 1,
+	февраль,
+	март,
+	апрель,
+	май,
+	июнь,
+	июль,
+	август,
+	сент€брь,
+	окт€брь,
+	но€брь,
+	декабрь,
+};
+
+int main() {
+	setlocale(LC_ALL, "Russian");
+	system("chcp 1251"); // настраиваем кодировку консоли 
+	int number{};
+	do {
+		std::cout << "¬ведите номер мес€ца: ";
+		std::cin >> number;
+		months mon = static_cast<months>(number);
+		switch (static_cast<int>(mon)) {
+		case 0: std::cout << "ƒо свидани€" << std::endl; break;
+		case 1: std::cout << "€нварь" << std::endl; break;
+		case 2: std::cout << "февраль" << std::endl; break;
+		case 3: std::cout << "март" << std::endl; break;
+		case 4: std::cout << "апрель" << std::endl; break;
+		case 5: std::cout << "май" << std::endl; break;
+		case 6: std::cout << "июнь" << std::endl; break;
+		case 7: std::cout << "июль" << std::endl; break;
+		case 8: std::cout << "август" << std::endl; break;
+		case 9: std::cout << "сент€брь" << std::endl; break;
+		case 10: std::cout << "окт€брь" << std::endl; break;
+		case 11: std::cout << "но€брь" << std::endl; break;
+		case 12: std::cout << "декабрь" << std::endl; break;
+		default: std::cout << "Ќеправильный номер!" << std::endl; break;
+		}
+	} while (number != 0);
+
+	return 0;
+}
