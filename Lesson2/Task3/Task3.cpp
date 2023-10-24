@@ -24,4 +24,5 @@ int main() {
 	address n2 = { "Ижевск", "Пушкина", 59, 143, 953769};
 	out_address(n1);
 	out_address(n2);
+	return 0;
 }

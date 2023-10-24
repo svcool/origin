@@ -22,7 +22,7 @@ int main() {
 	std::cin >> new_balance;
 	change_balance(p, new_balance);
 	std::cout << "Ваш счет: " << p.name << ", " << p.count << ", " << p.balance;
-
+	return 0;
 }
 void change_balance(person& p, double new_balance) {
 	p.balance = new_balance;
