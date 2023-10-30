@@ -31,6 +31,7 @@ int main() {
 	setlocale(LC_ALL, "Russin");
 	system("chcp 1251");
 	Counter c;
+>>>>>	//Counter* ptr = &c; //работа через указатель
 std::string yes_no{};
 int number{};
 std::string cnd{};
@@ -41,6 +42,7 @@ while (yes_no != "нет") {
 		std::cout << "Введите начальное значение счётчика :";
 		std::cin >> number;
 		c.set_number(number);
+>>>>>>>		//*ptr = number; // работа через указатель
 		break;
 	}
 }
