@@ -30,18 +30,18 @@ public:
 int main() {
 	setlocale(LC_ALL, "Russin");
 	system("chcp 1251");
-	std::string yes_no{};
-	int number{};
-	std::string cnd{};
 	Counter c;
-	Counter* ptr = &c;
-	int bb{};
+std::string yes_no{};
+int number{};
+std::string cnd{};
+
 while (yes_no != "нет") {
 	std::cout << "Вы хотите указать начальное значение счётчика ? Введите да или нет :"; std::cin >> yes_no;
 	if (yes_no == "да") {
 		std::cout << "Введите начальное значение счётчика :";
 		std::cin >> number;
-		*ptr = number;
+		c.set_number(number);
+>>>>>>>		//*ptr = number; // работа через указатель
 		break;
 	}
 }
