@@ -34,14 +34,14 @@ int main() {
 std::string yes_no{};
 int number{};
 std::string cnd{};
-
+//>>>>>	//Counter* ptr = &c; //работа через указатель
 while (yes_no != "нет") {
 	std::cout << "Вы хотите указать начальное значение счётчика ? Введите да или нет :"; std::cin >> yes_no;
 	if (yes_no == "да") {
 		std::cout << "Введите начальное значение счётчика :";
 		std::cin >> number;
 		c.set_number(number);
->>>>>>>		//*ptr = number; // работа через указатель
+//>>>>>>>		//*ptr = number; // работа через указатель
 		break;
 	}
 }
