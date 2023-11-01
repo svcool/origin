@@ -72,25 +72,7 @@ public:
 
 	}
 
-
-	// сортировка по полю: 1 - город, 2 - улица, 3 - дом, 4 - квартира
-	void sort(std::string* arr, int size, int pole) {
-		std::string temp{};
-		for (int i = pole - 1; i < size * 4; i += 4) {
-			for (int j = pole - 1; j < size * 4 - 4; j += 4) {
-				if (arr[j] > arr[j + 4]) {
-					for (int k = j - pole + 1; k < j - pole + 1 + 4; k++) {
-						temp = arr[k];
-						arr[k] = arr[k + 4];
-						arr[k + 4] = temp;
-
-					}
-				}
-			}
-		}
-
-	}
-	
+		
 	~Address() {
 		delete[] arr;
 	}
@@ -112,7 +94,6 @@ int main() {
 
 	Address ad; //экземпляр класса
 	ad.set_address(in_file, arr, size); // загружаем данные файла в массив
-	//ad.sort(arr, size, 1); // сортировка по полю: 1 - город, 2 - улица, 3 - дом, 4 - квартира
 	ad.get_output_address_back(f_out, arr, size); //выводим массив в файл
 	return 0;
 
