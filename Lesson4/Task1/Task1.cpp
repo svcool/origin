@@ -78,29 +78,18 @@ void get_output_address(std::ofstream& f_out, std::string* arr, int size) {
 	else std::cout << "Ошибка открытия файла" << std::endl;
 
 }
-for (int j = size - 1; j >= 0; j--) {
-
-	for (int i = size - 1; i > size - j - 1; i--) {
-		temp = arr[i];
-		if (arr[i] < arr[i - 1]) {
-			arr[i] = arr[i - 1];
-			arr[i - 1] = temp;
-		}
-	}
-}
 
 
 // сортировка по полю: 1 - город, 2 - улица, 3 - дом, 4 - квартира
 void sort(std::string* arr, int size, int pole) {
 	std::string temp{};
 	for (int i = pole - 1; i < size*4; i + 4) {
-		for (int j = i + 4; j < size * 4; j + 4) {
-			temp = arr[j];
-			if (arr[i] > arr[j]) {
-				for (int k = i; k < size; k++) {
+		for (int j = pole - 1; j < size * 4; j + 4) {
+			if (arr[j] > arr[j + 4]) {
+				for (int k = j - pole + 1; k < size; k++) {
 					temp = arr[k];
-					arr[j] = arr[k];
-					arr[k] = arr[j];
+					arr[k] = arr[k + 4];
+					arr[k + 4] = temp;
 				}
 			}
 		}
@@ -120,11 +109,12 @@ int main() {
 	set_address(in_file, arr, size);
 	for (int i{}; i < size * 4; i++) {
 		//f_out << arr[i] << " ";
-		std::cout << arr[0][1] << arr[0][1] << arr[0][2] << arr[0][3] << arr[0][4] << arr[0][5] << arr[0][6] <<"\n";
+		//std::cout << arr[0][1] << arr[0][1] << arr[0][2] << arr[0][3] << arr[0][4] << arr[0][5] << arr[0][6] <<"\n";
 	}
-	
+	if (arr[0] > arr[8]) std::cout << arr[4];
+	else std::cout << arr[0];
 	std::ofstream f_out("out.txt");
-
+	sort(arr, size, 1);
 	get_output_address(f_out, arr, size);
 
 }
