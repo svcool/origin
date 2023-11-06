@@ -1,4 +1,4 @@
-#include <iostream>
+п»ї#include <iostream>
 
 class figure {
 private:
@@ -13,13 +13,13 @@ figure(int side_count, std::string name) {
 	
 public:
 
-	//тоже работает
+	//С‚РѕР¶Рµ СЂР°Р±РѕС‚Р°РµС‚
 	/*figure() {
 		side_count = 0;
-		name = "Фигура";
+		name = "Р¤РёРіСѓСЂР°";
 	}*/
-	//и так работает
-	//figure() : figure(0, "Фигура11") {};
+	//Рё С‚Р°Рє СЂР°Р±РѕС‚Р°РµС‚
+	//figure() : figure(0, "Р¤РёРіСѓСЂР°11") {};
 
 	int get_sides_count() {
 		return side_count;
@@ -33,12 +33,12 @@ public:
 
 class triangle : public figure {
 public:
-	triangle() : figure(3, "Треугольник") {};
+	triangle() : figure(3, "РўСЂРµСѓРіРѕР»СЊРЅРёРє") {};
 };
 
 class Quadrangle : public figure {
 public:
-	Quadrangle() : figure(4, "Квадрат") {};
+	Quadrangle() : figure(4, "РљРІР°РґСЂР°С‚") {};
 
 };
 
@@ -50,7 +50,7 @@ int main() {
 	figure f;
 	triangle tr;
 	Quadrangle qv;
-	std::cout << "Количество сторон:" << std::endl;
+	std::cout << "РљРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚РѕСЂРѕРЅ:" << std::endl;
 	std::cout << f.get_name() << ": " << f.get_sides_count() << std::endl;
 	std::cout << tr.get_name() << ":  " << tr.get_sides_count() << std::endl;
 	std::cout << qv.get_name() << ":  " << qv.get_sides_count() << std::endl;
