@@ -64,12 +64,20 @@ public:
 		triangle::name = "Равносторониий треугольник";
 	}
 };
+//прямоугольник(стороны a, c и b, d попарно равны, все углы равны 90);
+class rectangle : public Quadrangle
+{
+public:
+	rectangle(double a, double b) : Quadrangle(a, b, a, b, 90, 90, 90, 90) {
+		Quadrangle::name = "Прямоугольник";
+	}
+};
 
 //квадрат (все стороны равны, все углы равны 90);
 class square : public Quadrangle{
 public:
 	square(double a) : Quadrangle(a, a, a, a, 90, 90, 90, 90) {
-		Quadrangle::name = "Квдрат";
+		Quadrangle::name = "Квадрат";
 	}
 };
 //параллелограмм(стороны a, c и b, d попарно равны, углы A, C и B, D попарно равны);
@@ -97,6 +105,7 @@ int main() {
 	isosceles_triangle isosceles_triangle(15, 20, 33, 26); //равнобедренный треугольник(стороны a и c равны, углы A и C равны);
 	estimated_triangle estimated_triangle(50);//равносторонний треугольник (все стороны равны, все углы равны 60);
 	Quadrangle quandrangle(10, 20, 30, 40, 60, 90, 90, 90); //прямоугольник (стороны a,c и b,d попарно равны, все углы равны 90);
+	rectangle rectangle(20,50); //прямоугольник(стороны a, c и b, d попарно равны, все углы равны 90);
 	square square(50);//квадрат (все стороны равны, все углы равны 90);
 	parallelogram parallelogram(23, 33, 40, 40);//параллелограмм(стороны a, c и b, d попарно равны, углы A, C и B, D попарно равны);
 	rhombus rhombus(22, 77, 60);//ромб(все стороны равны, углы A, C и B, D попарно равны).
@@ -116,6 +125,9 @@ int main() {
 
 	figure* f_quandrangle = &quandrangle;
 	f_quandrangle->print_info();
+	
+	figure* f_rectangle = &rectangle;
+	f_rectangle->print_info();
 	
 	figure* f_square = &square;
 	f_square->print_info();

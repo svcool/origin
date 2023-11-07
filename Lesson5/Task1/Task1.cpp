@@ -6,18 +6,18 @@ private:
 	std::string name;
 protected:
 
-figure(int side_count, std::string name) {
+	figure(int side_count, std::string name) {
 		this->side_count = side_count;
 		this->name = name;
 	}
-	
+
 public:
 
 	//тоже работает
-	/*figure() {
+	figure() {
 		side_count = 0;
 		name = "Фигура";
-	}*/
+	}
 	//и так работает
 	//figure() : figure(0, "Фигура11") {};
 
