@@ -110,6 +110,7 @@ int main() {
 	
 	figure* f_triangle = &triangle;
 	f_triangle->print_info();
+
 	
 	figure* f_right_triangle = &right_triangle;
 	f_right_triangle->print_info();
