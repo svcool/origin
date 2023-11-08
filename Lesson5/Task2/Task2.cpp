@@ -1,11 +1,10 @@
 ﻿#include <iostream>
 
 class figure {
-
 protected:
-	std::string name;	
+	std::string name;
 public:
-	virtual void print_info() {std::cout << name;	}
+	virtual void print_info() { std::cout << name; }
 };
 //////////////////////////////////////////////
 class triangle : public figure {
@@ -28,40 +27,39 @@ public:
 ///////////////////////////////////////
 class Quadrangle : public figure {
 protected:
-	double a{}, b{}, c{}, d{}; //стороны
-	double A{}, B{}, C{}, D{}; //углы
+    double a{}, b{}, c{}, d{}; //стороны
+    double A{}, B{}, C{}, D{}; //углы
 public:
-	Quadrangle(double a, double b, double c, double d, double A, double B, double C, double D) : a(a), b(b), c(c), d(d), A(A), B(B), C(C), D(D) {
-		name = "Четырехугольник";
-	}
-	void print_info() override {
-		std::cout << name << ":" << std::endl;
-		std::cout << "Стороны: " << "a=" << a << ", b=" << b << ", c=" << c << ", d=" << d << std::endl;
-		std::cout << "Углы: " << "A=" << A << ", B=" << B << ", C=" << C << ", D=" << D << std::endl;
-		std::cout << std::endl;
-	}
-
+    Quadrangle(double a, double b, double c, double d, double A, double B, double C, double D) : a(a), b(b), c(c), d(d), A(A), B(B), C(C), D(D) {
+        name = "Четырехугольник";
+    }
+    void print_info() override {
+        std::cout << name << ":" << std::endl;
+        std::cout << "Стороны: " << "a=" << a << ", b=" << b << ", c=" << c << ", d=" << d << std::endl;
+        std::cout << "Углы: " << "A=" << A << ", B=" << B << ", C=" << C << ", D=" << D << std::endl;
+        std::cout << std::endl;
+    }
 };
 
 //прямоугольный треугольник (угол C всегда равен 90);
 class right_triangle : public triangle {
 public:
 	right_triangle(double a, double b, double c, double A, double B) : triangle(a, b, c, A, B, 90) {
-	triangle::name = "Прямоугольный треугольник";
+	name = "Прямоугольный треугольник";
 	}
 };
 //равнобедренный треугольник(стороны a и c равны, углы A и C равны);
 class isosceles_triangle : public triangle {
 public:
 	isosceles_triangle(double a, double b, double A, double B) : triangle(a, b, a, A, B, A) {
-		triangle::name = "Равнобедренный треугольник";
+		name = "Равнобедренный треугольник";
 	}
 };
 //равносторонний треугольник (все стороны равны, все углы равны 60);
 class estimated_triangle : public triangle{
 public:
 	estimated_triangle(double a) : triangle(a, a, a, 60, 60, 60) {
-		triangle::name = "Равносторониий треугольник";
+		name = "Равносторониий треугольник";
 	}
 };
 //прямоугольник(стороны a, c и b, d попарно равны, все углы равны 90);
@@ -69,32 +67,31 @@ class rectangle : public Quadrangle
 {
 public:
 	rectangle(double a, double b) : Quadrangle(a, b, a, b, 90, 90, 90, 90) {
-		Quadrangle::name = "Прямоугольник";
+		name = "Прямоугольник";
 	}
 };
 
-//квадрат (все стороны равны, все углы равны 90);
-class square : public Quadrangle{
-public:
-	square(double a) : Quadrangle(a, a, a, a, 90, 90, 90, 90) {
-		Quadrangle::name = "Квадрат";
-	}
-};
 //параллелограмм(стороны a, c и b, d попарно равны, углы A, C и B, D попарно равны);
 class parallelogram : public Quadrangle {
 public:
 	parallelogram(double a, double b, double A, double B) : Quadrangle(a, b, a, b, A, B, A, B) {
-		Quadrangle::name = "Параллелограм";
+		name = "Параллелограм";
 	}
 };
 //ромб(все стороны равны, углы A, C и B, D попарно равны).
 class rhombus : public Quadrangle{
 public:
 	rhombus(double a, double A, double B) : Quadrangle(a, a, a, a, A, B, A, B) {
-		Quadrangle::name = "Ромб";
+		name = "Ромб";
 	}
 };
-
+//квадрат (все стороны равны, все углы равны 90);
+class square : public rhombus {
+public:
+	square(double a) : rhombus(a, 90, 90) {
+		name = "Квадрат";
+	}
+};
 
 ///////////////////////////////////////////
 int main() {
