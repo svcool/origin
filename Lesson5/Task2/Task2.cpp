@@ -136,10 +136,6 @@ int main() {
 	figure* f_rhombus = &rhombus;
 	f_rhombus->print_info();
 
-	//std::cout << "Количество сторон:" << std::endl;
-	//std::cout << f.get_name() << ": " << f.get_sides_count() << std::endl;
-	//std::cout << tr.get_name() << ":  " << tr.get_sides_count() << std::endl;
-	//std::cout << qv.get_name() << ":  " << qv.get_sides_count() << std::endl;
 
 
 }
