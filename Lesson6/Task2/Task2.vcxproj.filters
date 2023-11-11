@@ -26,8 +26,8 @@
     <None Include="readme.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="name.h">
-      <Filter>Файлы ресурсов</Filter>
+    <ClInclude Include="class.h">
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

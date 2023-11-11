@@ -127,10 +127,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="e_trian.cpp" />
+    <ClCompile Include="figure.cpp" />
+    <ClCompile Include="is_trian.cpp" />
+    <ClCompile Include="paral.cpp" />
+    <ClCompile Include="quadr.cpp" />
+    <ClCompile Include="rect.cpp" />
+    <ClCompile Include="rect.h" />
+    <ClCompile Include="rhombus.cpp" />
+    <ClCompile Include="r_trian.cpp" />
+    <ClCompile Include="square.cpp" />
     <ClCompile Include="Task3.cpp" />
+    <ClCompile Include="trian.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="e_trian.h" />
+    <ClInclude Include="figure.h" />
+    <ClInclude Include="is_trian.h" />
+    <ClInclude Include="paral.h" />
+    <ClInclude Include="quadr.h" />
+    <ClInclude Include="rhombus.h" />
+    <ClInclude Include="r_trian.h" />
+    <ClInclude Include="square.h" />
+    <ClInclude Include="trian.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

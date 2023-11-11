@@ -1,32 +1,4 @@
-﻿#include <iostream>
-
-class Counter {
-private:
-	int count;
-public:
-	//конструктор со значениям
-	Counter(int number) {
-		count = number;
-	}
-	//конструктор по умолчанию
-	Counter() {
-		count = 1;
-	}
-
-	void set_number(int number) {
-		count = number;
-	}
-	void add() {
-		count++;
-	}
-	void subtraсе() {
-		count--;
-	}
-	void print() {
-		std::cout << count << "\n";
-	}
-};
-
+﻿#include "class.h"
 int main() {
 	setlocale(LC_ALL, "Russin");
 	system("chcp 1251");
