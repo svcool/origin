@@ -1,5 +1,5 @@
-﻿#define MAX(a, b) ((a) \
- >= (b) ? (a) : (b)) // Определили макрос MAX
+﻿#include <iostream>
+#define SUB(a, b) ((a)-(b)) // Определили макрос MAX
 
 int main(int argc, char** argv)
 {
