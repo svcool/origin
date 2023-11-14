@@ -1,6 +1,4 @@
 ﻿#include "iostream"
-
-#include "func.h"
 #define MODE 1 // Определили идентификатор MODE
 #ifndef MODE
 #error Определите константу MODE
@@ -20,4 +18,3 @@ std::cout << "Работаю в боевом режиме" << std::endl;
 	std::cout << "Неизвестный режим. Завершение работы";
 #endif
 }
-
