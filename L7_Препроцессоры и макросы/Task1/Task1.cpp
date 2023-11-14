@@ -10,10 +10,8 @@ setlocale(LC_ALL, "Russian");
 	std::cout << "Работаю в режиме тренировки";
 #elif MODE == 1
 std::cout << "Работаю в боевом режиме" << std::endl;
-	int x, y;
-	std::cout << "Введите число 1: "; std::cin >> x;
-	std::cout << "Введите число 1: "; std::cin >> y;
-	std::cout << "Результат сложения: " << (x + y);
+#include "func.h"
+add();
 #else
 	std::cout << "Неизвестный режим. Завершение работы";
 #endif
