@@ -1,5 +1,4 @@
-#include "func.h"
-
+#include "iostream"
 void add() {
 	int x, y;
 	std::cout << "¬ведите число 1: "; std::cin >> x;

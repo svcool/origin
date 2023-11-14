@@ -18,16 +18,8 @@
     <ClCompile Include="Task1.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="func.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="func.h">
-      <Filter>Файлы ресурсов</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
