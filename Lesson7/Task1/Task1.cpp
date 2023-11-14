@@ -1,4 +1,5 @@
 ﻿#include "iostream"
+
 #include "func.h"
 #define MODE 1 // Определили идентификатор MODE
 #ifndef MODE
