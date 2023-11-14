@@ -1,10 +1,10 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <fstream>
 #include <string>
 
 class Address {
 private:
-	//`<название города > , <название улицы>, <номер дома>, <номер квартиры>`
+	//`<РЅР°Р·РІР°РЅРёРµ РіРѕСЂРѕРґР° > , <РЅР°Р·РІР°РЅРёРµ СѓР»РёС†С‹>, <РЅРѕРјРµСЂ РґРѕРјР°>, <РЅРѕРјРµСЂ РєРІР°СЂС‚РёСЂС‹>`
 	std::string city;
 	std::string street;
 	int number_home;
@@ -35,18 +35,18 @@ public:
 				}
 				f_out.close();
 			}
-			else std::cout << "Ошибка открытия файла" << std::endl;
+			else std::cout << "РћС€РёР±РєР° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р°" << std::endl;
 
 		}
 
 
 
 int main() {
-	// локализация
+	// Р»РѕРєР°Р»РёР·Р°С†РёСЏ
 	setlocale(LC_ALL, "Russian");
 	system("chcp 1251");
 
-	// переменные, объекты
+	// РїРµСЂРµРјРµРЅРЅС‹Рµ, РѕР±СЉРµРєС‚С‹
 	int size{};
 	std::ifstream in_file("in.txt");
 	std::ofstream f_out("out.txt");
@@ -54,10 +54,10 @@ int main() {
 	std::string street;
 	int number_home;
 	int number_apart;
-	// считываем в данные из файла в массив
+	// СЃС‡РёС‚С‹РІР°РµРј РІ РґР°РЅРЅС‹Рµ РёР· С„Р°Р№Р»Р° РІ РјР°СЃСЃРёРІ
 	std::string* arr;
-	// проверка открытия файла
-	if (!in_file.is_open()) { std::cout << "Ошибка открытия файла" << std::endl; return 0; }
+	// РїСЂРѕРІРµСЂРєР° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р°
+	if (!in_file.is_open()) { std::cout << "РћС€РёР±РєР° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р°" << std::endl; return 0; }
 		
 	in_file >> size;
 	arr = new std::string[size];
@@ -67,7 +67,7 @@ int main() {
 			in_file >> street;
 			in_file >> number_home;
 			in_file >> number_apart;
-			//создаем экземпляр классса и записываем в массив
+			//СЃРѕР·РґР°РµРј СЌРєР·РµРјРїР»СЏСЂ РєР»Р°СЃСЃСЃР° Рё Р·Р°РїРёСЃС‹РІР°РµРј РІ РјР°СЃСЃРёРІ
 			Address address(city, street, number_home, number_apart);
 			arr[i] = address.get_output_address();
 		}
