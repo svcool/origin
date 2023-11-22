@@ -1,6 +1,5 @@
-#include "exsept.h"
+﻿#include "exsept.h"
 #include "figure.h"
 
-Except::Except(char* msg, int value) : domain_error(msg) {
-	this->value = value;
+Except::Except(const std::string& msg) : domain_error(msg) {
 };

@@ -106,6 +106,7 @@ int main() {
 
 	// сортировка
 	sort_city(arr, size);
+	//вывод в файл
 	output_address(f_out, arr, size);
 	
 	delete[] arr;

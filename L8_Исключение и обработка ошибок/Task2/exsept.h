@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 //#include <exception>
 #include <stdexcept>
 #include <typeinfo>
@@ -6,9 +6,9 @@
 
 class Except : public std::domain_error
 {
-private:
-	int value; 
 public:
-	Except(char* msg, int value);
+	Except(const std::string&);
+// импорттируем конструктор из базового класса
+	//using std::domain_error::domain_error;
   
 };

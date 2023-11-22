@@ -6,6 +6,6 @@ protected:
 	double A{}, B{}, C{};
 public:
 	triangle(double a, double b, double c, double A, double B, double C);
-
 	void print_info() override;
+	void create_print_info() override;
 };

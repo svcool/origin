@@ -7,4 +7,5 @@ protected:
 public:
 	Quadrangle(double a, double b, double c, double d, double A, double B, double C, double D);
 	void print_info() override;
+	void create_print_info() override;
 };
