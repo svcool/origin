@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Task1.cpp" />
+    <ClCompile Include="L8_Task1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.md" />
