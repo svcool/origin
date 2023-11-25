@@ -1,0 +1,13 @@
+# ninja log v5
+26	710	7226350348215288	CMakeFiles/Test.dir/rect.cpp.obj	2eda5869e574b5ab
+43	718	7226350348215288	CMakeFiles/Test.dir/paral.cpp.obj	3e57822092eea185
+37	719	7226350348215288	CMakeFiles/Test.dir/quadr.cpp.obj	537a85c15fba7e69
+9	724	7226350348215288	CMakeFiles/Test.dir/Task3.cpp.obj	a294483e374368d4
+32	726	7226350348371550	CMakeFiles/Test.dir/r_trian.cpp.obj	dd712c0542d84c40
+21	734	7226350348371550	CMakeFiles/Test.dir/rhombus.cpp.obj	733c6e847b64630b
+54	737	7226350348371550	CMakeFiles/Test.dir/figure.cpp.obj	c90b0057b8315993
+48	739	7226350348371550	CMakeFiles/Test.dir/is_trian.cpp.obj	c2f133324e7f69ce
+15	744	7226350348527833	CMakeFiles/Test.dir/square.cpp.obj	26d5077b43767b01
+59	746	7226350348527833	CMakeFiles/Test.dir/e_trian.cpp.obj	eaca0ef6217528e0
+2	755	7226350348527833	CMakeFiles/Test.dir/trian.cpp.obj	3e0f50043b8cd1bd
+755	1176	7226350352590572	Test.exe	aa0e67fa7d05cc4f

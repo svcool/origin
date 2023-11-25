@@ -1,0 +1,10 @@
+# ninja log v5
+1	551	7226331251288210	CMakeFiles/hello_cmake.dir/source.cpp.obj	1fdd85e1201b795
+553	951	7226331255020229	hello_cmake.exe	42d43b4db028d6fd
+1	185	7226332723524458	build.ninja	e1cf7c1794ae53c5
+0	13	0	clean	5b46a9964f035f91
+4	466	7226332727378589	CMakeFiles/my_first_cmake_project.dir/source.cpp.obj	85d3e80cd29fd881
+466	834	7226332730774680	my_first_cmake_project.exe	eafb0c39b77ce819
+2	16	0	clean	94eb5120419ed6fe
+6	554	7226333942471183	CMakeFiles/my_first_cmake_project.dir/source.cpp.obj	85d3e80cd29fd881
+555	775	7226333944069398	my_first_cmake_project.exe	eafb0c39b77ce819
