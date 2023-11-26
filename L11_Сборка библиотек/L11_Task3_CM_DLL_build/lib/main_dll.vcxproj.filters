@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\Program Files\MyProject\origin\L11_Сборка библиотек\L11_Task3_CM_DLL\lib\leaver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\Program Files\MyProject\origin\L11_Сборка библиотек\L11_Task3_CM_DLL\lib\leaver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Program Files\MyProject\origin\L11_Сборка библиотек\L11_Task3_CM_DLL\lib\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{155BBC8F-1314-39F8-9CDC-3D172AAD2F97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{F8507926-B3CF-35EA-A82F-06B11F5F2348}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
