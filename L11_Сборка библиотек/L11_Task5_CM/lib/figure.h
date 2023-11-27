@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#ifndef DINAMICLIB_EXPORTS
+#ifdef main_dll_EXPORTS
 #define TRIAN_LIB_API __declspec(dllexport)
 #else
 #define	TRIAN_LIB_API __declspec(dllimport)
