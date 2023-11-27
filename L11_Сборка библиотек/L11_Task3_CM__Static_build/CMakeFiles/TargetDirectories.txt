@@ -1,5 +1,0 @@
-D:/Program Files/MyProject/origin/L11_Сборка библиотек/L11_Task1_CM_build/CMakeFiles/main.dir
-D:/Program Files/MyProject/origin/L11_Сборка библиотек/L11_Task1_CM_build/CMakeFiles/ALL_BUILD.dir
-D:/Program Files/MyProject/origin/L11_Сборка библиотек/L11_Task1_CM_build/CMakeFiles/ZERO_CHECK.dir
-D:/Program Files/MyProject/origin/L11_Сборка библиотек/L11_Task1_CM_build/lib/CMakeFiles/main_lib.dir
-D:/Program Files/MyProject/origin/L11_Сборка библиотек/L11_Task1_CM_build/lib/CMakeFiles/ALL_BUILD.dir
