@@ -130,15 +130,10 @@
     <None Include="readme.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="2_race.h" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="2_race_fly.h" />
-    <ClCompile Include="2_race_fly_ground.h" />
-    <ClCompile Include="2_race_round.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="1_ground.h" />
-    <ClInclude Include="1_transport.h" />
+    <ClInclude Include="2_race.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
