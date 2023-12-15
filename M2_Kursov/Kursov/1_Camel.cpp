@@ -1,0 +1,25 @@
+#include "1_Camel.h"
+	Camel::Camel(int type, std::string name) : T_ground(type, name) {};
+	const std::string Camel::get_name() { return name; }
+	void Camel::set_move(double speed, double tm, double t1, double t2) {
+		speed_move = speed;
+		time_move = tm;
+		time_out1 = t1, time_out2 = t2;
+	}
+	int Camel::get_type() { return type; }
+	int Camel::get_count() { return count; }
+	void Camel::set_count(int cn) { this->count = cn; }
+	void Camel::set_distance(double dist) { distance = dist; }
+	double Camel::comp() {
+		double t{}; // общее время
+		double distance_move = speed_move * time_move; // расстояние без отдыха
+		double distance_ostatok_move = abs(distance - distance_move); //оставшееся расстояние после 1го отдыха
+		double distance_parts = distance_ostatok_move / distance_move; // количество оставшихся частей 
+		double distance_ostatok = static_cast<int>(distance_ostatok_move) % static_cast<int>(distance_move); // некратный остаток
+		if (distance >= distance_move) {
+			t = time_move + time_out1 + distance_parts * (time_move + time_out2) + distance_ostatok / speed_move;
+			if (distance_ostatok == 0) t = t - time_out2;
+			return t;
+		}
+		else return distance / speed_move;
+	}
