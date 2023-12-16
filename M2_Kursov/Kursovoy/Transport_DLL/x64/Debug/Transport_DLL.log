@@ -1,0 +1,13 @@
+﻿  1_Boots.cpp
+  1_Broom.cpp
+  1_Camel.cpp
+  1_CamelFast.cpp
+  1_Carpet.cpp
+  1_Eagle.cpp
+  1_Kentavr.cpp
+  1_Transport.cpp
+  1_TrFly.cpp
+  1_TrGround.cpp
+  Создание кода...
+     Создается библиотека D:\Program Files\MyProject\origin\M2_Kursov\Kursovoy\x64\Debug\Transport_DLL.lib и объект D:\Program Files\MyProject\origin\M2_Kursov\Kursovoy\x64\Debug\Transport_DLL.exp
+  Transport_DLL.vcxproj -> D:\Program Files\MyProject\origin\M2_Kursov\Kursovoy\x64\Debug\Transport_DLL.dll
