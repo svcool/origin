@@ -1,6 +1,6 @@
 #include "1_Camel.h"
 	Camel::Camel(int type, std::string name) : T_ground(type, name) {};
-	const std::string Camel::get_name() { return name; }
+	const std::string& Camel::get_name() const { return name; }
 	void Camel::set_move(double speed, double tm, double t1, double t2) {
 		speed_move = speed;
 		time_move = tm;

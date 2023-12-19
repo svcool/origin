@@ -5,7 +5,7 @@ Camel_fast::Camel_fast(int type, std::string name) : T_ground(type, name) {}
 		time_move = tm;
 		time_out1 = t1, time_out2 = t2; time_out3 = t3;
 	}
-	const std::string Camel_fast::get_name() { return name; }
+	const std::string& Camel_fast::get_name() const { return name; }
 	int Camel_fast::get_type() { return type; }
 	int Camel_fast::get_count() { return count; }
 	void Camel_fast::set_count(int cn) { this->count = cn; }

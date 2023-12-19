@@ -7,7 +7,7 @@ class Broom : public T_fly {
 public:
 	KURS_TRANSPORT_LIB_API Broom(int type, std::string name);
 	KURS_TRANSPORT_LIB_API void set_move(int speed);
-	KURS_TRANSPORT_LIB_API const std::string get_name() override;
+	KURS_TRANSPORT_LIB_API const std::string& get_name() const override;
 	KURS_TRANSPORT_LIB_API int get_type() override;
 	KURS_TRANSPORT_LIB_API int get_count() override;
 	KURS_TRANSPORT_LIB_API void set_count(int cn) override;

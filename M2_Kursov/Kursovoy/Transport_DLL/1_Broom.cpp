@@ -1,7 +1,7 @@
 #include "1_Broom.h"
 	Broom::Broom(int type, std::string name) : T_fly(type, name) {}
 	void Broom::set_move(int speed) {speed_move = speed;}
-	const std::string Broom::get_name() { return name; }
+	const std::string& Broom::get_name() const { return name; }
 	int Broom::get_type() { return type; }
 	int Broom::get_count() { return count; }
 	void Broom::set_count(int cn) { this->count = cn; }

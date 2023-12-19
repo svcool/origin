@@ -5,7 +5,7 @@
 		time_move = tm;
 		time_out1 = t1;
 	}
-	const std::string Kentavr::get_name() { return name; }
+	const std::string& Kentavr::get_name() const { return name; }
 	int Kentavr::get_type() { return type; }
 	int Kentavr::get_count() { return count; }
 	void Kentavr::set_count(int cn) { this->count = cn; }

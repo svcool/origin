@@ -12,7 +12,7 @@ public:
 	Transport(std::string name);
 	virtual int get_type();
 	virtual int get_count();
-	virtual const std::string get_name();
+	virtual const std::string& get_name() const;
 	virtual void set_count(int cn);
 	virtual void set_distance(double dist);
 	virtual double comp();

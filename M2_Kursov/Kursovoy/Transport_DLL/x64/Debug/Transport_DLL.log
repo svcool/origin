@@ -4,10 +4,11 @@
   1_CamelFast.cpp
   1_Carpet.cpp
   1_Eagle.cpp
+D:\Program Files\MyProject\origin\M2_Kursov\Kursovoy\Transport_DLL\1_Eagle.cpp(7,19): warning C4227: устаревший элемент: пропуск квалификаторов для ссылки
   1_Kentavr.cpp
-  1_Transport.cpp
   1_TrFly.cpp
   1_TrGround.cpp
+  1_Transport.cpp
   Создание кода...
-     Создается библиотека D:\Program Files\MyProject\origin\M2_Kursov\Kursovoy\x64\Debug\Transport_DLL.lib и объект D:\Program Files\MyProject\origin\M2_Kursov\Kursovoy\x64\Debug\Transport_DLL.exp
+D:\Program Files\MyProject\origin\M2_Kursov\Kursovoy\Transport_DLL\1_Transport.cpp(6): warning C4172: возвращение адреса локальной или временной переменной
   Transport_DLL.vcxproj -> D:\Program Files\MyProject\origin\M2_Kursov\Kursovoy\x64\Debug\Transport_DLL.dll

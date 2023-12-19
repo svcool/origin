@@ -6,7 +6,7 @@
 		time_move = tm;
 		time_out1 = t1, time_out2 = t2;
 	}
-	const std::string Boots::get_name() { return name; }
+	const std::string& Boots::get_name() const { return name; }
 	int Boots::get_type() { return type; }
 	int Boots::get_count() { return count; }
 	void Boots::set_count(int cn) { this->count = cn; }

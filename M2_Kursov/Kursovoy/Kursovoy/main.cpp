@@ -50,19 +50,16 @@ int main() {
 	Race* race_arr[]{ &racefly, &raceground, &racegroundfly };
 	double S{};
 	int type{}, a{}, d{}; //type-тип гонки, S - расстояние, a - транспорт, d - действие выбора
+	const int size{7}; // количество транспорта
 	std::string Rn{""}; //название гонки
 begin:	
 	std::string temp_name{}, name_transport{};
 	std::cout << "Добро пожаловать в гоночный симулятор!" << std::endl;
 	//обнуление счетчиков выбора
 	int unsigned count{0}; //счетчик транспорных средств
-	camel.set_count(0);
-	camelfast.set_count(0);
-	kentavr.set_count(0);
-	boots.set_count(0);
-	eagle.set_count(0);
-	carpet.set_count(0);
-	broom.set_count(0);
+	for (int i = 0; i < size; ++i) {
+		tr_arr[i]->set_count(0);
+	}
 	do {
 		std::cout << race_arr[0]->get_type() << " " << race_arr[0]->get_name() << std::endl;
 		std::cout << race_arr[1]->get_type() << " " << race_arr[1]->get_name() << std::endl;
@@ -136,11 +133,10 @@ do {
 		}
 } while (true);
 
-double arr[7]{};
+double arr[size]{};
 double temp{};
 Transport* temp_tr{};
 int n{1};
-int size{7};
 std::cout << "\nРезультат гонки:" << std::endl;
 for (int i = 0; i < size; i++) {
 	if (tr_arr[i]->get_count() == 1) {
@@ -155,8 +151,6 @@ for (int i = 0; i < size - 1; ++i) {
 			temp = arr[j]; temp_tr = tr_arr[j];
 			arr[j] = arr[j + 1]; tr_arr[j] = tr_arr[j + 1];
 			arr[j + 1] = temp; tr_arr[j + 1] = temp_tr;
-
-
 		}
 	}
 }

@@ -4,7 +4,7 @@
 		speed_move = speed;
 		k1 = kp1;
 	}
-	const std::string Eagle::get_name() { return name; }
+	const std::string& const Eagle::get_name() const { return name; }
 	int Eagle::get_type() { return type; }
 	int Eagle::get_count() { return count; }
 	void Eagle::set_count(int cn) { this->count = cn; }

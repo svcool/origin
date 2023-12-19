@@ -5,7 +5,7 @@
 		speed_move = speed;
 		k1 = kp1; k2 = kp2; k3 = kp3;
 	}
-	const std::string Carpet::get_name() { return name; }
+	const std::string& Carpet::get_name() const { return name; }
 	int Carpet::get_type() { return type; }
 	int Carpet::get_count() { return count; }
 	void Carpet::set_count(int cn) { this->count = cn; }
