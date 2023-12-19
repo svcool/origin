@@ -1,0 +1,10 @@
+^D:\PROGRAM FILES\MYPROJECT\ORIGIN\L11_СБОРКА БИБЛИОТЕК\L11_TASK5_CM_BUILD\CMAKEFILES\7CA2A2FFA3446B69FA33E444404C0A25\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SD:/Program Files/MyProject/origin/L11_Сборка библиотек/L11_Task5_CM" "-BD:/Program Files/MyProject/origin/L11_Сборка библиотек/L11_Task5_CM_build" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "D:/Program Files/MyProject/origin/L11_Сборка библиотек/L11_Task5_CM_build/main.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

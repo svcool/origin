@@ -1,0 +1,5 @@
+D:/Program Files/MyProject/origin/L11_Сборка библиотек/L11_Task3_CM_DLL_build/CMakeFiles/main.dir
+D:/Program Files/MyProject/origin/L11_Сборка библиотек/L11_Task3_CM_DLL_build/CMakeFiles/ALL_BUILD.dir
+D:/Program Files/MyProject/origin/L11_Сборка библиотек/L11_Task3_CM_DLL_build/CMakeFiles/ZERO_CHECK.dir
+D:/Program Files/MyProject/origin/L11_Сборка библиотек/L11_Task3_CM_DLL_build/lib/CMakeFiles/main_dll.dir
+D:/Program Files/MyProject/origin/L11_Сборка библиотек/L11_Task3_CM_DLL_build/lib/CMakeFiles/ALL_BUILD.dir

@@ -1,0 +1,15 @@
+﻿D:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: промежуточный каталог (x64\Debug\) содержит файлы, которые используются совместно с другим проектом (Task2.vcxproj).  Это может привести к ошибкам очистки и перестроения.
+  L8_Task2.cpp
+  e_trian.cpp
+  exsept.cpp
+  figure.cpp
+  is_trian.cpp
+  paral.cpp
+  quadr.cpp
+  r_trian.cpp
+  rect.cpp
+  rhombus.cpp
+  square.cpp
+  trian.cpp
+  Создание кода...
+  Task2.vcxproj -> D:\Program Files\MyProject\origin\L8_Исключение и обработка ошибок\Task2\x64\Debug\L8_Task2.exe
