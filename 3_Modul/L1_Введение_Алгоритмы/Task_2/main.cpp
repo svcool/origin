@@ -5,7 +5,8 @@ int function(int* arr, const int size, int number) {
 	int right = size - 1;
 	while (left < right) {
 		int middle = (left + right / 2);
-		if (arr[middle] > number) right = middle - 1;
+if (arr[middle]== number) result = middle;
+		else if (arr[middle] > number) right = middle - 1;
 		else if (arr[middle] < number) left = middle + 1;
 		if (arr[left] == number) result = arr[left];
 	}
