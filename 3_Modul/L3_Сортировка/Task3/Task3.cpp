@@ -1,43 +1,22 @@
 ﻿#include <iostream>
+//#include<array>
 using namespace std;
-void count_sort(int* arr, int size) {
-	int counts[10]{};
+ void count_sort(int* arr, int size){
+	int* counts = new int[size]{};
 	for (int i = 0; i < size; ++i) {
-		++counts[arr[i]];
+		counts[arr[i]-10]+=1;
 	}
 	int c = 0;
 	for (int i = 0; i < size; ++i) {
-		while (counts[c] = 0)
+		while (counts[i] != 0) {
+			arr[c] = i + 10;
 			c += 1;
-		arr[i] = c;
-		counts[c] -= 1;
-	}
-}
-void CountingSort(int a[], int n)
-{
-	int max = INT_MIN, min = INT_MAX;
-	for (int i = 0; i < n; i++) {
-		if (a[i] > max)
-			max = a[i];
-		if (a[i] < min)
-			min = a[i];
-	}
-	int* c = new int[max + 1 - min];
-	for (int i = 0; i < max + 1 - min; i++) {
-		c[i] = 0;
-	}
-	for (int i = 0; i < n; i++) {
-		c[a[i] - min] = c[a[i] - min] + 1;
-	}
-	int i = 0;
-	for (int j = min; j < max + 1; j++) {
-		while (c[j - min] != 0) {
-			a[i] = j;
-			c[j - min]--;
-			i++;
+			counts[i] -= 1;
 		}
 	}
+	delete[] counts;
 }
+
 
 void print(int* arr, int size) {
 	cout << "Исходный массив: ";
@@ -51,21 +30,21 @@ count_sort(arr, size);
 	for (int i = 0; i < size; i++) {
 		cout << arr[i] << " ";
 	}
-	cout << "\n";
+	cout << "\n\n";
 }
 
 int main() {
 	setlocale(LC_ALL, "Russian");
 
-	const int n1 = 10, n2 = 15, n3 = 18;
-	int arr1[n1]{ 3, 43, 38, 29, 18, 72, 57, 61, 2, 33 };
-	int arr2[n2]{ 88, 91, 87, 59, 53, 49, 29, 16, 4, 27, 28, 89, 2, 25, 74 };
-	int arr3[n3]{ 24, 66, 20, 79, 30, 16, 19, 62, 94, 59, 0, 7, 59, 90, 84, 60, 95, 62 };
+	int arr1[]{ 19, 14, 22, 22, 17, 22, 13, 21, 20, 24, 18, 10, 17, 16, 17, 20, 22, 11, 20, 16, 14, 13, 10, 22, 18, 14, 16, 24, 19, 17 };
+	int arr2[]{ 16, 17, 14, 20, 22, 20, 17, 22, 16, 19, 23, 24, 20, 22, 21, 18, 14, 16, 17, 21, 10, 11, 19, 23, 11, 11, 17, 17, 11, 21, 17, 11, 17, 16, 12, 11, 16, 22, 23, 16 };
+	int arr3[]{ 21, 15, 19, 18, 23, 12, 18, 18, 19, 23, 12, 20, 15, 22, 21, 18, 19, 20, 12, 16, 20, 14, 17, 13, 10, 23, 19, 14, 10, 22, 19, 12, 24, 23, 22, 15, 13, 22, 18, 18, 11, 23, 24, 17, 10 };
+	
+	const int n1 = sizeof(arr1) / sizeof(*arr1);
+	const int n2 = sizeof(arr2) / sizeof(*arr2);
+	const int n3 = end(arr3) - begin(arr3);
 	
 	print(arr1, n1);
-	
 	print(arr2, n2);
 	print(arr3, n3);
-
-
 }
