@@ -62,8 +62,7 @@ void quick_sort(int* arr, int size) {
             left += 1;
             right -= 1;
         }
-        if (left <= right) break;
-    } 
+     } 
 
   if (right > 0) quick_sort(arr, right+1);
        

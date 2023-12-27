@@ -15,22 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="check_race.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="check_race.h">
-      <Filter>Файлы ресурсов</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="readme.md">
       <Filter>Файлы ресурсов</Filter>
     </None>
-    <None Include="reclaim.md" />
   </ItemGroup>
 </Project>
