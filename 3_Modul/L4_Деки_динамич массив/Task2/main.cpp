@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 using namespace std;
+
 void print_dynamic_array(int* arr, int logical_size, int actual_size) {
 	for (int i = 0; i < logical_size; ++i) {
 		cout << arr[i] << " ";
@@ -31,6 +32,7 @@ int main() {
 	int size_fact{};
 	int size_log{};
 	int add{};
+	
 	do {
 		cout << "Введите фактичеcкий размер массива: "; cin >> size_fact;
 		cout << "Введите логический размер массива: "; cin >> size_log;
@@ -40,25 +42,25 @@ int main() {
 		}
 		break;
 	} while (true);
+	//создание массива
 
-	int* arr = new int[size_fact] {}; //создаем массив
-
+	int* arr = new int[size_fact] {}; 
 	for (int i = 0; i < size_log; ++i) {
 		cout << "Введите arr[" << i << "] : ";
 		cin >> arr[i];
 	}
 	cout << "Динамический массив: ";
 	print_dynamic_array(arr, size_log, size_fact);
-
+	
+	//Добавление элемента
 	do {
 		cout << "Введите элемент для добавления: "; cin >> add;
 		if (add == 0) break;
 		append_to_dynamic_array(arr, size_log, size_fact, add);
 		cout << "Динамический массив: ";
 		print_dynamic_array(arr, size_log, size_fact);
-		
-
 	} while (true);
+	//Завершение
 	cout << "Спасибо!Ваш массив: ";
 	print_dynamic_array(arr, size_log, size_fact);
 	delete[] arr;

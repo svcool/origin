@@ -16,16 +16,17 @@ int main() {
 
 	int size_fact{};
 	int size_log{};
-	bool check = true;
 
 	do {
-	cout << "Введите фактичеcкий размер массива: "; cin >> size_fact;
-	cout << "Введите логический размер массива: "; cin >> size_log;
-	if (size_log > size_fact) {
-		cout << "Ошибка!Логический размер массива не может превышать фактический! \n";
-		check = false;
-	}
-	}while (check == false);
+		cout << "Введите фактичеcкий размер массива: "; cin >> size_fact;
+		cout << "Введите логический размер массива: "; cin >> size_log;
+		if (size_log > size_fact) {
+			cout << "Ошибка!Логический размер массива не может превышать фактический! \n";
+			continue;
+		}
+		break;
+	} while (true);
+
 
 	int* arr = new int[size_fact] {}; //создаем массив
 
