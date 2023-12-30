@@ -1,4 +1,4 @@
-#include <iostream>
+п»ї#include <iostream>
 using namespace std;
 //class Piramida {
 //	int size;
@@ -29,12 +29,12 @@ using namespace std;
 //};
 
 void print_pyramid(int* arr, int size) {
-	int x{}; //расчетный индекс родителя
-	int y{2}; //счетчик уровней
-	int z{1}; //номер уровня дерева
-	cout << "\nПирамида: ";
+	int x{}; //СЂР°СЃС‡РµС‚РЅС‹Р№ РёРЅРґРµРєСЃ СЂРѕРґРёС‚РµР»СЏ
+	int y{2}; //СЃС‡РµС‚С‡РёРє СѓСЂРѕРІРЅРµР№
+	int z{1}; //РЅРѕРјРµСЂ СѓСЂРѕРІРЅСЏ РґРµСЂРµРІР°
+	cout << "\nРџРёСЂР°РјРёРґР°: ";
 	for (int i = 0; i < size; ++i) {
-//вывод корня и подсчет следующих уровней
+//РІС‹РІРѕРґ РєРѕСЂРЅСЏ Рё РїРѕРґСЃС‡РµС‚ СЃР»РµРґСѓСЋС‰РёС… СѓСЂРѕРІРЅРµР№
 		if (i == 0) {
 			cout << "\n" << 0 << " root " << arr[0];
 			continue;
@@ -43,7 +43,7 @@ void print_pyramid(int* arr, int size) {
 			++z; 
 			y = z * z;
 		}
-//четный - правый, нечетный - левый
+//С‡РµС‚РЅС‹Р№ - РїСЂР°РІС‹Р№, РЅРµС‡РµС‚РЅС‹Р№ - Р»РµРІС‹Р№
 		if (i % 2 == 0) {
 			x = (i - 2) / 2;
 			cout << "\n" << z << " " << "right" << "(" << arr[x] << ") " << arr[i];
@@ -58,7 +58,7 @@ void print_pyramid(int* arr, int size) {
 };
 void print(int* arr, int size) {
 cout << "\n";
-	cout << "Исходный массив: ";
+	cout << "РСЃС…РѕРґРЅС‹Р№ РјР°СЃСЃРёРІ: ";
 	for (int i = 0; i < size; i++) {
 		cout << arr[i] << " ";
 	}
