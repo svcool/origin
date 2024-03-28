@@ -1,0 +1,411 @@
+п»ї#include <iostream>
+#include <fstream>
+#include <string>
+#include <map>
+#include <typeinfo>
+
+class parser_error : public std::exception{
+	std::string message;
+public:
+	parser_error(const std::string& message) : message{ message }
+	{}
+	const char* what() const noexcept override {
+		return message.c_str();
+	}
+};
+
+class parser_error_sintax : public std::exception{
+	std::string message;
+public:
+	parser_error_sintax(const std::string& message, int count) {
+		this->message = message + " - line " + std::to_string(count);
+	}
+	const char* what() const noexcept override{
+		return message.c_str();
+	}
+};
+
+
+//#############################################################################################
+class ini_parser {
+	std::string file_name{};
+	std::ifstream file{};
+	std::string V;
+	std::string S;
+	//std::map<std::string, std::string> data_value;
+	std::map<std::string, std::map <std::string, std::string> > data;
+
+void open_file() {
+		file.open(file_name);
+		if (!file.is_open()) {
+			throw parser_error("File not found");
+		}
+	}
+
+	void section_value(std::string sec_val) {
+		if (sec_val.empty()) {
+			throw parser_error("Data empty");
+		}
+<<<<<<< HEAD
+		S = sec_val.substr(0, sec_val.find(".")); //СЃРµРєС†РёСЏ
+		V = sec_val.substr(sec_val.find(".") + 1);//РїР°СЂР°РјРµС‚СЂ
+	}
+//РїСЂРѕРІРµСЂРєР° СЃРёРјРІРѕР»РѕРІ РјРµР¶РґСѓ Р·РЅР°С‡РµРЅРёРµРј Рё =
+=======
+		S = sec_val.substr(0, sec_val.find(".")); //секция
+		V = sec_val.substr(sec_val.find(".") + 1);//параметр
+	}
+//проверка символов между значением и =
+>>>>>>> b86d4b2 (final)
+	bool error(size_t val_end, size_t next_word, std::string& line) {
+
+		for (size_t i = val_end; i < next_word; i++) {
+			if (line[i] != ' ') return true;
+		}
+		return false; // РїСЂР°РІРёР»СЊРЅС‹Р№ СЃРёРЅС‚Р°РєСЃРёСЃ РјРµР¶РґСѓ = Рё value
+	}
+
+<<<<<<< HEAD
+	// РїСЂРѕРІРµСЂРєР° С‡РёСЃР»Р°
+=======
+	// проверка числа
+>>>>>>> b86d4b2 (final)
+	bool is_number(const std::string& line) {
+		if (!line.empty() && (line.find_first_not_of("0123456789.") == std::string::npos)) {
+			return true;
+		}
+		return false;
+	}
+
+	void find_file() {
+<<<<<<< HEAD
+		std::string line, d_val, val; // РёСЃР»РµРґСѓРµРјР°СЏ СЃС‚СЂРѕРєР°
+		size_t section_start{}, section_end{}, section_find{};// РЅР°С‡Р°Р»Рѕ Рё РєРѕРЅРµС† СЃРµРєС†РёРё
+		size_t val_start{}, val_end{}; //РЅР°С‡Р°Р»Рѕ Рё РєРѕРЅРµС† value
+		std::string section_temp; //РІСЂРµРјРµРЅР°СЏ СЃРµРєС†РёСЏ РґР»СЏ Р·Р°РїРёСЃРё РІ map
+		size_t comment{}; //РєРѕРјРјРµРЅС‚Р°СЂРёРё
+		size_t space{}; // РїСЂРѕР±РµР»
+=======
+		std::string line, d_val, val; // иследуемая строка
+		size_t section_start{}, section_end{}, section_find{};// начало и конец секции
+		size_t val_start{}, val_end{}; //начало и конец value
+		std::string section_temp; //временая секция для записи в map
+		size_t comment{}; //комментарии
+		size_t space{}; // пробел
+>>>>>>> b86d4b2 (final)
+		std::string result{};
+		const std::string separators{ " ,;:.\"!?'*\n\t" }; // СЂР°Р·РґРµР»РёС‚РµР»Рё СЃР»РѕРІ
+		unsigned count{}; //СЃС‡РµС‚С‡РёРє СЃС‚СЂРѕРє
+		bool find_section{ false };
+		while (std::getline(file, line))
+		{
+<<<<<<< HEAD
+			count++;//СЃС‡РµС‚С‡РёРє СЃС‚СЂРѕРє
+			size_t word = line.find_first_not_of(separators);// РёРґРµРєСЃ СЃР»РѕРІР°
+			comment = line.find_first_of(';'); //РїРѕРёСЃРє РёРЅРґРµРєСЃР° РЅР°С‡Р°Р»Р° РєРѕРјРјРµРЅС‚Р°СЂРёСЏ
+			if (comment != std::string::npos) line.erase(comment);//СѓРґР°Р»СЏРµРј РєРѕРјРјРµРЅС‚Р°СЂРёРё РїРѕСЃР»Рµ ;
+			if (line.empty() || word == std::string::npos) continue;//РµСЃР»Рё СЃС‚СЂРѕРєР° РїСѓСЃС‚Р°СЏ РёР»Рё РЅРµС‚ СЃР»РѕРІ
+			section_start = line.find('[');
+			section_end = line.find(']');
+			//РїРѕРёСЃРє СЃРµРєС†РёРё
+
+			if (section_start != std::string::npos && section_end != std::string::npos) {
+				find_section = false; // РЅР°Р№РґРµРЅР° СЃРµРєС†РёСЏ, РїСЂРѕРІРµСЂСЏРµРј РЅР° СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРµ
+				section_find = line.find(S);// РёРЅРґРµРєСЃ РЅР°С‡Р°Р»Р° РёСЃРєРѕРјРѕР№ СЃРµРєС†РёРё
+
+				if (section_end > section_start) {
+					//РїСЂРѕРІРµСЂРєР° РѕС‚СЃСѓС‚РІРёСЏ СЃРёРјРІРѕР»РѕРІ РєСЂРѕРјРµ РїСЂРѕР±РµР»Р° Рё С‚Р°Р±СѓР»СЏС†РёРё РґРѕ Рё РїРѕСЃР»Рµ СЃРєРѕР±РѕРє
+=======
+			count++;//счетчик строк
+			size_t word = line.find_first_not_of(separators);// идекс слова
+			comment = line.find_first_of(';'); //поиск индекса начала комментария
+			if (comment != std::string::npos) line.erase(comment);//удаляем комментарии после ;
+			if (line.empty() || word == std::string::npos) continue;//если строка пустая или нет слов
+			section_start = line.find('[');
+			section_end = line.find(']');
+			//поиск секции
+
+			if (section_start != std::string::npos && section_end != std::string::npos) {
+				find_section = false; // найдена секция, проверяем на соответствие
+				section_find = line.find(S);// индекс начала искомой секции
+
+				if (section_end > section_start) {
+					//проверка отсутвия символов кроме пробела и табуляции до и после скобок
+>>>>>>> b86d4b2 (final)
+					if (line.find_first_not_of(" \t\n", section_end + 1) != std::string::npos) {
+						throw parser_error_sintax("Incorrect syntax in the file", count);
+					}
+
+					for (size_t i = 0; i < section_start; i++) {
+						if (line[i] == ' ' || line[i] == '\t') continue;
+						throw parser_error_sintax("Incorrect syntax in the file", count);
+					}
+
+<<<<<<< HEAD
+					//РїСЂРѕРІРµСЂРєР° С†РµР»РѕСЃС‚РЅРѕС‚СЃС‚Рё РЅР°Р·РІР°РЅРёСЏ СЃРµРєС†РёРё Р±РµР· РїСЂРѕР±РµР»РѕРІ Рё С‚Р°Р±СѓР»СЏС†РёР№ РЅР° РєСЂР°СЏС… РЅР°Р·РІР°РЅРёСЏ
+					if(section_start == section_end -1 ) throw parser_error_sintax("Incorrect syntax in the file", count); //РїСЂРѕРІРµСЂРєР°, С‡С‚Рѕ СЃРµРєС†РёСЏ РЅРµ РїСѓСЃС‚Р°СЏ [];
+=======
+					//проверка целостнотсти названия секции без пробелов и табуляций на краях названия
+					if(section_start == section_end -1 ) throw parser_error_sintax("Incorrect syntax in the file", count); //проверка, что секция не пустая [];
+>>>>>>> b86d4b2 (final)
+					for (size_t i = section_end - 1; i > section_start; i--) {
+						if (line[i] == ' ' || line[i] == '\t') throw parser_error_sintax("Incorrect syntax in the file", count);
+						if (line[i] != ' ' || line[i] != '\t') break;
+					}
+
+					for (size_t i = section_start + 1; i < section_end; i++) {
+						if (line[i] == ' ' || line[i] == '\t') throw parser_error_sintax("Incorrect syntax in the file", count);
+						if (line[i] != ' ' || line[i] != '\t') break;
+						
+					}
+
+				}
+				
+<<<<<<< HEAD
+				find_section = true; //РЅР°Р№РґРµРЅР° СЃРµРєС†РёСЏ
+				section_temp = line.substr(section_start + 1, section_end - section_start - 1);
+				data[section_temp];//Р·Р°РїРёСЃСЊ СЃРµРєС†РёРё
+=======
+				find_section = true; //найдена секция
+				section_temp = line.substr(section_start + 1, section_end - section_start - 1);
+				data[section_temp];//запись секции
+>>>>>>> b86d4b2 (final)
+				continue;
+			}
+
+			//Р Р°Р·Р±РѕСЂ РїРµСЂРµРјРµРЅРЅС‹С… СЃРµРєС†РёРё
+			if (find_section) {
+<<<<<<< HEAD
+				size_t start_word = line.find_first_not_of(separators);//РЅР°С‡Р°Р»Р° Р·РЅР°С‡РµРЅРёСЏ value
+				size_t end_word = line.find_first_of(" =", start_word + 1); // РЅР°С…РѕРґРёРј, РіРґРµ РєРѕРЅС‡Р°РµС‚СЃСЏ СЃР»РѕРІРѕ
+				val_start = line.find(V);
+				space = line.find_first_of('=');
+				//РЅРµС‚ РІ СЃС‚СЂРѕРєРµ Р·РЅР°РєР° =
+				if (line.find_first_of("=", start_word + 1) == std::string::npos) {
+					throw parser_error_sintax("Incorrect syntax in the file", count);
+				}
+				//РїСЂРѕРІРµСЂРєР° РѕС‚СЃСѓСЃС‚РІРёСЏ Р·РЅР°РєРѕРІ РєСЂРѕРјРµ РїСЂРѕР±РµР»Р° РґРѕ Р·РЅР°РєР° "="
+				if (error(end_word, space, line)) {
+					throw parser_error_sintax("Incorrect syntax in the file", count);
+				}
+				d_val = line.substr(start_word, end_word); // РїРѕРґСЃС‚СЂРѕРєР° СЃ РёРјРµРЅРµРј РїР°СЂР°РјРµС‚СЂР°
+
+				//РѕР±СЂР°Р±РѕС‚РєР° РїРѕРґСЃС‚СЂРѕРєРё РїРѕСЃР»Рµ =
+				start_word = line.find_first_not_of(separators, space + 1); //РЅР°С‡Р°Р»Рѕ Р·РЅР°С‡РµРЅРёСЏ РїРѕСЃР»Рµ =
+				end_word = line.size() - 1; //РєРѕРЅРµС† Р·РЅР°С‡РµРЅРёСЏ
+				//РїСЂРѕРІРµСЂРєР° РѕС‚СЃСѓСЃС‚РІРёСЏ Р·РЅР°РєРѕРІ РґРѕ Р·РЅР°С‡РµРЅРёСЏ РєСЂРѕРјРµ РїСЂРѕР±РµР»Р° 
+=======
+				size_t start_word = line.find_first_not_of(separators);//начала значения value
+				size_t end_word = line.find_first_of(" =", start_word + 1); // находим, где кончается слово
+				val_start = line.find(V);
+				space = line.find_first_of('=');
+				//нет в строке знака =
+				if (line.find_first_of("=", start_word + 1) == std::string::npos) {
+					throw parser_error_sintax("Incorrect syntax in the file", count);
+				}
+				//проверка отсуствия знаков кроме пробела до знака "="
+				if (error(end_word, space, line)) {
+					throw parser_error_sintax("Incorrect syntax in the file", count);
+				}
+				d_val = line.substr(start_word, end_word); // подстрока с именем параметра
+
+				//обработка подстроки после =
+				start_word = line.find_first_not_of(separators, space + 1); //начало значения после =
+				end_word = line.size() - 1; //конец значения
+				//проверка отсуствия знаков до значения кроме пробела 
+>>>>>>> b86d4b2 (final)
+				if (error(space + 1, start_word, line) && start_word != std::string::npos) {
+					throw parser_error_sintax("Incorrect syntax in the file", count);
+				}
+				//СѓРґР°Р»РµРЅРёРµ Р»РёС€РЅРёС… РїСЂРѕР±РµР»РѕРІ РІ РєРѕРЅС†Рµ СЃС‚СЂРѕРєРё
+				while (true) {
+					if (line[end_word] != ' ') {
+						break;
+					}
+					end_word--;
+				}
+<<<<<<< HEAD
+				//РµСЃР»Рё РЅРµС‚ Р·РЅР°С‡РµРЅРёСЏ Р·Р°РїРёСЃР°С‚СЊ "", РёРЅР°С‡Рµ Р·РЅР°С‡РµРЅРёРµ
+=======
+				//если нет значения записать "", иначе значение
+>>>>>>> b86d4b2 (final)
+				if (start_word == std::string::npos) {
+					val = "";
+				}
+				else {
+					val = line.substr(start_word, end_word - start_word + 1); // Р·РЅР°С‡РµРЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№
+				}
+	
+				data[section_temp][d_val] = val;
+			}
+
+		}
+		file.close();
+	}
+
+<<<<<<< HEAD
+	// РєРѕРЅС‚СЂРѕР»СЊ РґР°РЅРЅС‹С…, РІС‹РІРѕРґ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёС… СЃРµРєС†РёР№ Рё РїР°СЂР°РјРµС‚СЂРѕРІ, РµСЃР»Рё РЅРµ РЅРµ РЅР°РґРµРЅС‹
+	void control_data() {
+		std::map<std::string, std::string>::iterator itr1;
+		std::map<std::string, std::map<std::string, std::string> >::iterator itr;
+		// РїСЂРѕРІРµСЂРєР° СЃРµРєС†РёРё Рё РІС‹РІРѕРґ СЃСѓС‰РµСЃС‚РІСѓСЋС‰Рё СЃРµРєС†РёР№ РІ С„Р°Р№Р»Рµ
+
+		itr = data.find(S);
+		if (itr == data.end()) {
+			std::cout << "РЎРµРєС†РёСЏ [" << S << "] РЅРµ РЅР°Р№РґРµРЅР°. \nР¤Р°Р№Р» СЃРѕРґРµСЂР¶РёС‚ СЃР»РµРґСѓСЋС‰РёРµ СЃРµРєС†РёРё: \n";
+=======
+	// контроль данных, вывод существующих секций и параметров, если не не надены
+	void control_data() {
+		std::map<std::string, std::string>::iterator itr1;
+		std::map<std::string, std::map<std::string, std::string> >::iterator itr;
+		// проверка секции и вывод существующи секций в файле
+	
+		itr = data.find(S);
+		if (itr == data.end()) {
+			std::cout << "Секция [" << S << "] не найдена. \nФайл содержит следующие секции: \n";
+>>>>>>> b86d4b2 (final)
+			for (itr = data.begin(); itr != data.end(); itr++)
+			{
+				std::cout << itr->first << "\n";
+			}
+			throw parser_error("The section is not found");
+		}
+<<<<<<< HEAD
+		// РїСЂРѕРІРµСЂРєР° РїР°СЂР°РјРµС‚СЂР° Рё РІС‹РІРѕРґ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёС… РїР°СЂР°РјРµС‚СЂРѕРІ РІ СЃРµРєС†РёРё
+		itr1 = itr->second.find(V);
+		if (itr1 == itr->second.end()) {
+			std::cout << "РџРµСЂРµРјРµРЅРЅР°СЏ \"" << V << "\" РЅРµ РЅР°Р№РґРµРЅР°. \nРЎРµРєС†РёСЏ [" << S << "] СЃРѕРґРµСЂР¶РёС‚ СЃР»РµРґСѓСЋС‰РёРµ РїРµСЂРµРјРµРЅРЅС‹Рµ: \n";
+		for (auto it = data[S].cbegin(); it != data[S].cend(); ++it){
+			std::cout << it->first << std::endl;
+		}
+			/*for (const auto& element : data[S]) {
+				std::cout << element.first << std::endl;
+			}
+			throw parser_error("The parameter is not found");*/
+		}
+	
+
+		//РµСЃР»Рё Сѓ РїР°СЂР°РјРµС‚СЂР° РЅРµС‚ Р·РЅР°С‡РµРЅРёСЏ
+			if (data.at(S).at(V) == "") {
+				std::cout << "РќРµС‚ Р·РЅР°С‡РµРЅРёСЏ РґР»СЏ РїР°СЂР°РјРµС‚СЂР° \"" << V << "\" РІ СЃРµРєС†РёРё [" << S << "].\n";
+				throw parser_error("No meaning for the variable");
+			}
+		}
+		
+
+	std::string get_value_string(std::string sec_val) {
+	section_value(sec_val);
+	control_data(); // РєРѕРЅС‚СЂРѕР»СЊ РґР°РЅРЅС‹С…, РІС‹РІРѕРґ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёС… СЃРµРєС†РёР№ Рё РїР°СЂР°РјРµС‚СЂРѕРІ, РµСЃР»Рё РЅРµ РЅРµ РЅР°РґРµРЅС‹
+=======
+		// проверка параметра и вывод существующих параметров в секции
+		itr1 = itr->second.find(V);
+		if (itr1 == itr->second.end()) {
+			std::cout << "Переменная \"" << V << "\" не найдена. \nСекция [" << S << "] содержит следующие переменные: \n";
+
+			for (const auto& element : data[S]) {
+				std::cout << element.first << std::endl;
+			}
+			throw parser_error("The parameter is not found");
+		}
+	//если у параметра нет значения
+		if (data.at(S).at(V) == "") {
+			std::cout << "Нет значения для параметра \"" << V << "\" в секции [" << S << "].\n";
+			throw parser_error("No meaning for the variable");
+		}
+	}
+		
+	std::string get_value_string(std::string sec_val) {
+	section_value(sec_val);
+	control_data(); // контроль данных, вывод существующих секций и параметров, если не не надены
+>>>>>>> b86d4b2 (final)
+		return data.at(S).at(V);
+	}
+
+public:
+	ini_parser(std::string file_name) : file_name(file_name) {
+		open_file();
+		find_file();
+	}
+	template<typename T>
+	T get_value(std::string sec_val) {
+		
+		static_assert(sizeof(T) == -1, "not implemented type for get_value");
+	}
+			
+<<<<<<< HEAD
+	//2. РєРѕРЅРєСЂРµС‚РЅС‹Р№ С€Р°Р±Р»РѕРЅ РґР»СЏ СЃС‚СЂРёРЅРіР°
+=======
+	//2. конкретный шаблон для стринга
+>>>>>>> b86d4b2 (final)
+	template<>
+	std::string get_value(std::string sec_val) {
+		return get_value_string(sec_val);
+	}
+<<<<<<< HEAD
+	//3. РєРѕРЅРєСЂРµС‚РЅС‹Р№ С€Р°Р±Р»РѕРЅ РґР»СЏ РёРЅС‚Р°
+=======
+	//3. конкретный шаблон для инта
+>>>>>>> b86d4b2 (final)
+	template<>
+	int get_value(std::string sec_val) {
+		std::string str_val = get_value_string(sec_val);
+		if (!is_number(str_val)) {
+			throw parser_error("Incorrect type of data requested");
+		}
+		return atoi(str_val.c_str());
+	}
+
+<<<<<<< HEAD
+	//3. РєРѕРЅРєСЂРµС‚РЅС‹Р№ С€Р°Р±Р»РѕРЅ РґР»СЏ double
+	template<>
+	double get_value(std::string sec_val) {
+		std::string str_val = get_value_string(sec_val);
+		if (!is_number(str_val)) {
+			throw parser_error("Incorrect type of data requested");
+		}
+		if (str_val.find('.') != std::string::npos) {
+			str_val = str_val.replace(str_val.find("."), 1, ",");
+		}
+		return atof(str_val.c_str());
+	}
+
+
+=======
+>>>>>>> b86d4b2 (final)
+	~ini_parser() {
+		file.close();
+	}
+};
+
+
+
+int main() {
+	setlocale(LC_ALL, "Russian");
+	std::string file = "txt.ini";
+<<<<<<< HEAD
+	std::string parametr = "Section1.var1"; 
+	try {
+		ini_parser parser(file);
+		auto value = parser.get_value<double>(parametr);
+		std::cout << "РќР°Р№РґРµРЅС‹Р№ РїР°СЂР°РјРµС‚СЂ: " << parametr << " = " << value;
+=======
+	std::string parametr = "Section4.Mode"; 
+	try {
+		ini_parser parser(file);
+		auto value = parser.get_value<std::string>(parametr);
+		std::cout << "Найденый параметр: " << parametr << " = " << value;
+>>>>>>> b86d4b2 (final)
+	}
+	catch (const parser_error& err) {
+		std::cout << "Parser error: " << err.what() << std::endl;
+	}
+	catch (const parser_error_sintax& err) {
+		std::cout << "Parser error: " << err.what() << std::endl;
+	}
+	// РѕР±СЂР°Р±РѕС‚РєР° РѕСЃС‚Р°Р»СЊРЅС‹С… РёСЃРєР»СЋС‡РµРЅРёР№
+	catch (const std::exception&)
+	{
+		std::cout << "Something wrong" << std::endl;
+	}
+	return 0;
+}
