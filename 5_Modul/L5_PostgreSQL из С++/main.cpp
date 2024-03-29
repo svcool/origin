@@ -1,4 +1,4 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <pqxx/pqxx>
 #include <Windows.h>
 using namespace std;
@@ -19,13 +19,25 @@ class clientdb {
 	string db;
 public:
 	clientdb(string db) : db(db) {
-		createdb;
+		create_db();
 	}
 
-	void createdb() {
-		// подключение от суперпользователя
-		const string cdb = "CREATE DATABASE " + db;
-		try {
+	bool checkDatabaseExists(pqxx::connection& conn, const std::string& dbName) {
+		pqxx::work txn(conn);
+		pqxx::result result = txn.exec("SELECT 1 FROM pg_database WHERE datname = " + txn.quote(dbName));
+		txn.commit();
+		return !result.empty();
+	}
+
+	void createDatabase(pqxx::connection& conn, const std::string& dbName) {
+		pqxx::nontransaction query(conn, "Sample");
+		pqxx::result res = query.exec("CREATE DATABASE " + dbName);
+		std::cout << "Database '" << dbName << "' created successfully!" << std::endl;
+	}
+
+	void create_db() {
+		// РїРѕРґРєР»СЋС‡РµРЅРёРµ РѕС‚ СЃСѓРїРµСЂРїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+		
 			pqxx::connection conn(
 				"host=localhost "
 				"port=5432 "
@@ -33,110 +45,104 @@ public:
 				"user=postgres "
 				"password=postgres");
 
-			cout << "База подключена" << endl;
+			cout << "Р‘Р°Р·Р° РїРѕРґРєР»СЋС‡РµРЅР°" << endl;
 
+			// РџСЂРѕРІРµСЂРєР° СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёСЏ Р±Р°Р·С‹
 			if (conn.is_open()) {
-				pqxx::nontransaction query(conn, "Sample");
-				pqxx::result res = query.exec(cdb);
-				std::cout << "Database 'clientdb' created successfully!" << std::endl;
+				string dbName = db;
+
+				if (!checkDatabaseExists(conn, dbName)) {
+					createDatabase(conn, dbName);
+				}
+				else {
+					std::cout << "Database '" << dbName << "' already exists!" << std::endl;
+				}
 			}
 			else {
 				std::cerr << "Failed to connect to database" << std::endl;
 			}
 			conn.close();
-		}
-		catch (const std::exception& err) {
-			cout << "Исключение: " << err.what() << endl;
-		}
 	}
 };
 
 class manage_db {
-	string name{};
-	string surname{};
-	string email{};
-	string phone{};
-	string db;
+	//string name{};
+	//string surname{};
+	//string email{};
+	//string phone{};
+	string dbname;
+	string user;
+	string password;
+	
 public:
-	manage_db(const string& name, const string& surname, const string& email, const string& phone)
-		: name(name), surname(surname), email(email), phone(phone)
-	{}
-	manage_db(string db) : db(db) {
-		createdb;
+	pqxx::connection conn{};
+	//manage_db(const string& name, const string& surname, const string& email, const string& phone)
+	//	: name(name), surname(surname), email(email), phone(phone)
+	//{}
+	manage_db() {
+		conn = connect_db();
 	}
 
-	void createdb() {
-		pqxx::connection c(
-			"host=localhost "
-			"port=5432 "
-			"dbname=clientdb "
-			"user=postgres "
+
+	pqxx::connection& connect_db() {
+		// РїРѕРґРєР»СЋС‡РµРЅРёРµ РѕС‚ СЃСѓРїРµСЂРїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+		conn = pqxx::connection("host=localhost "
+				"port=5432 "
+				"dbname=postgres "
+				"user=postgres "
 			"password=postgres");
-		cout << "База подключена" << endl;
-		// Проверка существования базы
+			
 
-		if (c.is_open()) {
-			pqxx::work txn(c);
-			pqxx::result r = txn.exec("SELECT 1 FROM pg_database WHERE datname = 'clientdb'");
-			if (r.empty()) {
-				// Базы не существует, создаем ее
-				txn.exec("CREATE DATABASE clientdb");
-				txn.commit();
-				std::cout << "Database " << db << "created successfully!" << std::endl;
-			}
-			else {
-				throw("Database already exists!");
-			}
-		}
-
-		// Создание таблицы
-		void createTable() {
-		txn.exec("CREATE TABLE IF NOT EXISTS employee ("
-				"id SERIAL PRIMARY KEY,"
-				"name VARCHAR(100),"
-				"surname,"
-				"email,"
-				"phone,");
-			txn.commit();
-			std::cout << "Table 'employee' created successfully!" << std::endl;
+		if (conn.is_open()) {
+			std::cout << "Opened database successfully: " << conn.dbname() << std::endl;
 		}
 		else {
-			std::cerr << "Failed to connect to database" << std::endl;
+			std::cerr << "Failed to open database" << std::endl;
 		}
-
+		return conn;
 	}
+
+	// //РњРµС‚РѕРґ, СЃРѕР·РґР°СЋС‰РёР№ СЃС‚СЂСѓРєС‚СѓСЂСѓ Р‘Р”(С‚Р°Р±Р»РёС†С‹).
+	/*void createTable() {
+		pqxx::work txn(conn);
+		txn.exec("CREATE TABLE IF NOT EXISTS phone ("
+			"id SERIAL PRIMARY KEY,"
+			"text VARCHAR(30),");
+			txn.commit();
+		std::cout << "Table 'employee' created successfully!" << std::endl;
+
+		txn.exec("CREATE TABLE IF NOT EXISTS employee ("
+			"id SERIAL PRIMARY KEY,"
+			"name VARCHAR(100),"
+			"surname VARCHAR(100),"
+			"email VARCHAR(100) UNIQUE,"
+			"phoneId INTEGER REFERENCES phone(id),");
+		txn.commit();
+		std::cout << "Table 'employee' created successfully!" << std::endl;
+
+
+	}*/
+
+//РњРµС‚РѕРґ, РїРѕР·РІРѕР»СЏСЋС‰РёР№ РґРѕР±Р°РІРёС‚СЊ С‚РµР»РµС„РѕРЅ РґР»СЏ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРіРѕ РєР»РёРµРЅС‚Р°.
+
+//РњРµС‚РѕРґ, РїРѕР·РІРѕР»СЏСЋС‰РёР№ РёР·РјРµРЅРёС‚СЊ РґР°РЅРЅС‹Рµ Рѕ РєР»РёРµРЅС‚Рµ.
+
+//РњРµС‚РѕРґ, РїРѕР·РІРѕР»СЏСЋС‰РёР№ СѓРґР°Р»РёС‚СЊ С‚РµР»РµС„РѕРЅ Сѓ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРіРѕ РєР»РёРµРЅС‚Р°.
+
+//РњРµС‚РѕРґ, РїРѕР·РІРѕР»СЏСЋС‰РёР№ СѓРґР°Р»РёС‚СЊ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРіРѕ РєР»РёРµРЅС‚Р°.
+
+
+
+
+
+
 };
 
 
-
-
-		//Метод, создающий структуру БД(таблицы).
 		
 		
 
-//Метод, позволяющий добавить нового клиента.
-
-//Метод, позволяющий добавить телефон для существующего клиента.
-
-//Метод, позволяющий изменить данные о клиенте.
-
-//Метод, позволяющий удалить телефон у существующего клиента.
-
-//Метод, позволяющий удалить существующего клиента.
-
-
-	};
-
-
-
-
-
-
-
-
-
-
-
+//РњРµС‚РѕРґ, РїРѕР·РІРѕР»СЏСЋС‰РёР№ РґРѕР±Р°РІРёС‚СЊ РЅРѕРІРѕРіРѕ РєР»РёРµРЅС‚Р°.
 
 int main()
 {
@@ -145,59 +151,18 @@ int main()
 	SetConsoleOutputCP(CP_UTF8);
 	//setvbuf(stdout, nullptr, _IOFBF, 10000);
 	try {
-		pqxx::connection conn(
-			"host=localhost "
-			"port=5432 "
-			"dbname=postgres "
-			"user=postgres "
-			"password=postgres");
-		cout << "База подключена" << endl;
+const std::string dbname = "cliendb";
+		const std::string user = "postgres";
+		const std::string password = "postgres";
 
-		if (conn.is_open()) {
-			pqxx::nontransaction query(conn, "Sample");
-			pqxx::result res = query.exec("CREATE DATABASE clientdb;");
-			std::cout << "Database 'clientdb' created successfully!" << std::endl;
-			}
-		else {
-			std::cerr << "Failed to connect to database" << std::endl;
-		}
-		conn.close();
+		clientdb r("clientdb");
 
-		pqxx::connection c(
-			"host=localhost "
-			"port=5432 "
-			"dbname=clientdb "
-			"user=postgres "
-			"password=postgres");
-		cout << "База подключена" << endl;
-		// Проверка существования базы
 
-		if (c.is_open()) {
-			pqxx::work txn(c);
-		pqxx::result r = txn.exec("SELECT 1 FROM pg_database WHERE datname = 'clientdb'");
-		if (r.empty()) {
-			// Базы не существует, создаем ее
-			txn.exec("CREATE DATABASE clientdb");
-			txn.commit();
-			std::cout << "Database 'clientdb' created successfully!" << std::endl;
-		}
-		else {
-			std::cout << "Database 'clientdb' already exists!" << std::endl;
-		}
+		
+		manage_db db;
 
-		// Создание таблицы
-		txn.exec("CREATE TABLE IF NOT EXISTS employee ("
-			"id SERIAL PRIMARY KEY,"
-			"name VARCHAR(100),"
-			"surname,"
-			"email,"
-			"phone,");
-		txn.commit();
-		std::cout << "Table 'employee' created successfully!" << std::endl;
-	}
- else {
-	 std::cerr << "Failed to connect to database" << std::endl;
-		}
+		
+
 
 		////select
 		//pqxx::work tx{ c };
@@ -214,7 +179,7 @@ int main()
 		////update insert
 		//pqxx::work tx{ c };
 		//tx.exec("INSERT INTO book(title, author) "
-		//	"VALUES('Братья Карамазовы', 'Федор Достоевский')");
+		//	"VALUES('Р‘СЂР°С‚СЊСЏ РљР°СЂР°РјР°Р·РѕРІС‹', 'Р¤РµРґРѕСЂ Р”РѕСЃС‚РѕРµРІСЃРєРёР№')");
 		//tx.commit()
 
 
@@ -223,7 +188,7 @@ int main()
 	}
 	//catch (pqxx::sql_error e) {
 	catch (const std::exception& e) {
-		cout << e.what() << "Исключение" << endl;
+		cout << e.what() << "РСЃРєР»СЋС‡РµРЅРёРµ" << endl;
 	}
 
 	return 0;
