@@ -120,59 +120,70 @@ public:
 	}
 
 	void add_client(string name, string surname, string email, string phone) {
-		//if (phone == "") phone = " ";
+		pqxx::work txn(*conn);
 		string query = "WITH new_client AS("
 			"INSERT INTO client(name, surname, email) "
-			"VALUES('" + name + "', '" + surname + "', '" + email + "') ON CONFLICT DO NOTHING RETURNING id"
+			"VALUES('" + txn.esc(name) + "', '" + txn.esc(surname) + "', '" + txn.esc(email) + "') ON CONFLICT DO NOTHING RETURNING id"
 			") "
 			"INSERT INTO phone(phone, clientid) "
-			"VALUES('" + phone + "', (SELECT id FROM new_client)) "
+			"VALUES('" + txn.esc(phone) + "', (SELECT id FROM new_client)) "
 			"ON CONFLICT DO NOTHING";
-		transaction(query);
+		txn.exec(query);
+		txn.commit();
 		std::cout << "Added a client: " << name << ", " << surname << ", " << email << ", " << phone << std::endl;
 	}
 
 //Метод, позволяющий добавить телефон для существующего клиента.
 	void add_phone(string name, string surname, string phone) {
+		pqxx::work txn(*conn);
 		string query = "INSERT INTO phone(phone, clientid) "
-			"VALUES('" + phone + "',"
-			"(SELECT id FROM client WHERE name = '" + name + "' AND surname = '" + surname + "')"
+			"VALUES('" + txn.esc(phone) + "',"
+			"(SELECT id FROM client WHERE name = '" + txn.esc(name) + "' AND surname = '" + txn.esc(surname) + "')"
 			")";
-		transaction(query);
+		txn.exec(query);
+		txn.commit();
 		std::cout << "The phone is added! " + phone << std::endl;
 	}
 
 //Метод, позволяющий изменить данные о клиенте.
 	void change_client(string name, string surname, string newname, string newsurname, string newemail, string newphone) {
+		pqxx::work txn1(*conn);
 		string query1 = "UPDATE phone "
-			"SET phone = '" + newphone + "' "
-			"WHERE clientid = (SELECT id FROM client WHERE name = '" + name + "' AND surname = '" + surname + "')";
-		transaction(query1);
+			"SET phone = '" + txn1.esc(newphone) + "' "
+			"WHERE clientid = (SELECT id FROM client WHERE name = '" + txn1.esc(name) + "' AND surname = '" + txn1.esc(surname) + "')";
+		txn1.exec(query1);
+		txn1.commit();
+		pqxx::work txn2(*conn);
 		string query2 = "UPDATE client "
-			"SET name = '" + newname + "', surname = '" + newsurname + "', email = '" + newemail + "'"
-			"WHERE name = '" + name + "' AND surname = '" + surname +"'";
-		transaction(query2);
+			"SET name = '" + txn2.esc(newname) + "', surname = '" + txn2.esc(newsurname) + "', email = '" + txn2.esc(newemail) + "'"
+			"WHERE name = '" + txn2.esc(name) + "' AND surname = '" + txn2.esc(surname) +"'";
+		txn2.exec(query2);
+		txn2.commit();
 		std::cout << "Client data successfully updated!" << std::endl;
 	}
 
 //Метод, позволяющий удалить телефон у существующего клиента.
 	void delete_phone(string name, string surname, string phone) {
+		pqxx::work txn(*conn);
 		string query = "DELETE FROM phone "
 			"WHERE clientid = (SELECT id FROM client WHERE "
-			"name = '" + name +
-			"' AND surname = '" + surname + 
-			"') AND phone = '" + phone + "'";
-		transaction(query);
+			"name = '" + txn.esc(name) +
+			"' AND surname = '" + txn.esc(surname) +
+			"') AND phone = '" + txn.esc(phone) + "'";
+		txn.exec(query);
+		txn.commit();
 		std::cout << "Topping phone " << phone << " from a client of " << name << ", " << surname << std::endl;
 	}
 
 //Метод, позволяющий удалить существующего клиента.
 	void delete_client(string name, string surname) {
+		pqxx::work txn(*conn);
 		string query = "DELETE FROM phone "
-			"WHERE clientid = (SELECT id FROM client WHERE name = '" + name + "' AND surname = '" + surname + "');"
+			"WHERE clientid = (SELECT id FROM client WHERE name = '" + txn.esc(name) + "' AND surname = '" + txn.esc(surname) + "');"
 			" DELETE FROM client "
-			"WHERE name = '" + name + "' AND surname = '" + surname + "'";
-		transaction(query);
+			"WHERE name = '" + txn.esc(name) + "' AND surname = '" + txn.esc(surname) + "'";
+		txn.exec(query);
+		txn.commit();
 		std::cout << "The client(" << name << " " << surname << ") is deleted!" << std::endl;
 	}
 
