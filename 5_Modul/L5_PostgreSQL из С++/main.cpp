@@ -189,21 +189,22 @@ public:
 
 	// Метод, позволяющий найти клиента по его данным — имени, фамилии, email или телефону.
 	void out_client(string parametr, string data) {
+		pqxx::work txn{ *conn };
 		if (parametr == "phone") {
-			string query = "SELECT c.name, c.surname FROM client c JOIN phone p ON c.id = p.clientid WHERE p.phone = '" + data + "'";
-			select(query, parametr);
+			string query = "SELECT c.name, c.surname FROM client c JOIN phone p ON c.id = p.clientid WHERE p.phone = '" + txn.esc(data) + "'";
+			select(query, parametr, txn);
 			}
 		else if (parametr == "name") {
-			string query = "SELECT name, surname FROM client WHERE name = '" + data + "'";
-			select(query, parametr);
+			string query = "SELECT name, surname FROM client WHERE name = '" + txn.esc(data) + "'";
+			select(query, parametr, txn);
 		}
 		else if (parametr == "surname") {
-			string query = "SELECT name, surname FROM client WHERE surname = '" + data + "'";
-			select(query, parametr);
+			string query = "SELECT name, surname FROM client WHERE surname = '" + txn.esc(data) + "'";
+			select(query, parametr, txn);
 		}
 		else if (parametr == "email") {
-			string query = "SELECT name, surname FROM client WHERE email = '" + data + "'";
-			select(query, parametr);
+			string query = "SELECT name, surname FROM client WHERE email = '" + txn.esc(data) + "'";
+			select(query, parametr, txn);
 		}
 		else {
 			throw ("Incorrect name of the parameter. The parameter accepts the values: phone, name , surname, email");
@@ -211,9 +212,8 @@ public:
 	
 	}
 
-	void select(string query, string parametr) {
+	void select(string query, string parametr, pqxx::work& txn) {
 		int check{};
-		pqxx::work txn{ *conn };
 		auto collection = txn.query<std::string, std::string>(query);
 		
 		for (auto elem : collection)
