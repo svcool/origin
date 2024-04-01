@@ -6,17 +6,19 @@ using namespace std;
 #pragma execution_character_set("utf-8")
 class Book;
 class Shop;
-
+class Publisher;
+class Stock;
+class Sale;
 
 class Publisher {
 public:
 	string name = "";
 	Wt::Dbo::collection<Wt::Dbo::ptr<Book>> books;
 
-	template<typename Action>
+	template<class Action>
 	void persist(Action& a) {
 		Wt::Dbo::field(a, name, "name");
-		Wt::Dbo::hasMany(a, books, Wt::Dbo::ManyToOne, "publisher")
+		Wt::Dbo::hasMany(a, books, Wt::Dbo::ManyToOne, "publisher");
 	}
 };
 
@@ -26,11 +28,11 @@ public:
 		Wt::Dbo::ptr<Publisher> publisher;
 		Wt::Dbo::collection<Wt::Dbo::ptr<Stock>> stocks;
 
-		template<typename Action>
+		template<class Action>
 		void persist(Action& a) {
 			Wt::Dbo::field(a, title, "title");
-			Wt::Dbo::belongsTo(a, publishers, "publisher");  //дописывает _id в таблице
-			Wt::Dbo::hasMany(a, stocks, Wt::Dbo::ManyToOne, "book")
+			Wt::Dbo::belongsTo(a, publisher, "publisher");  //дописывает _id в таблице
+			Wt::Dbo::hasMany(a, stocks, Wt::Dbo::ManyToOne, "book");
 		}
 	};
 
@@ -41,11 +43,11 @@ public:
 		Wt::Dbo::ptr<Book> books;
 		Wt::Dbo::collection<Wt::Dbo::ptr<Sale>> sales;
 
-		template<typename Action>
+		template<class Action>
 		void persist(Action& a) {
 			Wt::Dbo::field(a, count, "count");
-			Wt::Dbo::belongsTo(a, Shop, "shop");
-			Wt::Dbo::belongsTo(a, book, "book");
+			Wt::Dbo::belongsTo(a, shops, "shop");
+			Wt::Dbo::belongsTo(a, books, "book");
 			Wt::Dbo::hasMany(a, sales, Wt::Dbo::ManyToOne, "stock");
 		}
 	};
@@ -55,7 +57,7 @@ public:
 		string name = "";
 		Wt::Dbo::collection<Wt::Dbo::ptr<Stock>> stocks;
 
-		template<typename Action>
+		template<class Action>
 		void persist(Action& a) {
 			Wt::Dbo::field(a, name, "name");
 			Wt::Dbo::hasMany(a, stocks, Wt::Dbo::ManyToOne, "shop");
@@ -64,17 +66,16 @@ public:
 
 	class Sale {
 	public:
-		string name = "";
 		int price{};
 		string date_sale="";
 		int count{};
 		Wt::Dbo::ptr<Stock> stocks;
 
-		template<typename Action>
+		template<class Action>
 		void persist(Action& a) {
-			Wt::Dbo::field(a, name, "name");
-			Wt::Dbo::field(a, date, "date");
+			Wt::Dbo::field(a, date_sale, "date");
 			Wt::Dbo::field(a, price, "price");
+			Wt::Dbo::field(a, count, "count");
 			Wt::Dbo::belongsTo(a, stocks, "stock");
 		}
 	};
@@ -101,8 +102,8 @@ int main() {
 
 		unique_ptr<Wt::Dbo::backend::Postgres> connection = make_unique<Wt::Dbo::backend::Postgres>(connectionString);
 		Wt::Dbo::Session s;
-		
-		
+
+
 		s.setConnection(move(connection));
 		s.mapClass<Publisher>("publisher");
 		s.mapClass<Book>("book");
@@ -110,18 +111,66 @@ int main() {
 		s.mapClass<Shop>("shop");
 		s.mapClass<Stock>("stock");
 		
+		s.dropTables();
 		s.createTables();
 		Wt::Dbo::Transaction t(s);
 
+		// издательство
+		std::unique_ptr<Publisher> p1(new Publisher{ "Roga", {} }); //установка значений
+		std::unique_ptr<Publisher> p2(new Publisher{ "Piter", {} });
+		std::unique_ptr<Publisher> p3(new Publisher{ "XXX", {} });
 
+		Wt::Dbo::ptr<Publisher>  p1db = s.add(std::move(p1)); // добавление в БД
+		Wt::Dbo::ptr<Publisher>  p2db = s.add(std::move(p2));
+		Wt::Dbo::ptr<Publisher>  p3db = s.add(std::move(p3));
 
-		std::unique_ptr<Publisher> joe(new Publisher{ "Roga", {} });
-		joe-> = "Joe";
-		joe->phone = "12345";
-		joe->karma = 100;
-		Wt::Dbo::ptr<user> joeDb = s.add(std::move(joe));
-		
+		//магазин
+		std::unique_ptr<Shop> shop1(new Shop{ "Ogonek", {} });
+		std::unique_ptr<Shop> shop2(new Shop{ "Knigniy", {} });
+		std::unique_ptr<Shop> shop3(new Shop{ "My book", {} });
+
+		Wt::Dbo::ptr<Shop>  shop1db = s.add(std::move(shop1));
+		Wt::Dbo::ptr<Shop>  shop2db = s.add(std::move(shop2));
+		Wt::Dbo::ptr<Shop>  shop3db = s.add(std::move(shop3));
+
+		//Книги в базе book
+		std::unique_ptr<Book> book1{ new Book };
+		book1->title = "Война и мир";
+		book1->publisher = p1db;
+		std::unique_ptr<Book> book2(new Book{ "Преступление и наказание", p2db, {} });
+		std::unique_ptr<Book> book3(new Book{ "Горе от ума", p3db, {} });
+
+		Wt::Dbo::ptr<Book>  book1db = s.add(std::move(book1));
+		Wt::Dbo::ptr<Book>  book2db = s.add(std::move(book2));
+		Wt::Dbo::ptr<Book>  book3db = s.add(std::move(book3));
+
+		//Stock
+		std::unique_ptr<Stock> stock1(new Stock{ 10, shop1db, book1db, {} });
+		std::unique_ptr<Stock> stock2(new Stock{ 10, shop2db, book2db, {} });
+		std::unique_ptr<Stock> stock3(new Stock{ 10, shop3db, book3db, {} });
+
+		Wt::Dbo::ptr<Stock>  stock1db = s.add(std::move(stock1));
+		Wt::Dbo::ptr<Stock>  stock2db = s.add(std::move(stock2));
+		Wt::Dbo::ptr<Stock>  stock3db = s.add(std::move(stock3));
+
+	
+		//Sale
+		std::unique_ptr<Sale> sale1(new Sale{ 22, "2024-01-10", 4, stock1db });
+		std::unique_ptr<Sale> sale2(new Sale{ 20, "2024-02-20", 1, stock1db });
+		std::unique_ptr<Sale> sale3(new Sale{ 19, "2024-03-15", 2, stock1db });
+
+		Wt::Dbo::ptr<Sale>  sale1db = s.add(std::move(sale1));
+		Wt::Dbo::ptr<Sale>  sale2db = s.add(std::move(sale2));
+		Wt::Dbo::ptr<Sale>  sale3db = s.add(std::move(sale3));
+
 		t.commit();
+		string input{};
+		int id{};
+
+		Wt::Dbo::ptr<Publisher> pub;
+		pub = s.find<Publisher>().where("id=?").bind(id);
+		pub = s.find<Publisher>().where("name=?").bind(input);
+
 	}
 	catch (const exception& err) {
 		cout << "Error happened: " << err.what() << endl;
