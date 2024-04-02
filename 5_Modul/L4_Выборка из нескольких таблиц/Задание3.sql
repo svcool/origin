@@ -18,11 +18,14 @@ JOIN album a ON mt.albumid = a.id
 GROUP BY a.name_album 
 
 --Все исполнители, которые не выпустили альбомы в 2020 году.
-SELECT pseudonym FROM singer s 
-JOIN album_singer as2 ON as2.singerid  = s.id 
-JOIN album a ON a.id = as2.albumid 
-WHERE a.year_album != 2020
-GROUP BY pseudonym;
+SELECT s.id, s.pseudonym
+FROM singer s
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM album_singer as
+    INNER JOIN album a ON as.albumId = a.id
+    WHERE as.singerId = s.id AND a.year_album = 2020
+);
 
 --Названия сборников, в которых присутствует конкретный исполнитель (выберите его сами
 SELECT pseudonym, a.name_album FROM singer s
