@@ -148,28 +148,61 @@ int main() {
 		std::unique_ptr<Stock> stock1(new Stock{ 10, shop1db, book1db, {} });
 		std::unique_ptr<Stock> stock2(new Stock{ 10, shop2db, book2db, {} });
 		std::unique_ptr<Stock> stock3(new Stock{ 10, shop3db, book3db, {} });
+		std::unique_ptr<Stock> stock4(new Stock{ 10, shop1db, book3db, {} });
 
 		Wt::Dbo::ptr<Stock>  stock1db = s.add(std::move(stock1));
 		Wt::Dbo::ptr<Stock>  stock2db = s.add(std::move(stock2));
 		Wt::Dbo::ptr<Stock>  stock3db = s.add(std::move(stock3));
+		Wt::Dbo::ptr<Stock>  stock4db = s.add(std::move(stock4));
 
 	
 		//Sale
 		std::unique_ptr<Sale> sale1(new Sale{ 22, "2024-01-10", 4, stock1db });
-		std::unique_ptr<Sale> sale2(new Sale{ 20, "2024-02-20", 1, stock1db });
-		std::unique_ptr<Sale> sale3(new Sale{ 19, "2024-03-15", 2, stock1db });
+		std::unique_ptr<Sale> sale2(new Sale{ 20, "2024-02-20", 1, stock2db });
+		std::unique_ptr<Sale> sale3(new Sale{ 19, "2024-03-15", 2, stock3db });
 
 		Wt::Dbo::ptr<Sale>  sale1db = s.add(std::move(sale1));
 		Wt::Dbo::ptr<Sale>  sale2db = s.add(std::move(sale2));
 		Wt::Dbo::ptr<Sale>  sale3db = s.add(std::move(sale3));
 
 		t.commit();
-		string input{};
+		//выводит информацию об издателе(publisher), имя или идентификатор которого принимается через `std::cin`.
+		//Программа должна выводить список магазинов, в которых продают книги этого издателя.
+		
+		string x{};
 		int id{};
-
+		Wt::Dbo::Transaction t1(s);
 		Wt::Dbo::ptr<Publisher> pub;
-		pub = s.find<Publisher>().where("id=?").bind(id);
-		pub = s.find<Publisher>().where("name=?").bind(input);
+
+		cout << "Введите имя или индефикатор" << endl;
+		cin >> x;
+		if (!x.empty() && (x.find_first_not_of("0123456789") == std::string::npos)) {
+			pub = s.find<Publisher>().where("id=?").bind(x);
+		}
+		else {
+			pub = s.find<Publisher>().where("name=?").bind(x);
+		}
+
+		if(pub){
+			cout << "Издатель:" << pub->name << endl;
+
+		cout << "Списко магазинов, где продают книги издателя:" << pub->name<< endl;
+
+		std::set<std::string> shopNames;
+
+		for (const auto& book : pub->books){
+			for (const auto& stock : book->stocks) {
+				shopNames.insert(stock->shops->name);
+			
+			}
+		}
+		for (const auto& sh:shopNames)
+			cout << sh << endl;
+
+		}
+
+		 
+
 
 	}
 	catch (const exception& err) {
