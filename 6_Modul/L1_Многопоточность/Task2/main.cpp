@@ -5,8 +5,8 @@
 
 void foo(std::size_t i) {}
 
-void fillVector(std::vector<int>& v) {
-	for (int i = 0; i < 100; i++) {
+void fillVector(std::vector<int>& v, unsigned n) {
+	for (int i = 0; i < n; i++) {
 		v.push_back(i);
 	}
 }
@@ -17,25 +17,47 @@ void print(const int* vector, const size_t size)
 		std::cout << vector[i];
 }
 
-int* sum(int* v_result, const int* v1, const int* v2, const size_t size)
+void sum(std::vector<int>& v_result, const std::vector<int>& v1, const std::vector<int>& v2, int count)
 {
-	for (size_t i = 0; i < size; ++i)
-		v_result[i] = v1[i] + v2[i];
-	return v_result;
+	size_t size{};
+	std::vector <int>::iterator iter1, iter2;
+	//iter1 = v1.begin();
+	//iter2 = v1.begin();
+
+	if (v1.size() > v2.size()) {
+		size = v1.size();
+	}
+	else {
+		size = v2.size();
+	}
+
+	int step =  size/count;
+	for (auto iter1 = v1.begin(); iter1 != v1.end(); iter1++)
+		cout << *iter1 << " ";
+	cout << ")." << endl;
+	//for (iter1 = v1.size(); i < (count + 1) * step; ++i)
+
+
+	//for (size_t i = 0; i < size; ++i)
+	//	//v_result[i] = v1[i] + v2[i];
+	//return v_result;
 }
 
 int main() {
 	std::vector<int> v1;
 	std::vector<int> v2;
+	unsigned n = 1000; //размер вектора
 	std::vector<int> result;
-	fillVector(v1);
-	fillVector(v2);
+	fillVector(v1, n);
+	fillVector(v2, n);
+
 	std::size_t count;
+
 	std::cout << "Enter the number of flows: ";  std::cin >> count;
 
 	int step = v1.size() / count;
 
-	std::vector<std::thread> threads;
+	/*std::vector<std::thread> threads;
 	for (auto i = 0; i < count; ++i) {
 		std::thread th([=]()
 			{
@@ -49,6 +71,11 @@ int main() {
 		for (auto& th : ths) {
 			th.join();
 		}
-	}
+	}*/
+
+	std::thread threads[10];
+	for (auto& th : threads)
+		th = std::thread([&]() {});
+
 	return 0;
 }
