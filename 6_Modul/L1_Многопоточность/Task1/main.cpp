@@ -13,19 +13,21 @@ public:
 	};
 
 	void add_count() {
-		while(count != max_client) {
+		while(count < max_client) {
 		count++;
 		nubmer_client++;
-		std::cout << get_client() << std::endl;
+		std::cout << "Client++:" << get_client();
 		std::this_thread::sleep_for(std::chrono::seconds(1));
+		std::cout<< std::endl;
 		}
 	}
 	
-	virtual void rm_count() {
-		while(nubmer_client >! 0) {
+	void rm_count() {
+		while(true) {
 			nubmer_client--;
-			std::cout << get_client() << std::endl;
+			std::cout << "  Operator: " << get_client();
 			std::this_thread::sleep_for(std::chrono::seconds(2));
+			if (count == max_client && nubmer_client == 0) break;
 		}
 	}
 
@@ -33,6 +35,20 @@ public:
 		return nubmer_client;
 	}
 };
+
+class Operator {
+	class Client c;
+
+public:
+		Operator(class Client &c) {
+			this->c = c;
+	};
+	void rm_count() {
+		c.rm_count();
+	}
+	
+};
+
 
 int main() {
 
@@ -42,11 +58,13 @@ int main() {
 	std::chrono::duration<double> elapsed_seconds = end - start;
 	std::cout << "elapsed time: " << elapsed_seconds.count() << "s\n";*/
 
-	Client c(10);
-	
-//std::thread t2(&Client::rm_count, &c);
-std::thread t1(&Client::add_count, &c);
+	Client c(5);
+	Operator op(c);
+
+std::thread t1(&Client::add_count, &c);	
+std::thread t2(&Operator::rm_count, &op);
+
 	
 	t1.join();
-	//t2.join();
+	t2.join();
 }
