@@ -3,79 +3,89 @@
 #include<chrono>
 #include<vector>
 
-void foo(std::size_t i) {}
 
 void fillVector(std::vector<int>& v, unsigned n) {
-	for (int i = 0; i < n; i++) {
+	for (unsigned i = 1; i <= n; i++) {
 		v.push_back(i);
 	}
 }
 
-void print(const int* vector, const size_t size)
+void print(const int* vector, const int size)
 {
-	for (size_t i = 0; i < size; ++i, std::cout << std::endl)
+	for (int i = 0; i < size; ++i, std::cout << std::endl)
 		std::cout << vector[i];
 }
 
-void sum(std::vector<int>& v_result, const std::vector<int>& v1, const std::vector<int>& v2, int count)
+void sum(std::vector<int>& v_result, const std::vector<int>& v1, const std::vector<int>& v2, int count, int nt)
 {
-	size_t size{};
-	std::vector <int>::iterator iter1, iter2;
-	//iter1 = v1.begin();
-	//iter2 = v1.begin();
+	//nt номер потока, count количество потоков
+	size_t size = v1.size();
 
-	if (v1.size() > v2.size()) {
+	//наибольший размер вектора иp v1,v2
+	/*if (v1.size() > v2.size()) {
 		size = v1.size();
 	}
 	else {
 		size = v2.size();
+	}*/
+	//шаг для сложения векторов с округлением вверх
+	int step = (static_cast<int>(size) + count - 1 )/ count;
+	
+		for (auto iter1 = v1.begin() + nt*step; iter1 != v1.begin() + (nt + 1)*step; iter1++){
+			
+			if (iter1 == v1.end()-1) break;
+			int j = std::distance(v1.begin(), iter1);
+			std::cout << *iter1 << " " << std::distance(v1.begin(), iter1) << " " << v2[std::distance(v1.begin(), iter1)];
+			v_result[std::distance(v1.begin(), iter1)] = *iter1 + v2[std::distance(v1.begin(), iter1)];
+			std::cout << v_result[std::distance(v1.begin(), iter1)] << " \n";
+			
 	}
 
-	int step =  size/count;
-	for (auto iter1 = v1.begin(); iter1 != v1.end(); iter1++)
-		cout << *iter1 << " ";
-	cout << ")." << endl;
-	//for (iter1 = v1.size(); i < (count + 1) * step; ++i)
-
-
-	//for (size_t i = 0; i < size; ++i)
-	//	//v_result[i] = v1[i] + v2[i];
-	//return v_result;
 }
 
 int main() {
 	std::vector<int> v1;
 	std::vector<int> v2;
-	unsigned n = 1000; //размер вектора
-	std::vector<int> result;
+	unsigned n = 9; //размер вектора
+	std::vector<int> result(n);
 	fillVector(v1, n);
 	fillVector(v2, n);
-
-	std::size_t count;
-
+	size_t size = v1.size();
+	for (auto& n  : v1) {
+		std::cout << n << " ";
+	}
+	std::cout << std::endl;
+	for (auto& n : v2) {
+		std::cout << n << " ";
+	}
+	int count;
+	unsigned int c = std::thread::hardware_concurrency();
+	std::cout << c << " concurrent threads are supported.\n";
 	std::cout << "Enter the number of flows: ";  std::cin >> count;
 
-	int step = v1.size() / count;
-
-	/*std::vector<std::thread> threads;
+	std::vector<std::thread> threads;
+	
 	for (auto i = 0; i < count; ++i) {
-		std::thread th([=]()
-			{
-				threads_sum[i] = std::accumulate(v.begin() + i * step, v.begin() + (i + 1) * step, 0);
-			});
-		threds.push_back(std::move(th));
+		std::thread th(&sum, std::ref(result), std::ref(v1), std::ref(v2), count, i);
+		threads.push_back(std::move(th));
 	}
 	
-	for (std::size_t i=0;i<n;++i) {
+	/*for (int i=0;i<n;++i) {
 		threads.push_back(std::thread(&foo, i));
 		for (auto& th : ths) {
 			th.join();
 		}
 	}*/
 
-	std::thread threads[10];
-	for (auto& th : threads)
-		th = std::thread([&]() {});
+	for (std::thread& th : threads)
+	{
+		if (th.joinable())
+			th.join();
+	}
+
+	for (auto& n : result) {
+		std::cout << n << " ";
+	}
 
 	return 0;
 }
