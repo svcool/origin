@@ -21,71 +21,88 @@ void sum(std::vector<int>& v_result, const std::vector<int>& v1, const std::vect
 	//nt номер потока, count количество потоков
 	size_t size = v1.size();
 
-	//наибольший размер вектора иp v1,v2
-	/*if (v1.size() > v2.size()) {
-		size = v1.size();
-	}
-	else {
-		size = v2.size();
-	}*/
 	//шаг для сложения векторов с округлением вверх
 	int step = (static_cast<int>(size) + count - 1 )/ count;
 	
-		for (auto iter1 = v1.begin() + nt*step; iter1 != v1.begin() + (nt + 1)*step; iter1++){
-			
-			if (iter1 == v1.end()-1) break;
-			int j = std::distance(v1.begin(), iter1);
-			std::cout << *iter1 << " " << std::distance(v1.begin(), iter1) << " " << v2[std::distance(v1.begin(), iter1)];
+		if (nt == count - 1) {
+			auto end_vector = v1.end();
+			for (auto iter1 = v1.begin() + nt * step; iter1 != v1.end(); iter1++) {
 			v_result[std::distance(v1.begin(), iter1)] = *iter1 + v2[std::distance(v1.begin(), iter1)];
-			std::cout << v_result[std::distance(v1.begin(), iter1)] << " \n";
-			
-	}
+			}
+				
+		}
+		else {
+			for (auto iter1 = v1.begin() + nt * step; iter1 != v1.begin() + (nt + 1) * step; iter1++) {
+				//std::cout << *iter1 << " " << std::distance(v1.begin(), iter1) << " " << v2[std::distance(v1.begin(), iter1)];
+				v_result[std::distance(v1.begin(), iter1)] = *iter1 + v2[std::distance(v1.begin(), iter1)];
+				//std::cout << v_result[std::distance(v1.begin(), iter1)] << " \n";
 
+			}
+		}
 }
 
 int main() {
+	setlocale(LC_ALL, "Russian");
+	system("chcp 1251");
 	std::vector<int> v1;
 	std::vector<int> v2;
-	unsigned n = 9; //размер вектора
+	unsigned n = 1000; //размер вектора
 	std::vector<int> result(n);
 	fillVector(v1, n);
 	fillVector(v2, n);
-	size_t size = v1.size();
-	for (auto& n  : v1) {
-		std::cout << n << " ";
-	}
-	std::cout << std::endl;
-	for (auto& n : v2) {
-		std::cout << n << " ";
-	}
+
+//	size_t size = v1.size();
+
 	int count;
 	unsigned int c = std::thread::hardware_concurrency();
-	std::cout << c << " concurrent threads are supported.\n";
-	std::cout << "Enter the number of flows: ";  std::cin >> count;
+	std::cout << "Количество аппаратных ядер - " << c << "\n";
+	std::cout << "Выберите количество ядер: ";  std::cin >> count;
 
 	std::vector<std::thread> threads;
+	std::vector<std::chrono::duration<double>> time_thr;
+	std::chrono::steady_clock::time_point start;
+	std::chrono::steady_clock::time_point end;
 	
-	for (auto i = 0; i < count; ++i) {
-		std::thread th(&sum, std::ref(result), std::ref(v1), std::ref(v2), count, i);
-		threads.push_back(std::move(th));
-	}
-	
-	/*for (int i=0;i<n;++i) {
-		threads.push_back(std::thread(&foo, i));
-		for (auto& th : ths) {
-			th.join();
-		}
-	}*/
-
-	for (std::thread& th : threads)
+	try
 	{
-		if (th.joinable())
-			th.join();
+		for (auto i = 0; i < count; ++i) {
+			start = std::chrono::steady_clock::now();
+			
+			std::thread th(&sum, std::ref(result), std::ref(v1), std::ref(v2), count, i);
+			
+			end = std::chrono::steady_clock::now();
+
+			std::chrono::duration<double> el = end - start;
+
+			time_thr.push_back(std::move(el));
+		
+			threads.push_back(std::move(th));
+		}
+
+		for (std::thread& th : threads)
+		{
+			if (th.joinable())
+					th.join();
+		}
+	}
+	catch (const std::exception& err)
+	{
+	std::cout << "\n" << err.what()<<"\n";
 	}
 
-	for (auto& n : result) {
-		std::cout << n << " ";
+	for (int i = 1; i < count + 1; ++i) {
+		std::cout << i + 1 << " потоков";
+
 	}
+	
+	
+	for (auto& n : time_thr) {
+		std::cout << n.count() << " ";
+	}
+
+	//for (auto& n : result) {
+	//	std::cout << n << " ";
+	//}
 
 	return 0;
 }
