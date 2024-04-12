@@ -24,11 +24,13 @@ void sum(std::vector<int>& v_result, const std::vector<int>& v1, const std::vect
 	//шаг для сложения векторов с округлением вверх
 	int step = (static_cast<int>(size) + count - 1 )/ count;
 	
-		if (nt == count - 1) {
-			auto end_vector = v1.end();
-			for (auto iter1 = v1.begin() + nt * step; iter1 != v1.end(); iter1++) {
+		for (auto iter1 = v1.begin() + nt*step; iter1 != v1.begin() + (nt + 1)*step; iter1++){
+			
+			if (iter1 == v1.end()-1) break;
+			int j = std::distance(v1.begin(), iter1);
+			std::cout << *iter1 << " " << std::distance(v1.begin(), iter1) << " " << v2[std::distance(v1.begin(), iter1)];
 			v_result[std::distance(v1.begin(), iter1)] = *iter1 + v2[std::distance(v1.begin(), iter1)];
-			std::cout << v_result[std::distance(v1.begin(), iter1)] << " \n";
+			//std::cout << v_result[std::distance(v1.begin(), iter1)] << " \n";
 			
 	}
 
