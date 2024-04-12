@@ -38,6 +38,8 @@ public:
 
 
 int main() {
+	setlocale(LC_ALL, "Russian");
+	system("chcp 1251");
 	int n = 10; //максимальное количество клиентов
 Queue q(10);
 
