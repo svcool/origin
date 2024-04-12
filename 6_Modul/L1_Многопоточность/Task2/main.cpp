@@ -35,9 +35,9 @@ void sum(std::vector<int>& v_result, const std::vector<int>& v1, const std::vect
 			
 			if (iter1 == v1.end()-1) break;
 			int j = std::distance(v1.begin(), iter1);
-			std::cout << *iter1 << " " << std::distance(v1.begin(), iter1) << " " << v2[std::distance(v1.begin(), iter1)];
+			//std::cout << *iter1 << " " << std::distance(v1.begin(), iter1) << " " << v2[std::distance(v1.begin(), iter1)];
 			v_result[std::distance(v1.begin(), iter1)] = *iter1 + v2[std::distance(v1.begin(), iter1)];
-			std::cout << v_result[std::distance(v1.begin(), iter1)] << " \n";
+			//std::cout << v_result[std::distance(v1.begin(), iter1)] << " \n";
 			
 	}
 
