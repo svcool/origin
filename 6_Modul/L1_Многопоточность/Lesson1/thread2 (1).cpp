@@ -46,7 +46,7 @@ void print(size_t x)
 }
 
 
-int main()
+int main_t2()
 {
 	//string s = "abs";
 	//thread t1(func3, 3, ref(s));
