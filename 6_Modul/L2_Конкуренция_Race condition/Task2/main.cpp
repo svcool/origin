@@ -4,6 +4,7 @@
 #include <vector>
 #include <mutex>
 #include "timer.h"
+#include <iomanip>
 
 HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -89,27 +90,52 @@ void clearScreen() {
 //
 //}
 std::mutex mt;
-void doSomething(int nt) {
-    mt.lock();
-  std::cout << "\n1\t" << std::this_thread::get_id << "\tTime";
-  mt.unlock();
+std::condition_variable data_cond;
+bool vvv = false;
+int xxx = 0;
+void print(int nt) {
+    std::unique_lock<std::mutex> lk(mt);
+    data_cond.wait(lk, [] {return vvv == 1; });
+   
+ 
+std::cout << "\n"<< std::setw(2) << nt << std::setw(10) << std::this_thread::get_id() << std::setw(22) << "...................." << std::setw(12);
+    
+    lk.unlock();
+    
+}
+
+
+
+
+int nt = 0;
+void doSomething(int nt, int progress) {
+    Timer x;
+    
+    std::lock_guard<std::mutex> lk(mt);
+    if (nt == xxx) {
+    vvv = true;
+    xxx++;
+    }
+    data_cond.notify_one();
+print(nt);
+
+
+
   char symbol = 219;
-  int count = 30;
+  int width = 20;
 int last_index = 0;
-int progress = 0;
-Timer x;
-// имитация изменения прогресса
-    while (last_index < count)
+ //имитация изменения прогресса
+    while (last_index < width)
     {  
       //last_index += nt + rand() % 5;
       //if (last_index > count)  last_index = count;
-      
-      
+            
       last_index += 1;
 
-      if (last_index >= 1 / count) {
-          progress = (last_index / count);
-          SetColor(Red, Red); SetXY(50 + last_index, 3 + nt);
+
+      if (last_index >= 1 / width) {
+          progress = (last_index / width);
+          SetColor(Red, Red); SetXY(12 + last_index, 1 + nt);
       }
 
         std::this_thread::sleep_for(std::chrono::milliseconds(400));
@@ -117,7 +143,7 @@ Timer x;
         std::cout << symbol;
         
     }
-    SetColor(White, White); SetXY(50, 10 + nt);
+  //  SetColor(White, White); SetXY(50, 10 + nt);
 }
 
 
@@ -139,44 +165,35 @@ Timer x;
 //    }
 //}
 
-
 int main() {
     //setlocale(LC_ALL, "Russian");
    // system("chcp 1251");
 
-    std::cout << "#"  << "   id \t" << "Progress Bar\t" << "Time";
+    std::cout << std::setw(2) << "#"  << std::setw(10) << "id" << std::setw(22) <<"Progress Bar"<< std::setw(12) << "Time";
     //std::cout << std::this_thread::get_id << "Time";
 
-   /* std::vector<std::thread> threads;
+   std::vector<std::thread> threads;
     std::vector<std::chrono::duration<double>> time_thr;
     std::chrono::steady_clock::time_point start;
-    std::chrono::steady_clock::time_point end;*/
-    int N = 5;
+    std::chrono::steady_clock::time_point end;
+    int count = 5;
+    int progress = 0;
    // doSomething();
-    std::thread t1(doSomething, 1);
-    std::thread t2(doSomething, 2);
-    int count = std::thread::hardware_concurrency();
+    //std::thread t1(doSomething, 5, progress);
+   // std::this_thread::sleep_for(std::chrono::milliseconds(100));
+   // std::thread t2(doSomething, 2, progress);
+    //int count = std::thread::hardware_concurrency();
 
-    //for (auto j = 1; j < count + 1; ++j) { //количество потоков(ядер)
-    //    std::cout << "\n" << j << " потоков\t";
-    //    //перебор  потоков
-    //        start = std::chrono::steady_clock::now();
+    for (auto i = 0; i < count; ++i) {
 
-    //        f_thread(result, v1, v2, count, j);
+        std::thread th(&doSomething, i, progress);
+        threads.push_back(std::move(th));
+           
 
-    //        end = std::chrono::steady_clock::now();
-
-    //        std::chrono::duration<double> el = end - start;
-
-    //        time_thr.push_back(std::move(el));
-
-    //    for (auto& n : time_thr) {
-    //        std::cout << n.count() << "\t";
-    //    }
-    //    time_thr.clear();
-    //}
-
-    t1.join();
-    t2.join();
-
+    }
+ for (std::thread& th : threads)
+        {
+            if (th.joinable())
+                th.join();
+        }
 }
