@@ -130,7 +130,7 @@
     <None Include="readme.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main2.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="timer.cpp" />
   </ItemGroup>
   <ItemGroup>
