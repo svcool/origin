@@ -32,101 +32,49 @@ void clearScreen() {
     system("cls");
 }
 
-//class consol_parameter
-//{
-//public:
-//    static void SetColor(int text, int background)
-//    {
-//        SetConsoleTextAttribute(hStdOut, (WORD)((background << 4) | text));
-//    }
-//    static void SetPosition(int x, int y)
-//    {
-//        COORD point;
-//        point.X = x;
-//        point.Y = y;
-//        SetConsoleCursorPosition(hStdOut, point);
-//    }
-//private:
-//    static HANDLE hStdOut;
-//};
-//HANDLE consol_parameter::hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 
-//Прогресс - бар
-//
-//Создайте консольное приложение для имитации многопоточного расчёта.<br / >
-//Количество потоков, длина расчёта должны быть заданы переменными.<br / >
-//В консоль во время работы программы должны построчно для каждого потока выводиться :
-//
-//• номер потока по порядку;
-//
-//• идентификатор потока;
-//
-//• заполняющийся индикатор наподобие прогресс - бара, визуализирующий процесс «расчёта»;
-//
-//• после завершения работы каждого потока в соответствующей строке суммарное время, затраченное на работу потока.
-//
-//Строки прогресс - баров каждого потока должны выводиться одновремено.Время появления каждого нового символа в строке прогресс - бара подберите так, чтобы процесс заполнения строки был виден.Пример работы программы[по ссылке.](https://cloud.mail.ru/public/MZVL/AqpmAkcMp)
-
-//void task2() {
-//	int N = 5;
-//	for (size_t i = 0; i < 0; i++) {
-//		t[i] = thread(drawRowProgress, i, N);
-//		for (size_t i = 0; i < N; i++) {
-//			t[i].join();
-//			consol_paramer::SetPosition(0, 6);
-//		}
-//	}
-//
-//}
 std::mutex mt;
-std::condition_variable data_cond;
-bool vvv = false;
-int xxx = 0;
+
 void print(int nt) {
-
- 
+    
 std::cout << std::setw(2) << nt << std::setw(10) << std::this_thread::get_id() << std::setw(22) << "....................";
-    
-
-    
+       
 }
 
-
-
-
 int nt = 0;
-void doSomething(int nt, int progress) {
-    //Timer x;
-    
+void doSomething(int nt, int N) {
+ 
     mt.lock();
-SetXY(0, nt);
+    SetXY(0, nt);
    print(nt);
    mt.unlock();
-
-  char symbol = 219;
+   char symbol = 219;
   int width = 20;
-  int last_index = 0;
+
+  std::chrono::steady_clock::time_point start;
+  std::chrono::steady_clock::time_point end;
+  
   SetXY(0, 1);
- //имитация изменения прогресса
-  {
-      Timer f;
-      while (progress < width)
-      {
-          mt.lock();
-          progress += 1;
-          mt.unlock();
-          std::this_thread::sleep_for(std::chrono::milliseconds(400));
-          //SetColor(White, White); 
-          SetXY(13 + progress, nt);
 
-          std::cout << symbol;
 
-      }
-      //SetColor(White, White); SetXY(50, 10 + nt);
-      mt.lock();
-      SetXY(16 + progress, nt);
-      mt.unlock();
+mt.lock();
+start = std::chrono::steady_clock::now();
+
+  for (int i = 0; i < width; i++) {
+      std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+      SetXY(14+i, nt);
+      
+      std::cout << symbol;
   }
+end = std::chrono::steady_clock::now();
+ mt.unlock();
+ 
+ std::chrono::duration<double> time = end - start;
+
+  SetXY(40, nt);
+  std::cout << time.count();
+  SetXY(0, 8);
   std::cout << "\n";
 }
 
@@ -136,23 +84,13 @@ int main() {
    // system("chcp 1251");
 
     std::cout << std::setw(2) << "#"  << std::setw(10) << "id" << std::setw(22) <<"Progress Bar"<< std::setw(12) << "Time";
-    //std::cout << std::this_thread::get_id << "Time";
 
    std::vector<std::thread> threads;
-    std::vector<std::chrono::duration<double>> time_thr;
-    std::chrono::steady_clock::time_point start;
-    std::chrono::steady_clock::time_point end;
-    int count = 5;
-    int progress = 0;
-   // doSomething();
-    //std::thread t1(doSomething, 5, progress);
-   // std::this_thread::sleep_for(std::chrono::milliseconds(100));
-   // std::thread t2(doSomething, 2, progress);
-    //int count = std::thread::hardware_concurrency();
 
+   int count = 5;
     for (auto i = 1; i <= count; ++i) {
 
-        std::thread th(&doSomething, i, progress);
+        std::thread th(&doSomething, i, count);
         threads.push_back(std::move(th));
            
 
