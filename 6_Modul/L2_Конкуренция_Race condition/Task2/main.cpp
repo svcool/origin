@@ -28,21 +28,10 @@ void SetColor(ConsoleColor text, ConsoleColor background) {
     SetConsoleTextAttribute(hStdOut, (WORD)((background) | text));
 }
 
-
-
-void Start() {
-    SetColor(Cyan, Black); SetXY(12, 3); 
-    std::cout << "To start the game, select a theme:" << std::endl;
-}
-
 void clearScreen() {
     system("cls");
 }
-//
-//
-//
-//
-//
+
 //class consol_parameter
 //{
 //public:
@@ -94,13 +83,11 @@ std::condition_variable data_cond;
 bool vvv = false;
 int xxx = 0;
 void print(int nt) {
-    std::unique_lock<std::mutex> lk(mt);
-    data_cond.wait(lk, [] {return vvv == 1; });
-   
+
  
-std::cout << "\n"<< std::setw(2) << nt << std::setw(10) << std::this_thread::get_id() << std::setw(22) << "...................." << std::setw(12);
+std::cout << std::setw(2) << nt << std::setw(10) << std::this_thread::get_id() << std::setw(22) << "....................";
     
-    lk.unlock();
+
     
 }
 
@@ -109,61 +96,40 @@ std::cout << "\n"<< std::setw(2) << nt << std::setw(10) << std::this_thread::get
 
 int nt = 0;
 void doSomething(int nt, int progress) {
-    Timer x;
+    //Timer x;
     
-    std::lock_guard<std::mutex> lk(mt);
-    if (nt == xxx) {
-    vvv = true;
-    xxx++;
-    }
-    data_cond.notify_one();
-print(nt);
-
-
+    mt.lock();
+SetXY(0, nt);
+   print(nt);
+   mt.unlock();
 
   char symbol = 219;
   int width = 20;
-int last_index = 0;
+  int last_index = 0;
+  SetXY(0, 1);
  //имитация изменения прогресса
-    while (last_index < width)
-    {  
-      //last_index += nt + rand() % 5;
-      //if (last_index > count)  last_index = count;
-            
-      last_index += 1;
+  {
+      Timer f;
+      while (progress < width)
+      {
+          mt.lock();
+          progress += 1;
+          mt.unlock();
+          std::this_thread::sleep_for(std::chrono::milliseconds(400));
+          //SetColor(White, White); 
+          SetXY(13 + progress, nt);
 
+          std::cout << symbol;
 
-      if (last_index >= 1 / width) {
-          progress = (last_index / width);
-          SetColor(Red, Red); SetXY(12 + last_index, 1 + nt);
       }
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(400));
-       // SetColor(Red, Red); SetXY(50+progress, 3+nt);
-        std::cout << symbol;
-        
-    }
-  //  SetColor(White, White); SetXY(50, 10 + nt);
+      //SetColor(White, White); SetXY(50, 10 + nt);
+      mt.lock();
+      SetXY(16 + progress, nt);
+      mt.unlock();
+  }
+  std::cout << "\n";
 }
 
-
-//void f_thread(std::vector<int>& result, const std::vector<int>& v1, const std::vector<int>& v2, int count, int j) {
-//
-//    std::vector<std::thread> threads;
-//
-//    for (auto i = 0; i < count; ++i) {
-//
-//        std::thread th(&sum, std::ref(result), std::ref(v1), std::ref(v2), j, i);
-//        threads.push_back(std::move(th));
-//
-//        for (std::thread& th : threads)
-//        {
-//            if (th.joinable())
-//                th.join();
-//        }
-//
-//    }
-//}
 
 int main() {
     //setlocale(LC_ALL, "Russian");
@@ -184,7 +150,7 @@ int main() {
    // std::thread t2(doSomething, 2, progress);
     //int count = std::thread::hardware_concurrency();
 
-    for (auto i = 0; i < count; ++i) {
+    for (auto i = 1; i <= count; ++i) {
 
         std::thread th(&doSomething, i, progress);
         threads.push_back(std::move(th));
