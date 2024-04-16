@@ -26,11 +26,12 @@ public:
 void swap_lock(Data& x, Data& y) {
 	if (&x == &y) // проверка, объекты не идентичны
 		return;
-	x.mt.lock();
-	y.mt.lock();
+	lock(x.mt,y.mt);
+	std::lock_guard lock1{ x.mt, std::adopt_lock };
+	std::lock_guard lock2{ y.mt, std::adopt_lock };
 	std::swap(x.a, y.a);
-	x.mt.unlock();
-	y.mt.unlock();
+	//x.mt.unlock();
+	//y.mt.unlock();
 	}
 
 void swap_scoped_lock(Data& x, Data& y) {
