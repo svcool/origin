@@ -28,21 +28,10 @@ void SetColor(ConsoleColor text, ConsoleColor background) {
     SetConsoleTextAttribute(hStdOut, (WORD)((background) | text));
 }
 
-
-
-void Start() {
-    SetColor(Cyan, Black); SetXY(12, 3); 
-    std::cout << "To start the game, select a theme:" << std::endl;
-}
-
 void clearScreen() {
     system("cls");
 }
-//
-//
-//
-//
-//
+
 //class consol_parameter
 //{
 //public:
@@ -96,7 +85,7 @@ int xxx = 0;
 void print(int nt) {
 
  
-std::cout << std::setw(2) << nt << std::setw(10) << std::this_thread::get_id() << std::setw(22) << "...................." << std::setw(12);
+std::cout << std::setw(2) << nt << std::setw(10) << std::this_thread::get_id() << std::setw(22) << "....................";
     
 
     
@@ -107,7 +96,7 @@ std::cout << std::setw(2) << nt << std::setw(10) << std::this_thread::get_id() <
 
 int nt = 0;
 void doSomething(int nt, int progress) {
-    Timer x;
+    //Timer x;
     
     mt.lock();
 SetXY(0, nt);
@@ -117,21 +106,28 @@ SetXY(0, nt);
   char symbol = 219;
   int width = 20;
   int last_index = 0;
+  SetXY(0, 1);
  //имитация изменения прогресса
-    while (progress < width)
-    {  
-      progress += 1;
-        
+  {
+      Timer f;
+      while (progress < width)
+      {
+          mt.lock();
+          progress += 1;
+          mt.unlock();
+          std::this_thread::sleep_for(std::chrono::milliseconds(400));
+          //SetColor(White, White); 
+          SetXY(13 + progress, nt);
 
-          SetColor(White, White); 
-          SetXY(12 + progress, nt);
-   
+          std::cout << symbol;
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(400));
-        std::cout << symbol;
-        
-    }
-    SetColor(White, White); SetXY(50, 10 + nt);
+      }
+      //SetColor(White, White); SetXY(50, 10 + nt);
+      mt.lock();
+      SetXY(16 + progress, nt);
+      mt.unlock();
+  }
+  std::cout << "\n";
 }
 
 
