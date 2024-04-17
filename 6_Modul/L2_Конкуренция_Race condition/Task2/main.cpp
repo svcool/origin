@@ -52,23 +52,19 @@ void doSomething(int nt, int N) {
   int width = 20;
 
   std::chrono::steady_clock::time_point start;
+  for (int i = 0; i < width; i++) {
+      std::this_thread::sleep_for(std::chrono::milliseconds(rand() % 1000+nt*40));
+      mt.lock();
+      SetXY(14 + i, nt);
+      
+      std::cout << symbol;
+        mt.unlock();
+
+  }
   std::chrono::steady_clock::time_point end;
   
   SetXY(0, 1);
 
-
-mt.lock();
-start = std::chrono::steady_clock::now();
-
-  for (int i = 0; i < width; i++) {
-      std::this_thread::sleep_for(std::chrono::milliseconds(100));
-
-      SetXY(14+i, nt);
-      
-      std::cout << symbol;
-  }
-end = std::chrono::steady_clock::now();
- mt.unlock();
  
  std::chrono::duration<double> time = end - start;
 
