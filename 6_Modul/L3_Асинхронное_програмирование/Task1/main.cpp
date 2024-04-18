@@ -1,4 +1,4 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <ctime>
 #include <iomanip>
 #include <future>
@@ -7,9 +7,9 @@
 #include <random>
 using namespace std;
 
-void Sort1(int* arrayPtr, int length_array, int rp, std::promise<int> prom) // сортировка выбором
+void Sort1(int* arrayPtr, int length_array, int rp, std::promise<int> prom) // СЃРѕСЂС‚РёСЂРѕРІРєР° РІС‹Р±РѕСЂРѕРј
 {
-    int temp = arrayPtr[0]; // временная переменная для хранения значения перестановки
+    int temp = arrayPtr[0]; // РІСЂРµРјРµРЅРЅР°СЏ РїРµСЂРµРјРµРЅРЅР°СЏ РґР»СЏ С…СЂР°РЅРµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРµСЂРµСЃС‚Р°РЅРѕРІРєРё
     for (int elem = rp + 1; elem < length_array; elem++)
     {
         if (arrayPtr[rp] > arrayPtr[elem])
@@ -27,17 +27,17 @@ void Sort1(int* arrayPtr, int length_array, int rp, std::promise<int> prom) // с
 int main()
 {
     
-    srand(time(NULL)); //для создания ряда псевдослучайных целых чисел
+    srand(time(NULL)); //РґР»СЏ СЃРѕР·РґР°РЅРёСЏ СЂСЏРґР° РїСЃРµРІРґРѕСЃР»СѓС‡Р°Р№РЅС‹С… С†РµР»С‹С… С‡РёСЃРµР»
     setlocale(LC_ALL, "rus");
-    cout << "Введите размер массива: ";
-    int size; // размер массива
+    cout << "Р’РІРµРґРёС‚Рµ СЂР°Р·РјРµСЂ РјР°СЃСЃРёРІР°: ";
+    int size; // СЂР°Р·РјРµСЂ РјР°СЃСЃРёРІР°
     cin >> size;
 
-    int* arr = new int[size]; // одномерный динамический массив
+    int* arr = new int[size]; // РѕРґРЅРѕРјРµСЂРЅС‹Р№ РґРёРЅР°РјРёС‡РµСЃРєРёР№ РјР°СЃСЃРёРІ
     for (int counter = 0; counter < size; counter++)
     {
-        arr[counter] = rand() % 100; // заполняем массив случайными числами
-        cout << setw(2) << arr[counter] << "  "; // вывод массива на экран
+        arr[counter] = rand() % 100; // Р·Р°РїРѕР»РЅСЏРµРј РјР°СЃСЃРёРІ СЃР»СѓС‡Р°Р№РЅС‹РјРё С‡РёСЃР»Р°РјРё
+        cout << setw(2) << arr[counter] << "  "; // РІС‹РІРѕРґ РјР°СЃСЃРёРІР° РЅР° СЌРєСЂР°РЅ
     }
     cout << "\n\n";
 
@@ -56,7 +56,7 @@ int main()
     th.join();*/
     
     cout << "\n";
-    delete[] arr; // высвобождаем память
+    delete[] arr; // РІС‹СЃРІРѕР±РѕР¶РґР°РµРј РїР°РјСЏС‚СЊ
     system("pause");
     return 0;
 }

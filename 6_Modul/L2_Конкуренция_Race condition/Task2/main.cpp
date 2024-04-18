@@ -5,6 +5,8 @@
 #include <mutex>
 #include "timer.h"
 #include <iomanip>
+#include <random>
+#include <ctime>
 
 HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -31,7 +33,11 @@ void SetColor(ConsoleColor text, ConsoleColor background) {
 void clearScreen() {
     system("cls");
 }
-
+unsigned long seed = 1;
+int my_rand() {
+    seed = seed * 1103515245 + 12345;  // Линейный конгруэнтный метод
+    return (seed / 65536) % 32768;     // Вернуть значение в диапазоне 0-32767
+} 
 
 std::mutex mt;
 
@@ -44,32 +50,36 @@ std::cout << std::setw(2) << nt << std::setw(10) << std::this_thread::get_id() <
 int nt = 0;
 void doSomething(int nt, int N) {
  
-    mt.lock();
+    std::unique_lock<std::mutex> lock1(mt, std::defer_lock);
+    lock1.lock();
     SetXY(0, nt);
    print(nt);
-   mt.unlock();
+   lock1.unlock();
    char symbol = 219;
   int width = 20;
 
-  std::chrono::steady_clock::time_point start;
+  auto start = std::chrono::high_resolution_clock::now();
   for (int i = 0; i < width; i++) {
-      std::this_thread::sleep_for(std::chrono::milliseconds(rand() % 1000+nt*40));
-      mt.lock();
+      std::this_thread::sleep_for(std::chrono::milliseconds(my_rand() % 1000));
+      std::unique_lock<std::mutex> lock2(mt, std::defer_lock);
+      lock2.lock();
       SetXY(14 + i, nt);
       
       std::cout << symbol;
-        mt.unlock();
+      lock2.unlock();
 
   }
-  std::chrono::steady_clock::time_point end;
+  auto end = std::chrono::high_resolution_clock::now();
   
   SetXY(0, 1);
 
  
  std::chrono::duration<double> time = end - start;
-
+ std::unique_lock<std::mutex> lock3(mt, std::defer_lock);
+ lock3.lock();
   SetXY(40, nt);
   std::cout << time.count();
+  lock3.lock();
   SetXY(0, 8);
   std::cout << "\n";
 }
@@ -78,6 +88,8 @@ void doSomething(int nt, int N) {
 int main() {
     //setlocale(LC_ALL, "Russian");
    // system("chcp 1251");
+
+     srand(time(NULL)); //для создания ряда псевдослучайных целых чисел
 
     std::cout << std::setw(2) << "#"  << std::setw(10) << "id" << std::setw(22) <<"Progress Bar"<< std::setw(12) << "Time";
 
