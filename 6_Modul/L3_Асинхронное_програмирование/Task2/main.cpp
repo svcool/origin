@@ -1,22 +1,47 @@
-template <typename It, typename Fn>
-void parallel_for_each(It begin, It end, Fn&& function)
+﻿#include <iostream>
+#include <future>
+#include <thread>
+using namespace std;
+
+template<typename Iterator, typename Func>
+void parallel_for_each(Iterator first, Iterator last, Func f)
 {
-    const auto diff = std::distance(begin, end);
-    constexpr auto num_threads = 8;
-    std::vector<std::future<void>> fts;
-    for (int i = 0; i < num_threads; ++i)
+    auto curr_size = std::distance(first, last);
+   // ptrdiff_t const curr_size = last - first;
+    if (!curr_size)
+        return;
+    if (curr_size == 1)
     {
-        auto l = [&function](auto b, const auto thread_id, const auto n
-            , const auto d)
-            {
-                std::for_each(b + (thread_id * d / n)
-                    , b + ((thread_id + 1) * d / n), function);
-            };
-        fts.push_back(std::async(std::launch::async, l, begin, i, num_threads
-            , diff));
+        f(*first);
+        return;
     }
-    for (auto& f : fts)
-    {
-        f.get();
-    }
+    auto mid = first;
+    std::advance(mid, curr_size / 2);
+    //Iterator const mid = first + (curr_size / 2);
+    std::future<void> ft_res = std::async(std::launch::deferred, parallel_for_each<Iterator, Func>, mid, last, f);
+   parallel_for_each(first, mid, f);
+   ft_res.get(); 
 }
+
+void print(int n) {
+    std::cout << n << ' ';
+}
+
+int main() {
+    std::vector<int> v{ 3, -4, 2, -8, 15, 267 };
+
+    auto lamda_print = [](const int& n) { std::cout << n << ' '; };
+
+    std::cout << "before: ";
+    parallel_for_each(v.cbegin(), v.cend(), lamda_print);
+    std::cout << '\n';
+
+    // инкремент
+    parallel_for_each(v.begin(), v.end(), [](int& n) { n++; });
+
+    std::cout << "after++: ";
+    std::for_each(v.cbegin(), v.cend(), print);
+    std::cout << '\n';
+
+}
+
