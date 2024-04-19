@@ -41,45 +41,56 @@ int my_rand() {
 
 std::mutex mt;
 
-void print(int nt) {
-    
-std::cout << std::setw(2) << nt << std::setw(10) << std::this_thread::get_id() << std::setw(22) << "....................";
-       
-}
-
-int nt = 0;
 void doSomething(int nt, int N) {
- 
-    std::unique_lock<std::mutex> lock1(mt, std::defer_lock);
-    lock1.lock();
-    SetXY(0, nt);
-   print(nt);
-   lock1.unlock();
+   ////////////////////////////
+    {
+        std::unique_lock<std::mutex> lock(mt);
+        SetXY(0, nt);
+        std::cout << std::setw(2) << nt << std::setw(10) << std::this_thread::get_id() << std::setw(22) << "....................";
+    }
    char symbol = 219;
   int width = 20;
-
+  /////////////////////////////////////////////////
   auto start = std::chrono::high_resolution_clock::now();
   for (int i = 0; i < width; i++) {
       std::this_thread::sleep_for(std::chrono::milliseconds(my_rand() % 1000));
-      std::unique_lock<std::mutex> lock2(mt, std::defer_lock);
-      lock2.lock();
-      SetXY(14 + i, nt);
       
-      std::cout << symbol;
-      lock2.unlock();
+      {
+        std::unique_lock<std::mutex> lock(mt);
+          try
+          {
+              if (i == nt) {
+                    throw 0;
+              } 
+          
+          SetColor(White, White);
+          SetXY(14 + i, nt);
+          std::cout << symbol;
+      
+          }
+          catch (...)
+          {
+              SetColor(Red, Red);
+              SetXY(14 + i, nt);             
+          }
+
+
+
+      }
 
   }
   auto end = std::chrono::high_resolution_clock::now();
   
   SetXY(0, 1);
 
- 
+ /////////////////////////////////
  std::chrono::duration<double> time = end - start;
- std::unique_lock<std::mutex> lock3(mt, std::defer_lock);
- lock3.lock();
-  SetXY(40, nt);
-  std::cout << time.count();
-  lock3.lock();
+ {
+     std::unique_lock<std::mutex> lock(mt);
+
+     SetXY(40, nt);
+     std::cout << time.count();
+ }
   SetXY(0, 8);
   std::cout << "\n";
 }
@@ -89,7 +100,7 @@ int main() {
     //setlocale(LC_ALL, "Russian");
    // system("chcp 1251");
 
-     srand(time(NULL)); //дл€ создани€ р€да псевдослучайных целых чисел
+    // srand(time(NULL)); //дл€ создани€ р€да псевдослучайных целых чисел
 
     std::cout << std::setw(2) << "#"  << std::setw(10) << "id" << std::setw(22) <<"Progress Bar"<< std::setw(12) << "Time";
 
