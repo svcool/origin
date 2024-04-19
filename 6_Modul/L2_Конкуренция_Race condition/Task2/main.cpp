@@ -33,6 +33,7 @@ void SetColor(ConsoleColor text, ConsoleColor background) {
 void clearScreen() {
     system("cls");
 }
+
 unsigned long seed = 1;
 int my_rand() {
     seed = seed * 1103515245 + 12345;  // Линейный конгруэнтный метод
