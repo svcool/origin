@@ -1,8 +1,10 @@
 #pragma once
+#define _USE_MATH_DEFINES
 #include<string>
+#include<cmath>
 class Shape
 {
-private:
+protected:
 	int type;
 	double volume;
 	double square;
@@ -26,32 +28,110 @@ public:
 		x8 = 0, y8 = 0, z8 = 0;
 	
 
-	Shape() = default;
-	
-	Shape(int _type,
-		int _x1, int _y1, int _z1, 
-		int _x2, int _y2, int _z2, 
-		int _x3, int _y3, int _z3, 
-		int _x4, int _y4, int _z4, 
-		int _x5, int _y5, int _z5, 
-		int _x6, int _y6, int _z6, 
-		int _x7, int _y7, int _z7, 
-		int _x8, int _y8, int _z8);
+	void tranform_shift(int m, int n, int k);
+	void tranform_scaleX(int a);
+	void tranform_scaleY(int d);
+	void tranform_scaleZ(int e);
+	void tranform_scale(int s);
 
-	Shape(int _type,
-		int _x1, int _y1, 
-		int _x2, int _y2, 
-		int _x3, int _y3, 
-		int _x4, int _y4);
-
-	Shape(int _type, int _x1, int _y1,
-		int _z1, int _x2,
-		int _y2, int _z2);
-
-	Shape(int _type, int _x1, int _y1, double R);
-
-	Shape(int _type, int _x1, int _y1, double R, double H);
-
-	int getType() const { return type; }
+	int getType() const;
 	
 };
+
+
+class Line : public Shape {
+protected:
+
+public:
+	Line(int _x1, int _y1, int _x2, int _y2);
+	
+	void tranform_shift(int m, int n, int k);
+
+	void tranform_scaleX(int a);
+
+	void tranform_scaleY(int d);
+
+	void tranform_scaleZ(int e);
+
+	void tranform_scale(int s);
+		
+}; 
+
+
+class Sqr : public Line {
+protected:
+
+public:
+	Sqr(int _x1, int _y1,
+		int _x2, int _y2,
+		int _x3, int _y3,
+		int _x4, int _y4);
+
+	void tranform_shift(int m, int n, int k);
+
+	void tranform_scaleX(int a);
+
+	void tranform_scaleY(int d);
+
+	void tranform_scaleZ(int e);
+
+	void tranform_scale(int s);
+};
+		
+class Cube:public Shape{
+protected:
+		
+public:
+	Cube(int _x1, int _y1, int _z1,
+		int _x2, int _y2, int _z2,
+		int _x3, int _y3, int _z3,
+		int _x4, int _y4, int _z4,
+		int _x5, int _y5, int _z5,
+		int _x6, int _y6, int _z6,
+		int _x7, int _y7, int _z7,
+		int _x8, int _y8, int _z8);
+	
+	void tranform_shift(int m, int n, int k);
+
+	void tranform_scaleX(int a);
+
+	void tranform_scaleY(int d);
+
+	void tranform_scaleZ(int e);
+
+	void tranform_scale(int s);
+};
+		
+class Circle : public Shape {
+protected:
+
+public:
+	Circle(int _x1, int _y1, double R);
+	void tranform_shift(int m, int n, int k);
+
+	void tranform_scaleX(int a);
+
+	void tranform_scaleY(int d);
+
+	void tranform_scaleZ(int e);
+
+	void tranform_scale(int s);
+};
+
+class Cylinder : public Shape {
+protected:
+
+public:
+	Cylinder(int _x1, int _y1, double R, double H);
+	
+	void tranform_shift(int m, int n, int k);
+
+	void tranform_scaleX(int a);
+
+	void tranform_scaleY(int d);
+
+	void tranform_scaleZ(int e);
+
+	void tranform_scale(int s);
+};
+	
