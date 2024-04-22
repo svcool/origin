@@ -126,17 +126,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="shape.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="circle.cpp" />
-    <ClCompile Include="cube.cpp" />
-    <ClCompile Include="cylinder.cpp" />
-    <ClCompile Include="line.cpp" />
-    <ClCompile Include="shape.cpp" />
-    <ClCompile Include="sqr.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
