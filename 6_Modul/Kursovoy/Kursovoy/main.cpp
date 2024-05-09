@@ -5,18 +5,19 @@
 #include <condition_variable>
 #include <vector>
 #include <functional> 
+#include <atomic>
 
-std::mutex stop_mt;
 class Safe_queue {
 	//*метод push — записывает в начало очереди новую задачу.При этом захватывает мьютекс, а после окончания операции нотифицируется условная переменная;
 	//*метод pop — находится в ожидании, пока не придёт уведомление на условную переменную.При нотификации условной переменной данные считываются из очереди;
 	//*остальные методы на усмотрение разработчика.
 	std::queue<std::function<void()>> task_queue;
-	bool stop_ = false;
-	
-public:
+	std::atomic<bool> stop = false;
 	mutable std::mutex queue_mutex;
 	std::condition_variable condit;
+	
+public:
+
 	
 
 	void push(std::function<void()> func) {
@@ -24,13 +25,18 @@ public:
 			std::unique_lock<std::mutex> lock(queue_mutex);
 			task_queue.push(func);
 		}
-		condit.notify_one();
+		condit.notify_all();
 	};
 
 	std::function<void()> pop() {
 		std::unique_lock<std::mutex> lock(queue_mutex);
-		condit.wait(lock, [this] { return !task_queue.empty(); });
-		//std::cout << empty() << "\n";
+		{
+			condit.wait(lock, [this] { return !task_queue.empty() || stop; });
+		}
+		if (stop && task_queue.empty()) {
+			return nullptr;
+		}
+			
 		if (task_queue.empty()) {
 			throw std::runtime_error("Queue is empty");
 		}
@@ -50,23 +56,21 @@ public:
 		return task_queue.size();
 	}
 
-	~Safe_queue() {
-
+	void Stop() {
+		stop = true;
 		condit.notify_all();
 	}
-
 };
-
 
 class Thread_pool {
 	std::vector<std::thread> threads;
 	int count = std::thread::hardware_concurrency();
 	Safe_queue& q;
-	bool stop;
+	std::atomic<bool> stop;
 
 public:
 	Thread_pool(Safe_queue& sq, unsigned countThread = std::thread::hardware_concurrency()):q(sq),count(countThread), stop(false) {
-		for (auto i = 0; i < count-1; i++) {
+		for (auto i = 0; i < count-2; i++) {
 			threads.emplace_back([this] { this->work(); });
 		}
 	
@@ -88,24 +92,27 @@ public:
 	}
 
 	~Thread_pool() {
-		stop = true;
-		q.condit.notify_all();
-		for (std::thread& th : threads)
+		stop = true; //остановка выборки очередной задачи
+		q.Stop(); //разблокировка всех потоков в ожидании condit_v
+		for (auto & th : threads)
 		{
-			if (th.joinable())
+			stop = true;
+			std::cout << threads.size();
+			if (th.joinable()) {
+		std::cout << "Stop thread (" << th.get_id() << ")" << std::endl;
 				th.join();
+			}
+			
 		}
 	}
 };
 // Функция для ожидания нажатия клавиши и вызова деструктора пула потоков
-void waitForKeypressAndDestroyPool(Thread_pool& pool, Safe_queue& sq) {
+void waitForKeypressAndDestroyPool(Thread_pool& pool) {
 	std::cout << "Нажмите любую клавишу для выхода...\n";
 	std::cin.get(); // Ожидаем ввод с клавиатуры
 	std::cout << "Выход из программы...\n";
 	// Вызываем деструктор пула потоков
-pool.~Thread_pool();
-	sq.~Safe_queue();
-	
+	pool.~Thread_pool();
 }
 
 
@@ -114,11 +121,11 @@ void task1() {
 }
 
 void task2() {
-	std::cout << "The task1 is completed (" << std::this_thread::get_id() << ")" << std::endl;
+	std::cout << "The task2 is completed (" << std::this_thread::get_id() << ")" << std::endl;
 }
 
 void task3() {
-	std::cout << "The task1 is completed (" << std::this_thread::get_id() << ")" << std::endl;
+	std::cout << "The task2 is completed (" << std::this_thread::get_id() << ")" << std::endl;
 }
 
 int main() {
@@ -139,7 +146,7 @@ int main() {
 
 	Thread_pool th(sq);
 	//поток для завершения программы
-	std::thread keypressThread(waitForKeypressAndDestroyPool, std::ref(th), std::ref(sq));
+	std::thread keypressThread(waitForKeypressAndDestroyPool, std::ref(th));
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 	
 	for (int i = 0; i < 5; ++i) {
@@ -151,5 +158,6 @@ int main() {
 
 	// Присоединяем поток ожидания нажатия клавиши к основному потоку
 	keypressThread.join();
+	
 }
 
