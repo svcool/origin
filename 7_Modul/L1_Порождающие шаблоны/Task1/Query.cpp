@@ -20,19 +20,22 @@ std::string SqlSelectQueryBuilder::BuildQuery() {
     //"SELECT name, phone FROM students WHERE id='42' AND name='John';"
     query = "SELECT";
     if (_column.empty()) {
-        throw QueryException("Запрос не может быть сконструирован, не выбраны колонки");
+        query += " *'";
     }
-    for (std::string n : _column) {
-        query += " " + n + ",";
+    else {
+        for (std::string n : _column) {
+            query += " " + n + ",";
+        }
     }
     query.pop_back();
     query += " ";
     //FROM
     query += "FROM";
-    if (_table.empty()) throw QueryException("Запрос не может быть сконструирован, не выбрана таблица");
+    if (_table.empty()) throw QueryException("Запрос не может быть сконструирован - не выбрана таблица");
     query += " " + _table + " ";
     //WHERE
     query += "WHERE";
+    if (_conditions.empty()) throw QueryException("Запрос не может быть сконструирован - нет условия");
     for (int i = 0; i < _conditions.size(); i++) {
         query += " " + _conditions[i];
         if (i < _conditions.size() - 1) {
