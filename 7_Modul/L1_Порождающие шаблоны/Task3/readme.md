@@ -1,11 +1,11 @@
-### Задание 3 (необязательное)
-Реализуйте потомок класса `SqlSelectQueryBuilder`, который сможет добавлять в условие `FROM` запроса дополнительные операторы «больше» и «меньше».
-Пример кода с таким классом:
+п»ї### Р—Р°РґР°РЅРёРµ 3 (РЅРµРѕР±СЏР·Р°С‚РµР»СЊРЅРѕРµ)
+Р РµР°Р»РёР·СѓР№С‚Рµ РїРѕС‚РѕРјРѕРє РєР»Р°СЃСЃР° `SqlSelectQueryBuilder`, РєРѕС‚РѕСЂС‹Р№ СЃРјРѕР¶РµС‚ РґРѕР±Р°РІР»СЏС‚СЊ РІ СѓСЃР»РѕРІРёРµ `FROM` Р·Р°РїСЂРѕСЃР° РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ РѕРїРµСЂР°С‚РѕСЂС‹ В«Р±РѕР»СЊС€РµВ» Рё В«РјРµРЅСЊС€РµВ».
+РџСЂРёРјРµСЂ РєРѕРґР° СЃ С‚Р°РєРёРј РєР»Р°СЃСЃРѕРј:
 ```
 AdvancedSqlSelectQueryBuilder query_builder;
 query_builder.AddColumns({"name", "phone"});
 query_builder.AddFrom("students");
-query_builder.<SomeMethod>(...); // Добавляем условие id > 42
+query_builder.<SomeMethod>(...); // Р”РѕР±Р°РІР»СЏРµРј СѓСЃР»РѕРІРёРµ id > 42
 static_assert(query_builder.BuildQuery(), 
                 "SELECT name, phone FROM students WHERE id>42;");
 ```

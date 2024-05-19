@@ -1,10 +1,10 @@
-#pragma once
+п»ї#pragma once
 #include <string>
 #include <iostream>
 #include <vector>
 #include <map>
 
-// Абстрактный базовый класс
+// РђР±СЃС‚СЂР°РєС‚РЅС‹Р№ Р±Р°Р·РѕРІС‹Р№ РєР»Р°СЃСЃ
 class AbstractQueryBuilder {
 protected:
     std::string query;
@@ -16,12 +16,12 @@ public:
     ~AbstractQueryBuilder() {};
 };
 
-//Строитель запроса SELECT
+//РЎС‚СЂРѕРёС‚РµР»СЊ Р·Р°РїСЂРѕСЃР° SELECT
 class SqlSelectQueryBuilder : public AbstractQueryBuilder {
 private:
-    std::vector<std::string> _column; //для select
-    std::string _table; //для from
-    std::vector<std::string> _parametr; //для where >
+    std::vector<std::string> _column; //РґР»СЏ select
+    std::string _table; //РґР»СЏ from
+    std::vector<std::string> _parametr; //РґР»СЏ where >
 public:
     SqlSelectQueryBuilder();
 
@@ -32,7 +32,7 @@ public:
 
 };
 
-////Директор
+////Р”РёСЂРµРєС‚РѕСЂ
 //class SqlQueryDirector {
 //public:
 //    void ConstructQuery(SqlSelectQueryBuilder& builder) {

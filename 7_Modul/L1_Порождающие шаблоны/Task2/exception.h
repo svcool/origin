@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Query.h"
 
 class QueryException : public std::exception {

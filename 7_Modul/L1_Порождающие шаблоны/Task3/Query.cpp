@@ -1,4 +1,4 @@
-#include "exception.h"
+п»ї#include "exception.h"
 #include "Query.h"
 
 SqlSelectQueryBuilder::SqlSelectQueryBuilder() {}
@@ -21,7 +21,7 @@ std::string SqlSelectQueryBuilder::BuildQuery() {
     //"SELECT name, phone FROM students WHERE id='42' AND name='John';"
     query = "SELECT";
     if (_column.empty()) {
-        throw QueryException("Запрос не может быть сконструирован, не выбраны колонки");
+        throw QueryException("Р—Р°РїСЂРѕСЃ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ СЃРєРѕРЅСЃС‚СЂСѓРёСЂРѕРІР°РЅ, РЅРµ РІС‹Р±СЂР°РЅС‹ РєРѕР»РѕРЅРєРё");
     }
     for (std::string n : _column) {
         query += " " + n + ",";
@@ -30,7 +30,7 @@ std::string SqlSelectQueryBuilder::BuildQuery() {
     query += " ";
     //FROM
     query += "FROM";
-    if (_table.empty()) throw QueryException("Запрос не может быть сконструирован, не выбрана таблица");
+    if (_table.empty()) throw QueryException("Р—Р°РїСЂРѕСЃ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ СЃРєРѕРЅСЃС‚СЂСѓРёСЂРѕРІР°РЅ, РЅРµ РІС‹Р±СЂР°РЅР° С‚Р°Р±Р»РёС†Р°");
     query += " " + _table + " ";
     //WHERE
     query += "WHERE";
