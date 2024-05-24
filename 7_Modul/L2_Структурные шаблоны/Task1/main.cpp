@@ -12,6 +12,14 @@ public:
 class DecoratedText : public Text {
 public:
     explicit DecoratedText(Text* text) : text_(text) {}
+
+    virtual void render(const std::string& data1, const std::string& data2) const {}
+
+    void render(const std::string& data1) const override {
+        text_->render(data1);
+    };
+    
+    
     Text* text_;
 };
 
@@ -35,37 +43,54 @@ public:
     }
 };
 
+class Paragraph : public DecoratedText {
+public:
+    explicit Paragraph(Text* text_) :DecoratedText(text_) {}
+void render(const std::string& data) const {
+    std::cout << "<p>";
+    text_->render("Hello world");
+    std::cout << "</p>";
+}
+};
+
+class Reversed : public DecoratedText {
+    
+public:
+    
+    explicit Reversed(Text* text_) : DecoratedText(text_) {}
+    void render(const std::string& data) const {
+        std::string& tx = const_cast<std::string&>(data); //снимаем константность ссылки и присваиваем новой переменной
+        std::reverse(tx.begin(), tx.end());
+        text_->render(tx);
+    }
+};
+
+
+class Link : public DecoratedText {
+public:
+    using DecoratedText::render;
+
+    explicit Link(Text* text_) : DecoratedText(text_) {}
+    void render(const std::string& data1, const std::string& data2) const override {
+        std::cout << "<a href =";
+        std::cout << data1;
+        std::cout << ">";
+        text_->render(data2);
+        std::cout << "</a>";
+    }
+
+};
+
 int main() {
     auto text_block = new ItalicText(new BoldText(new Text()));
     text_block->render("Hello world");
+    std::cout << std::endl;
+    auto text_block1 = new Paragraph(new Text());
+    text_block1->render("Hello world");	
+    std::cout << std::endl;
+    auto text_block2 = new Reversed(new Text());
+    text_block2->render("Hello world"); 
+    
+    auto text_block = new Link(new Text());
+    text_block->render("netology.ru", "Hello world");
 }
-
-
-
-В программу рендеринга HTML из лекции(раздел про паттерн «Декоратор») добавьте новые классы для декорирования текста.
-```
-class Paragraph : ...
-
-	auto text_block = new Paragraph(new Text());
-text_block->render("Hello world");
-
->> > <p>Hello world< / p>
-```
-
-```
-class Reversed : ...
-
-	auto text_block = new Reversed(new Text());
-text_block->render("Hello world");
-
->> > dlrow olleH
-```
-
-```
-class Link : ...
-
-	auto text_block = new Link(new Text());
-text_block->render("netology.ru", "Hello world");
-
->> > <a href = netology.ru>Hello world< / a>
-```
