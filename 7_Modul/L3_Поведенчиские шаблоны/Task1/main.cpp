@@ -8,45 +8,53 @@ public:
     virtual void print(const std::string& message) = 0;
 };
 
-void print(LogCommand&);
 
-class LogToFileCommand : LogCommand {
+class LogToFileCommand : public LogCommand {
 private:
     std::string message;
     std::string filePath;
+    std::ofstream file;
 public:
-public:
-    LogToFileCommand(const std::string& msg, const std::string& path) : message(msg), filePath(path) {}
+    LogToFileCommand(const std::string& msg, const std::string& path) : message(msg), filePath(path) {
+        file.open(filePath);
+    }
 
-    void print(Logger& logger) override {
-        logger.logToFile(message, filePath);
+    void print(const std::string& msg) override {
+        file << msg << message << std::endl;
+    }
+
+    ~LogToFileCommand()
+    {
+        file.close();
     }
 };
 
-class LogPrintCommand : LogCommand {
-private:
+class LogPrintCommand : public LogCommand {
+ private:
     std::string message;
 public:
     LogPrintCommand(const std::string& msg) : message(msg) {}
-    void print(Logger& logger) override {
-        logger.logError(message);
+    void print(const std::string& msg) override {
+        std::cout << msg << message << std::endl;
     }
 };
-
 
 
 // Function to execute a command
 void print(LogCommand& command) {
-    command.print();
+    command.print("Log: ");
 }
+
 
 
 int main() {
     // Create command objects
-    Command* infoCommand = new LogInfoCommand("This is an information message");
-    Command* errorCommand = new LogErrorCommand("This is an error message");
-    Command* fileCommand = new LogToFileCommand("This message is written to file", "log.txt");
-    LogCommand log("This is a log message");
+    LogToFileCommand command_to_file("Log to file","output.txt");
+    LogPrintCommand command_out("Log print");
 
+    print(command_to_file);
+    print(command_out);
+
+    return 0;
 }
 

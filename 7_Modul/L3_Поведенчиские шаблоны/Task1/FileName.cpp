@@ -1,4 +1,4 @@
-cpp
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -59,8 +59,7 @@ private:
     std::string filePath;
 
 public:
-    LogToFileCommand(const std::string& msg, const std::string& path) : message(msg), filePath(path) {}
-
+    
     void execute(Logger& logger) override {
         logger.logToFile(message, filePath);
     }
