@@ -1,0 +1,6 @@
+Received a error: #####Error ¹1######
+Received a fatal error: ####Fatal Error ¹1#####
+Received a error: #####Error ¹1######
+Received a fatal error: ####Fatal Error ¹1#####
+Received a error: #####Error ¹1######
+Received a fatal error: ####Fatal Error ¹1#####
