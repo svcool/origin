@@ -2,11 +2,15 @@
 #include <stdexcept>
 #include <string>
 
-class ExceptionHandler {
+class ExceptionHandler : public std::exception {
+	std::string message;
 public:
-	static void throwRuntimeError(const std::string& message) {
-		throw std::runtime_error(message);
+	ExceptionHandler(const std::string& message) :message(message) {};
+
+	const char* what() const noexcept override {
+		return message.c_str();
 	}
+};
 
 enum class Type {
 	Info,
@@ -57,7 +61,7 @@ class FatalErrorHandler : public LogHandler {
 public:
 	void handleLogMessage(const LogMessage& logMessage) override {
 		if (logMessage.type() == Type::FatalError) {
-			ExceptionHandler::throwRuntimeError("Fatal Error: " + logMessage.message());
+			ExceptionHandler("Fatal Error: " + logMessage.message());
 		}
 		else {
 			passToNext(logMessage);
@@ -93,15 +97,17 @@ class UnknownMessageHandler : public LogHandler {
 public:
 	void handleLogMessage(const LogMessage& logMessage) override {
 		if (logMessage.type() == Type::Unknown) {
+
 			std::cout << "Unknown Message: " << logMessage.message() << std::endl;
 		}
 		else {
-			std::cout << "Unhandled Message: " << logMessage.message() << std::endl;
+			ExceptionHandler("Unhandled Message: " + logMessage.message());
 		}
 	}
 };
 
 int main() {
+	
 	FatalErrorHandler fatalErrorHandler;
 	ErrorHandler errorHandler;
 	WarningHandler warningHandler;
@@ -117,11 +123,18 @@ int main() {
 	LogMessage fatalErrorMessage(Type::FatalError, "This is a fatal error message");
 	LogMessage unknownMessage(Type::Unknown, "This is an unknown message");
 
-	errorHandler.handleLogMessage(infoMessage);
-	errorHandler.handleLogMessage(warningMessage);
-	errorHandler.handleLogMessage(errorMessage);
-	errorHandler.handleLogMessage(fatalErrorMessage);
-	errorHandler.handleLogMessage(unknownMessage);
-
+	try {
+		errorHandler.handleLogMessage(infoMessage);
+		errorHandler.handleLogMessage(warningMessage);
+		errorHandler.handleLogMessage(errorMessage);
+		errorHandler.handleLogMessage(fatalErrorMessage);
+		errorHandler.handleLogMessage(unknownMessage);
+	}
+	catch (const ExceptionHandler& err) {
+		std::cout << "Error: " << err.what() << std::endl;
+	}
+	catch (const std::exception&){
+		std::cout << "Something wrong" << std::endl;
+	}
 	return 0;
 }
