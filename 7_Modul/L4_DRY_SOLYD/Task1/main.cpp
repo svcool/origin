@@ -62,27 +62,27 @@ public:
 };
 
 
-void saveTo(std::ofstream& file, const Printable* printable)
+void saveTo(std::ostream& stream, const Printable* printable)
 {
-        file << printable->print();
+    stream << printable->print();
 }
 
-void saveToAsHTML(std::ofstream& file, const Printable* printable) {
+void saveToAsHTML(std::ostream& stream, const Printable* printable) {
     Format_AsHTML format_AsHTML();
     printable = &format_AsHTML();
-    saveTo(file, printable);
+    saveTo(stream, printable);
 }
 
-void saveToAsJSON(std::ofstream& file, const Printable* printable) {
+void saveToAsJSON(std::ostream& stream, const Printable* printable) {
     Format_AsHTML format_AsText();
     printable = &format_AsText();
-    saveTo(file, printable);
+    saveTo(stream, printable);
 }
 
-void saveToAsText(std::ofstream& file, const Printable* printable) {
+void saveToAsText(std::ostream& stream, const Printable* printable) {
     Format_AsHTML format_AsJSON();
     printable = &format_AsJSON();
-    saveTo(file, printable);
+    saveTo(stream, printable);
 }
 
 //принцип инверсии зависимостей: функции зависят от cущности более низкого уровня std::ofstream. Тип данных должен быть максимально абвстрактным
