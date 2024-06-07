@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <fstream>
 
 class ExceptionHandler : public std::exception {
 	std::string message;
@@ -70,14 +71,24 @@ public:
 };
 
 class ErrorHandler : public LogHandler {
+	std::ofstream file;
+	std::string filePath;
 public:
+	ErrorHandler(const std::string& path) : filePath(path) {
+		file.open(filePath, std::ios::app);
+	}
 	void handleLogMessage(const LogMessage& logMessage) override {
 		if (logMessage.type() == Type::Error) {
-			std::cerr << "Error: " << logMessage.message() << std::endl;
+			if (file.is_open()) {
+				file << "Error: " << logMessage.message() << std::endl;
+			}
 		}
 		else {
 			passToNext(logMessage);
 		}
+	}
+	~ErrorHandler() {
+		file.close();
 	}
 };
 
@@ -109,7 +120,7 @@ public:
 int main() {
 	
 	FatalErrorHandler fatalErrorHandler;
-	ErrorHandler errorHandler;
+	ErrorHandler errorHandler("output.txt");
 	WarningHandler warningHandler;
 	UnknownMessageHandler unknownMessageHandler;
 	//установка цепочки
