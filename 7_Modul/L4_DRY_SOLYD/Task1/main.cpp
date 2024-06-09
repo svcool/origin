@@ -17,14 +17,17 @@ public:
 
 };
 
-class Data {
+class Data : public Printable {
  public:
     Data(std::string data, Format format) : data_(data), format_(format) {
-        if (static_cast<int>(format) < 0 || static_cast<int>(format) >= static_cast<int>(Format::end_enum)) {
+        /*if (static_cast<int>(format) < 0 || static_cast<int>(format) >= static_cast<int>(Format::end_enum)) {
             throw std::runtime_error("Invalid format!");
-        }
+        }*/
     }
     std::string getdat() const {
+        return data_;
+    }
+    std::string print() const override {
         return data_;
     }
 
@@ -39,30 +42,27 @@ std::string data_;
       
 };
 
-class Format_AsHTML : public Printable {
-    const Data& m_data;
+class Format_AsHTML : public Data {
 public:
-    Format_AsHTML(const Data& data) : m_data(data) {}
+    Format_AsHTML(const Data& data) : Data(data) {}
     std::string print() const override {
-        return "<html>" + m_data.getdat() + "<html/>";
+        return "<html>" + getdat() + "<html/>";
     }
 };
 
-class Format_AsText : public Printable {
-    const Data& m_data;
+class Format_AsText : public Data {
 public:
-    Format_AsText(const Data& data) : m_data(data) {}
+    Format_AsText(const Data& data) : Data(data) {}
     std::string print() {
-        return m_data.getdat();
+        return getdat();
     }
 
 };
-class Format_AsJSON : public Printable {
-    const Data& m_data;
+class Format_AsJSON : public Data {
 public:
-    Format_AsJSON(const Data& data) : m_data(data) {}
+    Format_AsJSON(const Data& data) : Data(data) {}
     std::string print() {
-        return "{ \"data\": \"" + m_data.getdat() + "\"}";
+        return "{ \"data\": \"" + getdat() + "\"}";
     }
 public:
 };
@@ -81,19 +81,19 @@ void saveToAsHTML(std::ostream& stream, Data& data) {
 
 void saveToAsJSON(std::ostream& stream, Data& data) {
     if (data.getformat() != Format::kJSON) return;
-    Format_AsHTML format_AsText(data);
-    saveTo(stream, format_AsText);
+    Format_AsJSON format_AsJSON(data);
+    saveTo(stream, format_AsJSON);
 
 }
 
 void saveToAsText(std::ostream& stream, Data& data) {
     if (data.getformat() != Format::kText) return;
-    Format_AsHTML format_AsJSON(data);
-    saveTo(stream, format_AsJSON);
+    Format_AsText format_AsText(data);
+    saveTo(stream, format_AsText);
 }
 
 int main() { 
-    Data data("Hello, World!", Format::kText);
+    Data data("Hello, World!", Format::kHTML);
  
     std::ofstream text_file("text_file.txt");
     saveToAsText(text_file, data);
