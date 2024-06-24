@@ -51,6 +51,7 @@ public:
         if (Dialog->objectName().isEmpty())
             Dialog->setObjectName("Dialog");
         Dialog->resize(761, 384);
+        Dialog->setMaximumSize(QSize(761, 384));
         verticalLayout = new QVBoxLayout(Dialog);
         verticalLayout->setObjectName("verticalLayout");
         groupBox = new QGroupBox(Dialog);
