@@ -3,8 +3,7 @@
 
 #include <QMainWindow>
 #include <QProgressBar>
-//#include <QtGui>
-//#include <QtCore>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -28,9 +27,12 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_pb_button_toggled(bool checked);
+
 private:
     Ui::MainWindow *ui;
     QProgressBar *progressBar;
+    QTimer *timer;
     uint32_t val = 0;
 };
 #endif // MAINWINDOW_H

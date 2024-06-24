@@ -10,7 +10,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->cb_list->addItem("Сармат");
     ui->cb_list->addItem("Булава 30");
     ui->cb_list->addItem("РС-24 Ярс");
-
+    ui->rb_off->setText("Запретить запуск");
+     ui->rb_on->setText("Разрешить запуск");
+   // ui->pb_button->toggle();
+    ui->pb_button->setCheckable(true);
+    ui->pb_button->setText("ПУСК");
+    ui->label->setText("Выбор типа ракеты:");
     connect(ui->cb_list, SIGNAL(currentTextChanged(QString)), this, SLOT(updateStatusBar(QString)));
 
     progressBar = new QProgressBar(this);
@@ -18,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     progressBar->setMinimum(0);
     progressBar->setMaximum(10);
 
+    QTimer *timer = new QTimer(this);
 
 }
 
@@ -45,24 +51,84 @@ void MainWindow::on_pushButton_toggled(bool checked)
 
 void MainWindow::on_pushButton_clicked()
 {
+    if(ui->rb_off->isChecked()) {
+        ui->statusbar->showMessage("Запуск запрещен!!!");
+        return;
+    }
+
 QString newText = ui->cb_list->currentText();
- if(progressBar->value()!=10){
-    progressBar->setStyleSheet(QString());
-    ui->progressBar->setFormat(QString());
-    progressBar->setValue(++val);
-    newText += " летит....";
-   ui->statusbar->showMessage(newText);
- }
- else{
-     newText += " прилетел:(";
-    ui->statusbar->showMessage(newText);
 
-     progressBar->setValue(0);
-     progressBar->setFormat("              Бабам!!!");
-     progressBar->setStyleSheet("background: red; border: 1px solid black;");
-     val = 0;
- }
+if(ui->rb_on->isChecked()){
+    if(progressBar->value()!=10 ){
+     progressBar->setStyleSheet(QString()); //вернуть цвет бара
+     progressBar->setFormat(QString());//вернуть формат
+     progressBar->setValue(++val);
+     newText += " летит....";
+     ui->statusbar->showMessage(newText);
+    }
+    else{
+        newText += " прилетел:(";
+        ui->statusbar->showMessage(newText);
+    // установка формата цвета прогресс бара
+         progressBar->setValue(0);
+         progressBar->setFormat("Бабам!!!");
+         progressBar->setStyleSheet("QProgressBar{border: 1px solid transparent;text-align: center;"
+                                "color:rgba(255,255,250,255);"
+                                "background-color: red;"
+                                "}"
+                                );
+         val = 0;
+    }
+}
+else {
+     ui->statusbar->showMessage("Не выбрана команда!");
+
+}
+
+}
 
 
+void MainWindow::on_pb_button_toggled(bool checked)
+{
+    if (checked) {
+        if(ui->rb_off->isChecked()) {
+            ui->statusbar->showMessage("Запуск запрещен!!!");
+            return;
+        }
+
+        QString newText = ui->cb_list->currentText();
+
+        if(ui->rb_on->isChecked()){
+            do{
+            if(progressBar->value()!=10 ){
+                 progressBar->setStyleSheet(QString()); //вернуть цвет бара
+                progressBar->setFormat(QString());//вернуть формат
+                progressBar->setValue(++val);
+                newText += " летит....";
+                ui->statusbar->showMessage(newText);
+            }
+            else{
+                newText += " прилетел:(";
+                ui->statusbar->showMessage(newText);
+                // установка формата цвета прогресс бара
+                progressBar->setValue(0);
+                progressBar->setFormat("Бабам!!!");
+                progressBar->setStyleSheet("QProgressBar{border: 1px solid transparent;text-align: center;"
+                                           "color:rgba(255,255,250,255);"
+                                           "background-color: red;"
+                                           "}"
+                                           );
+                val = 0;
+            }
+            }while(val<10);
+        }
+        else {
+            ui->statusbar->showMessage("Не выбрана команда!");
+
+        }
+
+    } else {
+        // Код для состояния "выключено"
+    }
 }
 
