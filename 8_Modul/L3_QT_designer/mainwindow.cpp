@@ -6,7 +6,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    connectWin = new Connect(this);
+    dialogWin = new Dialog(this);
+    dialogWin->setWindowTitle("Подключение к БД");
 }
 
 MainWindow::~MainWindow()
@@ -17,6 +18,6 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     ui->statusbar->showMessage("Подключение...",3000);
-    connectWin->show();
+    dialogWin->show();
 }
 
