@@ -19,8 +19,8 @@
      <rect>
       <x>10</x>
       <y>0</y>
-      <width>271</width>
-      <height>101</height>
+      <width>261</width>
+      <height>82</height>
      </rect>
     </property>
     <property name="title">
@@ -31,20 +31,33 @@
       <number>9</number>
      </property>
      <item row="0" column="0">
-      <widget class="QRadioButton" name="rb_on">
+      <widget class="QRadioButton" name="radioButton">
        <property name="text">
         <string>Разрешить запуск</string>
        </property>
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QRadioButton" name="rb_off">
+      <widget class="QRadioButton" name="radioButton_2">
        <property name="text">
         <string>Запретить запуск</string>
        </property>
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QProgressBar" name="progressBar">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>180</y>
+      <width>118</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>24</number>
+    </property>
    </widget>
    <widget class="QComboBox" name="cb_list">
     <property name="geometry">
@@ -76,7 +89,7 @@
      <x>0</x>
      <y>0</y>
      <width>501</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

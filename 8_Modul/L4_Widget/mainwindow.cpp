@@ -13,6 +13,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->cb_list, SIGNAL(currentTextChanged(QString)), this, SLOT(updateStatusBar(QString)));
 
+    progressBar = new QProgressBar(this);
+    ui->statusbar->addPermanentWidget(progressBar);
+    progressBar->setMinimum(0);
+    progressBar->setMaximum(10);
+
+
 }
 
 MainWindow::~MainWindow()
@@ -34,5 +40,29 @@ void MainWindow::on_pushButton_toggled(bool checked)
 {
   //  ui->cb_list->currentData();
     //ui->statusbar->showMessage(,3000);
+}
+
+
+void MainWindow::on_pushButton_clicked()
+{
+QString newText = ui->cb_list->currentText();
+ if(progressBar->value()!=10){
+    progressBar->setStyleSheet(QString());
+    ui->progressBar->setFormat(QString());
+    progressBar->setValue(++val);
+    newText += " летит....";
+   ui->statusbar->showMessage(newText);
+ }
+ else{
+     newText += " прилетел:(";
+    ui->statusbar->showMessage(newText);
+
+     progressBar->setValue(0);
+     progressBar->setFormat("              Бабам!!!");
+     progressBar->setStyleSheet("background: red; border: 1px solid black;");
+     val = 0;
+ }
+
+
 }
 

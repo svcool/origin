@@ -6,6 +6,7 @@ Connect::Connect(QWidget *parent)
     , ui(new Ui::Connect)
 {
     ui->setupUi(this);
+
 }
 
 Connect::~Connect()

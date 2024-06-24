@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QProgressBar>
+//#include <QtGui>
+//#include <QtCore>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -23,7 +26,11 @@ private slots:
     void updateStatusBar(const QString &text);
     void on_pushButton_toggled(bool checked);
 
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
+    QProgressBar *progressBar;
+    uint32_t val = 0;
 };
 #endif // MAINWINDOW_H

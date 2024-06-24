@@ -2,7 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include  "connect.h"
+#include  "dialog.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -24,5 +25,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     Connect *connectWin;
+    Dialog *dialogWin;
 };
 #endif // MAINWINDOW_H
