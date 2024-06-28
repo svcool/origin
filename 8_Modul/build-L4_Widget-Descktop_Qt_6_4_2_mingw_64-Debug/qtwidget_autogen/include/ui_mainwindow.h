@@ -12,14 +12,15 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
-#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
-#include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
+#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -28,13 +29,15 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralwidget;
+    QVBoxLayout *verticalLayout_2;
     QGroupBox *groupBox;
-    QGridLayout *gridLayout;
-    QRadioButton *radioButton;
-    QRadioButton *radioButton_2;
-    QProgressBar *progressBar;
+    QVBoxLayout *verticalLayout;
+    QRadioButton *rb_on;
+    QRadioButton *rb_off;
+    QLabel *label;
     QComboBox *cb_list;
-    QPushButton *pushButton;
+    QPushButton *pb_button;
+    QSpacerItem *verticalSpacer;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -42,39 +45,54 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(501, 273);
+        MainWindow->resize(522, 234);
+        MainWindow->setMinimumSize(QSize(0, 234));
+        MainWindow->setMaximumSize(QSize(16777215, 234));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
+        verticalLayout_2 = new QVBoxLayout(centralwidget);
+        verticalLayout_2->setObjectName("verticalLayout_2");
         groupBox = new QGroupBox(centralwidget);
         groupBox->setObjectName("groupBox");
-        groupBox->setGeometry(QRect(10, 0, 261, 82));
-        gridLayout = new QGridLayout(groupBox);
-        gridLayout->setObjectName("gridLayout");
-        gridLayout->setContentsMargins(9, -1, -1, -1);
-        radioButton = new QRadioButton(groupBox);
-        radioButton->setObjectName("radioButton");
+        verticalLayout = new QVBoxLayout(groupBox);
+        verticalLayout->setObjectName("verticalLayout");
+        rb_on = new QRadioButton(groupBox);
+        rb_on->setObjectName("rb_on");
 
-        gridLayout->addWidget(radioButton, 0, 0, 1, 1);
+        verticalLayout->addWidget(rb_on);
 
-        radioButton_2 = new QRadioButton(groupBox);
-        radioButton_2->setObjectName("radioButton_2");
+        rb_off = new QRadioButton(groupBox);
+        rb_off->setObjectName("rb_off");
 
-        gridLayout->addWidget(radioButton_2, 1, 0, 1, 1);
+        verticalLayout->addWidget(rb_off);
 
-        progressBar = new QProgressBar(centralwidget);
-        progressBar->setObjectName("progressBar");
-        progressBar->setGeometry(QRect(270, 180, 118, 23));
-        progressBar->setValue(24);
+
+        verticalLayout_2->addWidget(groupBox);
+
+        label = new QLabel(centralwidget);
+        label->setObjectName("label");
+
+        verticalLayout_2->addWidget(label);
+
         cb_list = new QComboBox(centralwidget);
         cb_list->setObjectName("cb_list");
-        cb_list->setGeometry(QRect(10, 120, 271, 21));
-        pushButton = new QPushButton(centralwidget);
-        pushButton->setObjectName("pushButton");
-        pushButton->setGeometry(QRect(30, 150, 141, 31));
+
+        verticalLayout_2->addWidget(cb_list);
+
+        pb_button = new QPushButton(centralwidget);
+        pb_button->setObjectName("pb_button");
+        pb_button->setCheckable(false);
+
+        verticalLayout_2->addWidget(pb_button);
+
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_2->addItem(verticalSpacer);
+
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 501, 22));
+        menubar->setGeometry(QRect(0, 0, 522, 22));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName("statusbar");
@@ -88,10 +106,11 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
-        groupBox->setTitle(QCoreApplication::translate("MainWindow", "GroupBox", nullptr));
-        radioButton->setText(QCoreApplication::translate("MainWindow", "\320\240\320\260\320\267\321\200\320\265\321\210\320\270\321\202\321\214 \320\267\320\260\320\277\321\203\321\201\320\272", nullptr));
-        radioButton_2->setText(QCoreApplication::translate("MainWindow", "\320\227\320\260\320\277\321\200\320\265\321\202\320\270\321\202\321\214 \320\267\320\260\320\277\321\203\321\201\320\272", nullptr));
-        pushButton->setText(QCoreApplication::translate("MainWindow", "\320\237\321\203\321\201\320\272", nullptr));
+        groupBox->setTitle(QCoreApplication::translate("MainWindow", "\320\232\320\276\320\274\320\260\320\275\320\264\320\260", nullptr));
+        rb_on->setText(QCoreApplication::translate("MainWindow", "\320\240\320\260\320\267\321\200\320\265\321\210\320\270\321\202\321\214 \320\267\320\260\320\277\321\203\321\201\320\272", nullptr));
+        rb_off->setText(QCoreApplication::translate("MainWindow", "\320\227\320\260\320\277\321\200\320\265\321\202\320\270\321\202\321\214 \320\267\320\260\320\277\321\203\321\201\320\272", nullptr));
+        label->setText(QCoreApplication::translate("MainWindow", "\320\222\321\213\320\261\320\276\321\200 \321\202\320\270\320\277\320\260 \321\200\320\260\320\272\320\265\321\202:", nullptr));
+        pb_button->setText(QCoreApplication::translate("MainWindow", "\320\237\321\203\321\201\320\272", nullptr));
     } // retranslateUi
 
 };

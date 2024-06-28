@@ -330,6 +330,9 @@ CMakeFiles/qtwidget.dir/main.cpp.obj: \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/QProgressBar \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/qprogressbar.h \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/qframe.h \
+ D:/QT/6.4.2/mingw_64/include/QtCore/QTimer \
+ D:/QT/6.4.2/mingw_64/include/QtCore/qtimer.h \
+ D:/QT/6.4.2/mingw_64/include/QtCore/qbasictimer.h \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/QApplication \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/qapplication.h \
  D:/QT/6.4.2/mingw_64/include/QtCore/qcoreapplication.h \

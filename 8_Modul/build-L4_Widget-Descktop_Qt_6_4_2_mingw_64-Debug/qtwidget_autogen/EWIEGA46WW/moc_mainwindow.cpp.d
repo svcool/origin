@@ -1,5 +1,6 @@
 D:/gitrepo/origin/8_Modul/build-L4_Widget-Descktop_Qt_6_4_2_mingw_64-Debug/qtwidget_autogen/EWIEGA46WW/moc_mainwindow.cpp: D:/gitrepo/origin/8_Modul/L4_Widget/mainwindow.h \
   D:/gitrepo/origin/8_Modul/build-L4_Widget-Descktop_Qt_6_4_2_mingw_64-Debug/qtwidget_autogen/moc_predefs.h \
+  D:/QT/6.4.2/mingw_64/include/QtCore/QTimer \
   D:/QT/6.4.2/mingw_64/include/QtCore/qalgorithms.h \
   D:/QT/6.4.2/mingw_64/include/QtCore/qanystringview.h \
   D:/QT/6.4.2/mingw_64/include/QtCore/qarraydata.h \
@@ -8,6 +9,7 @@ D:/gitrepo/origin/8_Modul/build-L4_Widget-Descktop_Qt_6_4_2_mingw_64-Debug/qtwid
   D:/QT/6.4.2/mingw_64/include/QtCore/qatomic.h \
   D:/QT/6.4.2/mingw_64/include/QtCore/qatomic_cxx11.h \
   D:/QT/6.4.2/mingw_64/include/QtCore/qbasicatomic.h \
+  D:/QT/6.4.2/mingw_64/include/QtCore/qbasictimer.h \
   D:/QT/6.4.2/mingw_64/include/QtCore/qbindingstorage.h \
   D:/QT/6.4.2/mingw_64/include/QtCore/qbytearray.h \
   D:/QT/6.4.2/mingw_64/include/QtCore/qbytearrayalgorithms.h \
@@ -77,6 +79,7 @@ D:/gitrepo/origin/8_Modul/build-L4_Widget-Descktop_Qt_6_4_2_mingw_64-Debug/qtwid
   D:/QT/6.4.2/mingw_64/include/QtCore/qtcore-config.h \
   D:/QT/6.4.2/mingw_64/include/QtCore/qtcoreexports.h \
   D:/QT/6.4.2/mingw_64/include/QtCore/qtextstream.h \
+  D:/QT/6.4.2/mingw_64/include/QtCore/qtimer.h \
   D:/QT/6.4.2/mingw_64/include/QtCore/qtmetamacros.h \
   D:/QT/6.4.2/mingw_64/include/QtCore/qtypeinfo.h \
   D:/QT/6.4.2/mingw_64/include/QtCore/qutf8stringview.h \

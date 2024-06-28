@@ -3,6 +3,7 @@ D:/gitrepo/origin/8_Modul/L4_Widget/mainwindow.h
  mmc:Q_OBJECT
  mdp:D:/gitrepo/origin/8_Modul/L4_Widget/mainwindow.h
  mdp:D:/gitrepo/origin/8_Modul/build-L4_Widget-Descktop_Qt_6_4_2_mingw_64-Debug/qtwidget_autogen/moc_predefs.h
+ mdp:D:/QT/6.4.2/mingw_64/include/QtCore/QTimer
  mdp:D:/QT/6.4.2/mingw_64/include/QtCore/qalgorithms.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtCore/qanystringview.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtCore/qarraydata.h
@@ -11,6 +12,7 @@ D:/gitrepo/origin/8_Modul/L4_Widget/mainwindow.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtCore/qatomic.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtCore/qatomic_cxx11.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtCore/qbasicatomic.h
+ mdp:D:/QT/6.4.2/mingw_64/include/QtCore/qbasictimer.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtCore/qbindingstorage.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtCore/qbytearray.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtCore/qbytearrayalgorithms.h
@@ -80,6 +82,7 @@ D:/gitrepo/origin/8_Modul/L4_Widget/mainwindow.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtCore/qtcore-config.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtCore/qtcoreexports.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtCore/qtextstream.h
+ mdp:D:/QT/6.4.2/mingw_64/include/QtCore/qtimer.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtCore/qtmetamacros.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtCore/qtypeinfo.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtCore/qutf8stringview.h

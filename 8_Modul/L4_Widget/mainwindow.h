@@ -23,10 +23,6 @@ private slots:
 
     void on_cb_list_currentTextChanged(const QString &arg1);
     void updateStatusBar(const QString &text);
-    void on_pushButton_toggled(bool checked);
-
-    void on_pushButton_clicked();
-
     void on_pb_button_toggled(bool checked);
 
 private:

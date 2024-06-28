@@ -330,6 +330,9 @@ CMakeFiles/qtwidget.dir/mainwindow.cpp.obj: \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/QProgressBar \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/qprogressbar.h \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/qframe.h \
+ D:/QT/6.4.2/mingw_64/include/QtCore/QTimer \
+ D:/QT/6.4.2/mingw_64/include/QtCore/qtimer.h \
+ D:/QT/6.4.2/mingw_64/include/QtCore/qbasictimer.h \
  D:/gitrepo/origin/8_Modul/build-L4_Widget-Descktop_Qt_6_4_2_mingw_64-Debug/qtwidget_autogen/include/ui_mainwindow.h \
  D:/QT/6.4.2/mingw_64/include/QtCore/QVariant \
  D:/QT/6.4.2/mingw_64/include/QtCore/qvariant.h \
@@ -357,25 +360,32 @@ CMakeFiles/qtwidget.dir/mainwindow.cpp.obj: \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/qtabbar.h \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/qrubberband.h \
  D:/QT/6.4.2/mingw_64/include/QtCore/qabstractitemmodel.h \
- D:/QT/6.4.2/mingw_64/include/QtWidgets/QGridLayout \
- D:/QT/6.4.2/mingw_64/include/QtWidgets/qgridlayout.h \
- D:/QT/6.4.2/mingw_64/include/QtWidgets/qlayout.h \
- D:/QT/6.4.2/mingw_64/include/QtWidgets/qlayoutitem.h \
- D:/QT/6.4.2/mingw_64/include/QtWidgets/qboxlayout.h \
- D:/QT/6.4.2/mingw_64/include/QtWidgets/qgridlayout.h \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/QGroupBox \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/qgroupbox.h \
+ D:/QT/6.4.2/mingw_64/include/QtWidgets/QLabel \
+ D:/QT/6.4.2/mingw_64/include/QtWidgets/qlabel.h \
+ D:/QT/6.4.2/mingw_64/include/QtGui/qpicture.h \
+ D:/QT/6.4.2/mingw_64/include/QtCore/qiodevice.h \
+ D:/QT/6.4.2/mingw_64/include/QtGui/qtextdocument.h \
+ D:/QT/6.4.2/mingw_64/include/QtCore/qurl.h \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/QMainWindow \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/QMenuBar \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/qmenubar.h \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/qmenu.h \
- D:/QT/6.4.2/mingw_64/include/QtWidgets/QProgressBar \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/QPushButton \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/qpushbutton.h \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/qabstractbutton.h \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/QRadioButton \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/qradiobutton.h \
+ D:/QT/6.4.2/mingw_64/include/QtWidgets/QSpacerItem \
+ D:/QT/6.4.2/mingw_64/include/QtWidgets/qlayoutitem.h \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/QStatusBar \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/qstatusbar.h \
+ D:/QT/6.4.2/mingw_64/include/QtWidgets/QVBoxLayout \
+ D:/QT/6.4.2/mingw_64/include/QtWidgets/qboxlayout.h \
+ D:/QT/6.4.2/mingw_64/include/QtWidgets/qlayout.h \
+ D:/QT/6.4.2/mingw_64/include/QtWidgets/qlayoutitem.h \
+ D:/QT/6.4.2/mingw_64/include/QtWidgets/qboxlayout.h \
+ D:/QT/6.4.2/mingw_64/include/QtWidgets/qgridlayout.h \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/QWidget \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/qwidget.h

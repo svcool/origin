@@ -42,51 +42,6 @@ void MainWindow::on_cb_list_currentTextChanged(const QString &arg1)
 }
 
 
-void MainWindow::on_pushButton_toggled(bool checked)
-{
-  //  ui->cb_list->currentData();
-    //ui->statusbar->showMessage(,3000);
-}
-
-
-void MainWindow::on_pushButton_clicked()
-{
-    if(ui->rb_off->isChecked()) {
-        ui->statusbar->showMessage("Запуск запрещен!!!");
-        return;
-    }
-
-QString newText = ui->cb_list->currentText();
-
-if(ui->rb_on->isChecked()){
-    if(progressBar->value()!=10 ){
-     progressBar->setStyleSheet(QString()); //вернуть цвет бара
-     progressBar->setFormat(QString());//вернуть формат
-     progressBar->setValue(++val);
-     newText += " летит....";
-     ui->statusbar->showMessage(newText);
-    }
-    else{
-        newText += " прилетел:(";
-        ui->statusbar->showMessage(newText);
-    // установка формата цвета прогресс бара
-         progressBar->setValue(0);
-         progressBar->setFormat("Бабам!!!");
-         progressBar->setStyleSheet("QProgressBar{border: 1px solid transparent;text-align: center;"
-                                "color:rgba(255,255,250,255);"
-                                "background-color: red;"
-                                "}"
-                                );
-         val = 0;
-    }
-}
-else {
-     ui->statusbar->showMessage("Не выбрана команда!");
-
-}
-
-}
-
 
 void MainWindow::on_pb_button_toggled(bool checked)
 {
@@ -99,7 +54,7 @@ void MainWindow::on_pb_button_toggled(bool checked)
         QString newText = ui->cb_list->currentText();
 
         if(ui->rb_on->isChecked()){
-            do{
+
             if(progressBar->value()!=10 ){
                  progressBar->setStyleSheet(QString()); //вернуть цвет бара
                 progressBar->setFormat(QString());//вернуть формат
@@ -120,7 +75,7 @@ void MainWindow::on_pb_button_toggled(bool checked)
                                            );
                 val = 0;
             }
-            }while(val<10);
+
         }
         else {
             ui->statusbar->showMessage("Не выбрана команда!");

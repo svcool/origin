@@ -330,4 +330,7 @@ CMakeFiles/qtwidget.dir/qtwidget_autogen/mocs_compilation.cpp.obj: \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/qtabwidget.h \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/QProgressBar \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/qprogressbar.h \
- D:/QT/6.4.2/mingw_64/include/QtWidgets/qframe.h
+ D:/QT/6.4.2/mingw_64/include/QtWidgets/qframe.h \
+ D:/QT/6.4.2/mingw_64/include/QtCore/QTimer \
+ D:/QT/6.4.2/mingw_64/include/QtCore/qtimer.h \
+ D:/QT/6.4.2/mingw_64/include/QtCore/qbasictimer.h

@@ -332,6 +332,9 @@ CMakeFiles/qtwidget.dir/main.cpp.obj: D:/gitrepo/origin/8_Modul/L4_Widget/main.c
   D:/QT/6.4.2/mingw_64/include/QtWidgets/QProgressBar \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/qprogressbar.h \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/qframe.h \
+  D:/QT/6.4.2/mingw_64/include/QtCore/QTimer \
+  D:/QT/6.4.2/mingw_64/include/QtCore/qtimer.h \
+  D:/QT/6.4.2/mingw_64/include/QtCore/qbasictimer.h \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/QApplication \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/qapplication.h \
   D:/QT/6.4.2/mingw_64/include/QtCore/qcoreapplication.h \
@@ -675,6 +678,9 @@ CMakeFiles/qtwidget.dir/mainwindow.cpp.obj: D:/gitrepo/origin/8_Modul/L4_Widget/
   D:/QT/6.4.2/mingw_64/include/QtWidgets/QProgressBar \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/qprogressbar.h \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/qframe.h \
+  D:/QT/6.4.2/mingw_64/include/QtCore/QTimer \
+  D:/QT/6.4.2/mingw_64/include/QtCore/qtimer.h \
+  D:/QT/6.4.2/mingw_64/include/QtCore/qbasictimer.h \
   qtwidget_autogen/include/ui_mainwindow.h \
   D:/QT/6.4.2/mingw_64/include/QtCore/QVariant \
   D:/QT/6.4.2/mingw_64/include/QtCore/qvariant.h \
@@ -702,26 +708,33 @@ CMakeFiles/qtwidget.dir/mainwindow.cpp.obj: D:/gitrepo/origin/8_Modul/L4_Widget/
   D:/QT/6.4.2/mingw_64/include/QtWidgets/qtabbar.h \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/qrubberband.h \
   D:/QT/6.4.2/mingw_64/include/QtCore/qabstractitemmodel.h \
-  D:/QT/6.4.2/mingw_64/include/QtWidgets/QGridLayout \
-  D:/QT/6.4.2/mingw_64/include/QtWidgets/qgridlayout.h \
-  D:/QT/6.4.2/mingw_64/include/QtWidgets/qlayout.h \
-  D:/QT/6.4.2/mingw_64/include/QtWidgets/qlayoutitem.h \
-  D:/QT/6.4.2/mingw_64/include/QtWidgets/qboxlayout.h \
-  D:/QT/6.4.2/mingw_64/include/QtWidgets/qgridlayout.h \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/QGroupBox \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/qgroupbox.h \
+  D:/QT/6.4.2/mingw_64/include/QtWidgets/QLabel \
+  D:/QT/6.4.2/mingw_64/include/QtWidgets/qlabel.h \
+  D:/QT/6.4.2/mingw_64/include/QtGui/qpicture.h \
+  D:/QT/6.4.2/mingw_64/include/QtCore/qiodevice.h \
+  D:/QT/6.4.2/mingw_64/include/QtGui/qtextdocument.h \
+  D:/QT/6.4.2/mingw_64/include/QtCore/qurl.h \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/QMainWindow \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/QMenuBar \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/qmenubar.h \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/qmenu.h \
-  D:/QT/6.4.2/mingw_64/include/QtWidgets/QProgressBar \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/QPushButton \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/qpushbutton.h \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/qabstractbutton.h \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/QRadioButton \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/qradiobutton.h \
+  D:/QT/6.4.2/mingw_64/include/QtWidgets/QSpacerItem \
+  D:/QT/6.4.2/mingw_64/include/QtWidgets/qlayoutitem.h \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/QStatusBar \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/qstatusbar.h \
+  D:/QT/6.4.2/mingw_64/include/QtWidgets/QVBoxLayout \
+  D:/QT/6.4.2/mingw_64/include/QtWidgets/qboxlayout.h \
+  D:/QT/6.4.2/mingw_64/include/QtWidgets/qlayout.h \
+  D:/QT/6.4.2/mingw_64/include/QtWidgets/qlayoutitem.h \
+  D:/QT/6.4.2/mingw_64/include/QtWidgets/qboxlayout.h \
+  D:/QT/6.4.2/mingw_64/include/QtWidgets/qgridlayout.h \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/QWidget \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/qwidget.h
 
@@ -1056,7 +1069,10 @@ CMakeFiles/qtwidget.dir/qtwidget_autogen/mocs_compilation.cpp.obj: qtwidget_auto
   D:/QT/6.4.2/mingw_64/include/QtWidgets/qtabwidget.h \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/QProgressBar \
   D:/QT/6.4.2/mingw_64/include/QtWidgets/qprogressbar.h \
-  D:/QT/6.4.2/mingw_64/include/QtWidgets/qframe.h
+  D:/QT/6.4.2/mingw_64/include/QtWidgets/qframe.h \
+  D:/QT/6.4.2/mingw_64/include/QtCore/QTimer \
+  D:/QT/6.4.2/mingw_64/include/QtCore/qtimer.h \
+  D:/QT/6.4.2/mingw_64/include/QtCore/qbasictimer.h
 
 
 D:/QT/Tools/mingw1120_64/x86_64-w64-mingw32/include/sec_api/sys/timeb_s.h:
@@ -1389,6 +1405,8 @@ D:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/ext/concu
 
 D:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/tr1/beta_function.tcc:
 
+D:/QT/6.4.2/mingw_64/include/QtCore/qiodevice.h:
+
 D:/QT/6.4.2/mingw_64/include/QtGui/qregion.h:
 
 D:/QT/Tools/mingw1120_64/x86_64-w64-mingw32/include/string.h:
@@ -1464,6 +1482,8 @@ D:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/loca
 D:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/node_handle.h:
 
 D:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/unordered_map.h:
+
+D:/QT/6.4.2/mingw_64/include/QtWidgets/QVBoxLayout:
 
 D:/QT/Tools/mingw1120_64/x86_64-w64-mingw32/include/signal.h:
 
@@ -1767,6 +1787,12 @@ D:/QT/6.4.2/mingw_64/include/QtWidgets/qprogressbar.h:
 
 D:/QT/6.4.2/mingw_64/include/QtWidgets/qframe.h:
 
+D:/QT/6.4.2/mingw_64/include/QtCore/QTimer:
+
+D:/QT/6.4.2/mingw_64/include/QtCore/qtimer.h:
+
+D:/QT/6.4.2/mingw_64/include/QtCore/qbasictimer.h:
+
 D:/QT/6.4.2/mingw_64/include/QtWidgets/QApplication:
 
 D:/QT/6.4.2/mingw_64/include/QtWidgets/qapplication.h:
@@ -1797,13 +1823,17 @@ D:/QT/6.4.2/mingw_64/include/QtWidgets/qstyle.h:
 
 D:/QT/6.4.2/mingw_64/include/QtWidgets/qrubberband.h:
 
-D:/QT/6.4.2/mingw_64/include/QtWidgets/QGridLayout:
-
-D:/QT/6.4.2/mingw_64/include/QtWidgets/qgridlayout.h:
-
-D:/QT/6.4.2/mingw_64/include/QtWidgets/qboxlayout.h:
-
 D:/QT/6.4.2/mingw_64/include/QtWidgets/QGroupBox:
+
+D:/QT/6.4.2/mingw_64/include/QtWidgets/QLabel:
+
+D:/QT/6.4.2/mingw_64/include/QtWidgets/qlabel.h:
+
+D:/QT/6.4.2/mingw_64/include/QtGui/qpicture.h:
+
+D:/QT/6.4.2/mingw_64/include/QtGui/qtextdocument.h:
+
+D:/QT/6.4.2/mingw_64/include/QtCore/qurl.h:
 
 D:/QT/6.4.2/mingw_64/include/QtWidgets/QMenuBar:
 
@@ -1812,5 +1842,11 @@ D:/QT/6.4.2/mingw_64/include/QtWidgets/qmenubar.h:
 D:/QT/6.4.2/mingw_64/include/QtWidgets/QPushButton:
 
 D:/QT/6.4.2/mingw_64/include/QtWidgets/qabstractbutton.h:
+
+D:/QT/6.4.2/mingw_64/include/QtWidgets/QSpacerItem:
+
+D:/QT/6.4.2/mingw_64/include/QtWidgets/qboxlayout.h:
+
+D:/QT/6.4.2/mingw_64/include/QtWidgets/qgridlayout.h:
 
 D:/QT/6.4.2/mingw_64/include/QtWidgets/QWidget:
