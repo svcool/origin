@@ -1,3 +1,0 @@
-D:\QT\Tools\CMake_64\bin\cmake.exe -E rm -f CMakeFiles\qtdesigner.dir/objects.a
-D:\QT\Tools\mingw1120_64\bin\ar.exe qc CMakeFiles\qtdesigner.dir/objects.a @CMakeFiles\qtdesigner.dir\objects1.rsp
-d:\QT\Tools\mingw1120_64\bin\g++.exe -DQT_QML_DEBUG -g -mwindows -Wl,--whole-archive CMakeFiles\qtdesigner.dir/objects.a -Wl,--no-whole-archive -o qtdesigner.exe -Wl,--out-implib,libqtdesigner.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\qtdesigner.dir\linkLibs.rsp
