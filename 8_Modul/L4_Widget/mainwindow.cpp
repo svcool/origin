@@ -23,8 +23,6 @@ MainWindow::MainWindow(QWidget *parent)
     progressBar->setMinimum(0);
     progressBar->setMaximum(10);
 
-    QTimer *timer = new QTimer(this);
-
 }
 
 MainWindow::~MainWindow()
@@ -86,4 +84,7 @@ void MainWindow::on_pb_button_toggled(bool checked)
         // Код для состояния "выключено"
     }
 }
+
+
+
 

@@ -2,8 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QProgressBar>
-
+#include <QFont>
+#include "watch.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -20,14 +20,14 @@ public:
     ~MainWindow();
 
 private slots:
+    void on_pb_start_toggled(bool checked);
+    void UpdateTime(QString str);
+    void on_pb_circle_clicked();
 
-    void on_cb_list_currentTextChanged(const QString &arg1);
-    void updateStatusBar(const QString &text);
-    void on_pb_button_toggled(bool checked);
+    void on_pb_clear_clicked();
 
 private:
     Ui::MainWindow *ui;
-    QProgressBar *progressBar;
-    uint32_t val = 0;
+    Watch *watch;
 };
 #endif // MAINWINDOW_H
