@@ -1,0 +1,5 @@
+D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCharts/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/CMakeFiles/07_GraphicsCharts.dir
+D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCharts/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/CMakeFiles/edit_cache.dir
+D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCharts/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/CMakeFiles/rebuild_cache.dir
+D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCharts/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/CMakeFiles/07_GraphicsCharts_autogen_timestamp_deps.dir
+D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCharts/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/CMakeFiles/07_GraphicsCharts_autogen.dir

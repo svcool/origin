@@ -1,0 +1,2 @@
+set(__QT_DEPLOY_TARGET_07_GraphicsCustomPlot_FILE D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCustomPlot/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/07_GraphicsCustomPlot.exe)
+set(__QT_DEPLOY_TARGET_07_GraphicsCustomPlot_RUNTIME_DLLS D:/Qt/6.7.1/mingw_64/bin/Qt6PrintSupport.dll;D:/Qt/6.7.1/mingw_64/bin/Qt6Widgets.dll;D:/Qt/6.7.1/mingw_64/bin/Qt6Gui.dll;D:/Qt/6.7.1/mingw_64/bin/Qt6Core.dll)

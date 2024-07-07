@@ -1,0 +1,16 @@
+# ninja log v5
+3	3409	7418868491246851	07_GraphicsCharts_autogen/timestamp	32c3d413168a58ed
+3	3409	7418868491246851	07_GraphicsCharts_autogen/mocs_compilation.cpp	32c3d413168a58ed
+3	3409	7418868491246851	D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCharts/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/07_GraphicsCharts_autogen/timestamp	32c3d413168a58ed
+3	3409	7418868491246851	D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCharts/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/07_GraphicsCharts_autogen/mocs_compilation.cpp	32c3d413168a58ed
+3410	12328	7418868581627967	CMakeFiles/07_GraphicsCharts.dir/07_GraphicsCharts_autogen/mocs_compilation.cpp.obj	d18791131b2a4e6b
+3415	12385	7418868582146494	CMakeFiles/07_GraphicsCharts.dir/main.cpp.obj	cfd9e7fa37043a45
+3420	12559	7418868583934426	CMakeFiles/07_GraphicsCharts.dir/graphicchart.cpp.obj	90ae0a5c200ad44a
+3425	12752	7418868585873198	CMakeFiles/07_GraphicsCharts.dir/mainwindow.cpp.obj	3529aa4e215f5242
+12752	13179	7418868589745910	07_GraphicsCharts.exe	2af2fbfd6f0aa414
+16	374	7420206436564343	07_GraphicsCharts_autogen/timestamp	32c3d413168a58ed
+16	374	7420206436564343	07_GraphicsCharts_autogen/mocs_compilation.cpp	32c3d413168a58ed
+16	374	7420206436564343	D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCharts/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/07_GraphicsCharts_autogen/timestamp	32c3d413168a58ed
+16	374	7420206436564343	D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCharts/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/07_GraphicsCharts_autogen/mocs_compilation.cpp	32c3d413168a58ed
+385	10462	7420206537337095	CMakeFiles/07_GraphicsCharts.dir/mainwindow.cpp.obj	3529aa4e215f5242
+10463	11396	7420206546126941	07_GraphicsCharts.exe	2af2fbfd6f0aa414

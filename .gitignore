@@ -10,6 +10,8 @@
 /*/*/*_build
 /*/*/build
 /.vs/origin/v17
+/*/*/CMakeLists.txt.user
+/*/*/*/CMakeLists.txt.user
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudio
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudio
 
