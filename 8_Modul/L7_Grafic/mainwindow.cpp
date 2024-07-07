@@ -7,8 +7,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->pb_clearResult->setCheckable(true);
-    ui->le_path->setText("C:/Users/admin/Downloads/testData.adc");
-    pathToFile = ui->le_path->text();
+    //ui->le_path->setText("C:/Users/admin/Downloads/testData.adc");
+    //pathToFile = ui->le_path->text();
 
     ptrGraph = new QLineSeries(); //создание серии для заполнения данными
 
@@ -58,10 +58,6 @@ QVector<uint32_t> MainWindow::ReadFile(QString path, uint8_t numberChannel)
             mb.setText("Ошибка открытия фала");
             mb.exec();
         }
-    }
-    else{
-
-        //продумать как выйти из функции
     }
 
     QDataStream dataStream;
@@ -227,6 +223,7 @@ void MainWindow::on_pb_start_clicked()
         mb.setWindowTitle("Ошибка");
         mb.setText("Выберите файл!");
         mb.exec();
+        ui->pb_start->setEnabled(true);
         return;
     }
 
