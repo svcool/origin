@@ -81,9 +81,9 @@ void MainWindow::on_act_connect_triggered()
        ui->lb_statusConnect->setText("Подключение");
        ui->lb_statusConnect->setStyleSheet("color : black");
 
-
-       auto conn = [&]{dataBase->ConnectToDataBase(dataForConnect);};
-       QtConcurrent::run(conn);
+       (void)QtConcurrent::run(&DataBase::ConnectToDataBase, dataBase, dataForConnect);// void игнорируем возвращаемое значение QFuture, чтобы избежать предупреждения
+       //auto conn = [&]{dataBase->ConnectToDataBase(dataForConnect);};
+      // QtConcurrent::run(conn);
 
     }
     else{

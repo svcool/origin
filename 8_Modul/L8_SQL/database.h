@@ -3,6 +3,9 @@
 
 #include <QTableWidget>
 #include <QObject>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
 
 
 

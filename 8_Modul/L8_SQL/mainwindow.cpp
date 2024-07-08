@@ -66,6 +66,7 @@ void MainWindow::on_act_addData_triggered()
  */
 
 void MainWindow::on_act_connect_triggered()
+
 {
     /*
      * Обработчик кнопки у нас должен подключаться и отключаться от БД.
@@ -81,7 +82,7 @@ void MainWindow::on_act_connect_triggered()
 
 
        auto conn = [&]{dataBase->ConnectToDataBase(dataForConnect);};
-       QtConcurrent::run(conn);
+       (void)QtConcurrent::run(conn);// void игнорируем возвращаемое значение QFuture, чтобы избежать предупреждения
 
     }
     else{
