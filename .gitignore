@@ -7,8 +7,8 @@
 /*/*/*/.vs/out/**
 /*/*/*/.vs/**
 /*/*/.vs/**
-/*/*/*_build
-/*/*/build
+/*/*/*_build*
+/*/*/build*
 /.vs/origin/v17
 /*/*/CMakeLists.txt.user
 /*/*/*/CMakeLists.txt.user

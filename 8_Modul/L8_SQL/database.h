@@ -7,7 +7,10 @@
 #include <QSqlQueryModel>
 #include <QSqlError>
 #include <QSqlTableModel>
+<<<<<<< HEAD
 #include <QSqlQuery>
+=======
+>>>>>>> 1
 
 
 
@@ -63,9 +66,14 @@ signals:
 private:
 
     QSqlDatabase* dataBase;
+<<<<<<< HEAD
     QSqlQueryModel* tableQueryMod;
     QSqlTableModel* tableTableMod;
     QTableView *view;
+=======
+    QSqlQueryModel* tableQuery;
+    QSqlTableModel* tableSql;
+>>>>>>> 1
 };
 
 #endif // DATABASE_H

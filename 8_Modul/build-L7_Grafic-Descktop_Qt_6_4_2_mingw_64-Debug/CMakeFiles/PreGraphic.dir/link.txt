@@ -1,0 +1,3 @@
+D:\QT\Tools\CMake_64\bin\cmake.exe -E rm -f CMakeFiles\PreGraphic.dir/objects.a
+D:\QT\Tools\mingw1120_64\bin\ar.exe qc CMakeFiles\PreGraphic.dir/objects.a @CMakeFiles\PreGraphic.dir\objects1.rsp
+d:\QT\Tools\mingw1120_64\bin\g++.exe -DQT_QML_DEBUG -g -Wl,--whole-archive CMakeFiles\PreGraphic.dir/objects.a -Wl,--no-whole-archive -o PreGraphic.exe -Wl,--out-implib,libPreGraphic.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\PreGraphic.dir\linkLibs.rsp

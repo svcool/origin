@@ -7,20 +7,33 @@ DataBase::DataBase(QObject *parent)
      *Объект QSqlDatabase является основным классом низкого уровня,
      *в котором настраивается подключение к БД.
     */
+<<<<<<< HEAD
     view = new QTableView;
     dataBase = new QSqlDatabase;
     //Объект QSqlQueryModel отвечает за формирование запросов к БД
     tableQueryMod = new QSqlQueryModel;
     //QSqlTableModel необходим для формирования отображения ответа и передачи его в форму.
     tableTableMod = new QSqlTableModel;
+=======
+    dataBase = new QSqlDatabase;
+    //Объект QSqlQueryModel отвечает за формирование запросов к БД
+    tableQuery = new QSqlQueryModel;
+    //QSqlTableModel необходим для формирования отображения ответа и передачи его в форму.
+    tableSql = new QSqlTableModel;
+>>>>>>> 1
 
 }
 
 DataBase::~DataBase()
 {
     delete dataBase;
+<<<<<<< HEAD
     delete tableQueryMod;
     delete tableTableMod;
+=======
+    delete tableQuery;
+    delete tableSql;
+>>>>>>> 1
 }
 
 /*!
@@ -82,6 +95,7 @@ void DataBase::RequestToDB(QString request, quint32 requestIndex)
         tableTableMod->setTable(request);
         tableTableMod->select();
 
+<<<<<<< HEAD
         if(tableTableMod->lastError().isValid()){
             err = tableTableMod->lastError();
 
@@ -104,6 +118,32 @@ void DataBase::RequestToDB(QString request, quint32 requestIndex)
     }
 
 }
+=======
+    /*  Для фоомирования запроса будем использовать
+     *  объект QSqlQuery.
+     *  В конструктор передадим адрес объекта QSqlDatabase
+    */
+    *tableQuery = QSqlQueryModel(*dataBase);
+    /*
+       Выполнение запроса выполняется при помощи
+       метода exec. В случае успешного запроса он вернет true.
+       Если возникает какая либо ошибка, ее можно посмотреть
+       при помощи метода lastError. Этот метод возвращает
+       экземпляр класса QSqlError.
+    */
+    QSqlError err;
+    if(simpleQuery->exec(request) == false){
+        err = simpleQuery->lastError();
+    }
+
+    emit sig_SendStatusRequest(err);
+
+
+
+
+
+    ///Тут должен быть код ДЗ
+>>>>>>> 1
 
 void DataBase::ReadAnswerFromDB(QVector<QString> request, quint32 requestIndex){
     switch (requestIndex) {
