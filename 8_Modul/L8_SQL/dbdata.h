@@ -21,7 +21,7 @@ public:
 
 
 private slots:
-    void on_buttonBox_accepted();
+    void on_bb_Box_accepted();
 
 private:
     Ui::DbData *ui;

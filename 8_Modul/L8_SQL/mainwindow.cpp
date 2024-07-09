@@ -10,10 +10,31 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lb_statusConnect->setStyleSheet("color:red");
     ui->pb_request->setEnabled(false);
 
+
     /*
      * Выделим память под необходимые объекты. Все они наследники
      * QObject, поэтому воспользуемся иерархией.
     */
+
+
+    request.resize(NumberOfRequestTypes);
+    request[requestAllFilms] = "SELECT title, release_year, c.name  FROM film f "
+                       "JOIN film_category fc on f.film_id = fc.film_id "
+                       "JOIN category c on c.category_id  = fc.category_id";
+
+    request[requestComedy] = "SELECT title, description "
+                       "FROM film f "
+                       "JOIN film_category fc ON f.film_id = fc.film_id "
+                       "JOIN category c ON c.category_id = fc.category_id "
+                       "WHERE c.name = 'Comedy';";
+
+    request[requestHorrors] = "SELECT title, description "
+                       "FROM film f "
+                       "JOIN film_category fc ON f.film_id = fc.film_id "
+                       "JOIN category c ON c.category_id = fc.category_id "
+                       "WHERE c.name = 'Horror';";
+
+
 
     dataDb = new DbData(this);
     dataBase = new DataBase(this);
@@ -34,7 +55,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(dataDb, &DbData::sig_sendData, this, [&](QVector<QString> receivData){
         dataForConnect = receivData;
     });
-
+    connect(dataBase, &DataBase::sig_SendStatusRequest, this, &MainWindow::ReceiveStatusRequestToDB);
     /*
      * Соединяем сигнал, который передает ответ от БД с методом, который отображает ответ в ПИ
      */
@@ -75,6 +96,8 @@ void MainWindow::on_act_connect_triggered()
      * отключаемся
     */
 
+
+
     if(ui->lb_statusConnect->text() == "Отключено"){
 
        ui->lb_statusConnect->setText("Подключение");
@@ -100,8 +123,10 @@ void MainWindow::on_act_connect_triggered()
  */
 void MainWindow::on_pb_request_clicked()
 {
-
-    ///Тут должен быть код ДЗ
+    //передаем запрос из вектора по индексу комбо бокса
+    requestIndex = ui->cb_category->currentIndex();
+    auto req = [&]{dataBase->RequestToDB(request[requestIndex], requestIndex);};
+    (void)QtConcurrent::run(req);
 
 }
 
@@ -110,10 +135,29 @@ void MainWindow::on_pb_request_clicked()
  * \param widget
  * \param typeRequest
  */
-void MainWindow::ScreenDataFromDB(const QTableWidget *widget, int typeRequest)
+void MainWindow::ScreenDataFromDB(QTableView *view, quint32 typeRequest)
 {
+    switch (typeRequest) {
 
-    ///Тут должен быть код ДЗ
+    case requestAllFilms:{
+
+        view->show();
+        break;
+    }
+    case requestHorrors:{
+         view->horizontalHeader()->setVisible(true); // Показать горизонтальные заголовки
+        view->show();
+        break;
+    }
+    case requestComedy:{
+        view->horizontalHeader()->setVisible(true); // Показать горизонтальные заголовки
+        view->show();
+        break;
+
+    }
+    default:
+        break;
+    }
 
 
 }
@@ -140,5 +184,18 @@ void MainWindow::ReceiveStatusConnectionToDB(bool status)
 
 }
 
+void MainWindow::ReceiveStatusRequestToDB(QSqlError err, quint32 requestIndex)
+{
 
+    if(err.type() != QSqlError::NoError){
+        msg->setText(err.text());
+        msg->exec();
+    }
+    else{
+
+        dataBase->ReadAnswerFromDB(request, requestIndex);
+
+    }
+
+}
 

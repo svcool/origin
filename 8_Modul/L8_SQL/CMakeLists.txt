@@ -30,7 +30,7 @@ add_executable(08_PreDataBase
 
 
 target_link_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/PG_Libs)
-target_link_libraries(08_PreDataBase PRIVATE Qt6::Widgets Qt6::Concurrent Qt::Sql
+target_link_libraries(08_PreDataBase PRIVATE Qt6::Widgets Qt6::Concurrent Qt6::Sql
                                              libcrypto-3-x64
                                              libiconv-2
                                              libintl-9

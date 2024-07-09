@@ -26,7 +26,7 @@ DbData::~DbData()
 /*!
  * \brief Обработчик кнопки "Ок"
  */
-void DbData::on_buttonBox_accepted()
+void DbData::on_bb_Box_accepted()
 {
 
     //Добавляем данные в контейнер и передаем в главное окно
@@ -39,4 +39,6 @@ void DbData::on_buttonBox_accepted()
     emit sig_sendData(data);
 
 }
+
+
 

@@ -4,8 +4,10 @@
 #include <QTableWidget>
 #include <QObject>
 #include <QSqlDatabase>
-#include <QSqlQuery>
+#include <QSqlQueryModel>
 #include <QSqlError>
+#include <QSqlTableModel>
+#include <QSqlQuery>
 
 
 
@@ -27,9 +29,10 @@ enum fieldsForConnect{
 //Типы запросов
 enum requestType{
 
-    requestAllFilms = 1,
-    requestComedy   = 2,
-    requestHorrors  = 3
+    requestAllFilms = 0,
+    requestComedy   = 1,
+    requestHorrors  = 2,
+    NumberOfRequestTypes
 
 };
 
@@ -45,23 +48,24 @@ public:
 
     void AddDataBase(QString driver, QString nameDB = "");
     void DisconnectFromDataBase(QString nameDb = "");
-    void RequestToDB(QString request);
+    void RequestToDB(QString request, quint32 requestIndex);
     QSqlError GetLastError(void);
     void ConnectToDataBase(QVector<QString> dataForConnect);
-
+    void ReadAnswerFromDB(QVector<QString> request, quint32 requestIndex);
 
 signals:
 
-   void sig_SendDataFromDB(const QTableWidget *tableWg, int typeR);
+   void sig_SendDataFromDB(QTableView *view, quint32 typeR);
    void sig_SendStatusConnection(bool);
-
+   void sig_SendStatusRequest(QSqlError err, quint32 requestIndex);
 
 
 private:
 
     QSqlDatabase* dataBase;
-
-
+    QSqlQueryModel* tableQueryMod;
+    QSqlTableModel* tableTableMod;
+    QTableView *view;
 };
 
 #endif // DATABASE_H

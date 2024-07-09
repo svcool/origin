@@ -49,6 +49,5 @@ private:
                       "JOIN film_category fc on f.film_id = fc.film_id "
                       "JOIN category c on c.category_id  = fc.category_id";
 
-
 };
 #endif // MAINWINDOW_H

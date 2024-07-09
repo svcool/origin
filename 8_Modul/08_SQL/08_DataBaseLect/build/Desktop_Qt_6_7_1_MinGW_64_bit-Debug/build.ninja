@@ -169,7 +169,7 @@ build 08_DataBaseLect_autogen/timestamp 08_DataBaseLect_autogen/mocs_compilation
 #############################################
 # Phony custom command for CMakeFiles\08_DataBaseLect_autogen_timestamp_deps
 
-build CMakeFiles/08_DataBaseLect_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/08_DataBaseLect_autogen_timestamp_deps: phony D$:/Qt/6.7.1/mingw_64/lib/libQt6Concurrent.a D$:/Qt/6.7.1/mingw_64/lib/libQt6Sql.a D$:/Qt/6.7.1/mingw_64/lib/libQt6Widgets.a D$:/Qt/6.7.1/mingw_64/./bin/moc.exe D$:/Qt/6.7.1/mingw_64/./bin/uic.exe
+build CMakeFiles/08_DataBaseLect_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/08_DataBaseLect_autogen_timestamp_deps: phony D$:/Qt/6.7.1/mingw_64/lib/libQt6Concurrent.a D$:/Qt/6.7.1/mingw_64/lib/libQt6Sql.a D$:/Qt/6.7.1/mingw_64/lib/libQt6Widgets.a D$:/Qt/6.7.1/mingw_64/./bin/uic.exe D$:/Qt/6.7.1/mingw_64/./bin/moc.exe
 
 
 #############################################

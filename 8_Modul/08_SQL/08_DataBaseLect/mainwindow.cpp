@@ -117,7 +117,7 @@ void MainWindow::on_pb_request_clicked()
 
 
     auto req = [&]{dataBase->RequestToDB(request);};
-    QtConcurrent::run(req);
+(void)QtConcurrent::run(req);
 
 
 }

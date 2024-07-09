@@ -23,9 +23,9 @@ public:
 
 
 public slots:
-    void ScreenDataFromDB(const QTableWidget *widget, int typeRequest);
+    void ScreenDataFromDB(QTableView *view, quint32 typeRequest);
     void ReceiveStatusConnectionToDB(bool status);
-
+    void ReceiveStatusRequestToDB(QSqlError err, quint32 requestIndex);
 
 private slots:
     void on_act_addData_triggered();
@@ -39,16 +39,13 @@ signals:
 private:
 
     QVector<QString> dataForConnect; //Данные для подключения к БД.
-
+    QVector<QString> dataForConnect1;
     Ui::MainWindow *ui;
     DbData *dataDb;
     DataBase* dataBase;
     QMessageBox* msg;
-
-    QString request = "SELECT title, release_year, c.name  FROM film f "
-                      "JOIN film_category fc on f.film_id = fc.film_id "
-                      "JOIN category c on c.category_id  = fc.category_id";
-
+    QVector<QString> request;//запросы
+    quint32 requestIndex = 0;//для номер запроса
 
 };
 #endif // MAINWINDOW_H

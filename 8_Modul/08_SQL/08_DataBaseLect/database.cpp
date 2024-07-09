@@ -105,6 +105,7 @@ void DataBase::RequestToDB(QString request)
  * \brief Метод читае ответ, полученный от БД при помощи QSqlQuery
  * \param answerType - тип ответа
  */
+
 void DataBase::ReadAnswerFromDB(int requestType)
 {
     /*

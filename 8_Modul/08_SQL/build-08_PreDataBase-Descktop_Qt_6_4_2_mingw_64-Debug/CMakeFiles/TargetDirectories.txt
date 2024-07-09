@@ -1,4 +1,0 @@
-D:/gitrepo/origin/8_Modul/08_SQL/build-08_PreDataBase-Descktop_Qt_6_4_2_mingw_64-Debug/CMakeFiles/08_PreDataBase.dir
-D:/gitrepo/origin/8_Modul/08_SQL/build-08_PreDataBase-Descktop_Qt_6_4_2_mingw_64-Debug/CMakeFiles/edit_cache.dir
-D:/gitrepo/origin/8_Modul/08_SQL/build-08_PreDataBase-Descktop_Qt_6_4_2_mingw_64-Debug/CMakeFiles/rebuild_cache.dir
-D:/gitrepo/origin/8_Modul/08_SQL/build-08_PreDataBase-Descktop_Qt_6_4_2_mingw_64-Debug/CMakeFiles/08_PreDataBase_autogen.dir

@@ -3,15 +3,24 @@
 DataBase::DataBase(QObject *parent)
     : QObject{parent}
 {
-
-    dataBase = new QSqlDatabase();
-
+    /*Выделяем память под объекты классов.
+     *Объект QSqlDatabase является основным классом низкого уровня,
+     *в котором настраивается подключение к БД.
+    */
+    view = new QTableView;
+    dataBase = new QSqlDatabase;
+    //Объект QSqlQueryModel отвечает за формирование запросов к БД
+    tableQueryMod = new QSqlQueryModel;
+    //QSqlTableModel необходим для формирования отображения ответа и передачи его в форму.
+    tableTableMod = new QSqlTableModel;
 
 }
 
 DataBase::~DataBase()
 {
     delete dataBase;
+    delete tableQueryMod;
+    delete tableTableMod;
 }
 
 /*!
@@ -65,11 +74,74 @@ void DataBase::DisconnectFromDataBase(QString nameDb)
  * \param request - SQL запрос
  * \return
  */
-void DataBase::RequestToDB(QString request)
+void DataBase::RequestToDB(QString request, quint32 requestIndex)
 {
+    //для     QSqlQueryModel
+    QSqlError err;
+    if(requestIndex == 0){
+        tableTableMod->setTable(request);
+        tableTableMod->select();
 
-    ///Тут должен быть код ДЗ
+        if(tableTableMod->lastError().isValid()){
+            err = tableTableMod->lastError();
 
+        }
+
+        emit sig_SendStatusRequest(err, requestIndex);
+
+
+    }
+    //для QSqlTableModel
+    else {
+        tableQueryMod->setQuery(request);
+
+        if(tableQueryMod->lastError().isValid()){
+            err = tableQueryMod->lastError();
+        }
+
+        emit sig_SendStatusRequest(err, requestIndex);
+
+    }
+
+}
+
+void DataBase::ReadAnswerFromDB(QVector<QString> request, quint32 requestIndex){
+    switch (requestIndex) {
+    //Для наших запросов вид таблицы не поменяетя. Поэтому бужет единый обработчик.
+    case requestAllFilms:{
+
+        tableTableMod->setTable(request[requestAllFilms]);
+        tableTableMod->select();
+        tableTableMod->setEditStrategy(QSqlTableModel::OnFieldChange); // Стратегия редактирования
+        tableTableMod->setHeaderData(0, Qt::Horizontal, tr("Name"));
+        tableTableMod->setHeaderData(1, Qt::Horizontal, tr("Salary"));
+        view->setModel(tableTableMod);
+        view->setWindowTitle("Комедии и Ужасы");
+        break;
+    }
+
+    case requestComedy:{
+        tableQueryMod->setQuery(request[requestComedy]);
+        tableQueryMod->setHeaderData(0, Qt::Horizontal, QObject::tr("Название фильма"));
+        tableQueryMod->setHeaderData(1, Qt::Horizontal, QObject::tr("Описание фильма"));
+        view->setModel(tableQueryMod);
+        break;
+    }
+
+    case requestHorrors:{
+
+        tableQueryMod->setQuery(request[requestHorrors]);
+        tableQueryMod->setHeaderData(0, Qt::Horizontal, QObject::tr("Название фильма"));
+        tableQueryMod->setHeaderData(1, Qt::Horizontal, QObject::tr("Описание фильма"));
+        view->setModel(tableQueryMod);
+        break;
+    }
+
+    default:
+        break;
+    }
+
+    emit sig_SendDataFromDB(view, requestIndex);
 }
 
 /*!
