@@ -287,3 +287,9 @@ void MainWindow::UpdateGraph(){
     chart->createDefaultAxes(); //создание осей
     chartWindow->show(); // отображение графика
 }
+
+void MainWindow::on_cmB_numCh_currentIndexChanged(int index)
+{
+    MainWindow::on_pb_start_clicked();
+}
+

@@ -50,6 +50,9 @@ signals:
     void sig_finish();
 
 
+private slots:
+    void on_cmB_numCh_currentIndexChanged(int index);
+
 private:
     Ui::MainWindow *ui;
     QString pathToFile = "";
