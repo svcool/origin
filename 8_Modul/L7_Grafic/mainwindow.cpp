@@ -46,7 +46,6 @@ MainWindow::~MainWindow()
 /****************************************************/
 QVector<uint32_t> MainWindow::ReadFile(QString path, uint8_t numberChannel)
 {
-
     QFile file(path);
     file.open(QIODevice::ReadOnly);
 
@@ -58,6 +57,10 @@ QVector<uint32_t> MainWindow::ReadFile(QString path, uint8_t numberChannel)
             mb.setText("Ошибка открытия фала");
             mb.exec();
         }
+    }
+    else{
+
+        //продумать как выйти из функции
     }
 
     QDataStream dataStream;
