@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>483</width>
+    <width>780</width>
     <height>548</height>
    </rect>
   </property>
@@ -118,11 +118,7 @@
      </widget>
     </item>
     <item row="1" column="0" rowspan="2">
-<<<<<<< HEAD
      <widget class="QTableView" name="tv_ableView"/>
-=======
-     <widget class="QTableView" name="tableView"/>
->>>>>>> 1
     </item>
    </layout>
   </widget>
@@ -131,7 +127,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>483</width>
+     <width>780</width>
      <height>22</height>
     </rect>
    </property>

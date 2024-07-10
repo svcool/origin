@@ -23,7 +23,8 @@ public:
 
 
 public slots:
-    void ScreenDataFromDB(QTableView *view, quint32 typeRequest);
+    void ScreenDataFromDBTableMod(QSqlTableModel* tableTableMod);
+    void ScreenDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, quint32 typeRequest);
     void ReceiveStatusConnectionToDB(bool status);
     void ReceiveStatusRequestToDB(QSqlError err, quint32 requestIndex);
 
@@ -32,6 +33,8 @@ private slots:
     void on_act_connect_triggered();
     void on_pb_request_clicked();
 
+
+    void on_pb_clear_clicked();
 
 signals:
     void sig_RequestToDb(QString request);
@@ -44,20 +47,8 @@ private:
     DbData *dataDb;
     DataBase* dataBase;
     QMessageBox* msg;
-<<<<<<< HEAD
     QVector<QString> request;//запросы
     quint32 requestIndex = 0;//для номер запроса
-=======
-
-    QString request = "SELECT title, release_year, c.name  FROM film f "
-                      "JOIN film_category fc on f.film_id = fc.film_id "
-                      "JOIN category c on c.category_id  = fc.category_id";
-
-//    QString request = "SELECT title, release_year, c.name  FROM film f "
-//                      "JOIN film_category fc on f.film_id = fc.film_id "
-//                      "JOIN category c on c.category_id  = fc.category_id";
-
->>>>>>> 1
 
 };
 #endif // MAINWINDOW_H

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 6.7.1
+** Created by: Qt User Interface Compiler version 6.4.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -24,7 +24,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
-#include <QtWidgets/QTableWidget>
+#include <QtWidgets/QTableView>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -36,15 +36,15 @@ public:
     QAction *act_addData;
     QWidget *centralwidget;
     QGridLayout *gridLayout;
-    QPushButton *pb_request;
     QGroupBox *gb_filters;
     QFormLayout *formLayout;
     QLabel *lb_category;
     QComboBox *cb_category;
     QSpacerItem *verticalSpacer;
-    QTableWidget *tb_result;
-    QPushButton *pb_clear;
+    QPushButton *pb_request;
     QLabel *lb_statusConnect;
+    QPushButton *pb_clear;
+    QTableView *tv_ableView;
     QMenuBar *menubar;
     QMenu *menu;
     QStatusBar *statusbar;
@@ -53,8 +53,8 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(483, 548);
-        QSizePolicy sizePolicy(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Expanding);
+        MainWindow->resize(780, 548);
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(MainWindow->sizePolicy().hasHeightForWidth());
@@ -67,23 +67,13 @@ public:
         centralwidget->setObjectName("centralwidget");
         gridLayout = new QGridLayout(centralwidget);
         gridLayout->setObjectName("gridLayout");
-        pb_request = new QPushButton(centralwidget);
-        pb_request->setObjectName("pb_request");
-        QSizePolicy sizePolicy1(QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Maximum);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(pb_request->sizePolicy().hasHeightForWidth());
-        pb_request->setSizePolicy(sizePolicy1);
-
-        gridLayout->addWidget(pb_request, 4, 1, 1, 1);
-
         gb_filters = new QGroupBox(centralwidget);
         gb_filters->setObjectName("gb_filters");
-        QSizePolicy sizePolicy2(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Minimum);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(gb_filters->sizePolicy().hasHeightForWidth());
-        gb_filters->setSizePolicy(sizePolicy2);
+        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Minimum);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(gb_filters->sizePolicy().hasHeightForWidth());
+        gb_filters->setSizePolicy(sizePolicy1);
         formLayout = new QFormLayout(gb_filters);
         formLayout->setObjectName("formLayout");
         lb_category = new QLabel(gb_filters);
@@ -102,41 +92,46 @@ public:
 
         gridLayout->addWidget(gb_filters, 1, 1, 1, 1);
 
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Minimum);
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Minimum);
 
         gridLayout->addItem(verticalSpacer, 2, 1, 1, 1);
 
-        tb_result = new QTableWidget(centralwidget);
-        tb_result->setObjectName("tb_result");
-        QSizePolicy sizePolicy3(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(tb_result->sizePolicy().hasHeightForWidth());
-        tb_result->setSizePolicy(sizePolicy3);
+        pb_request = new QPushButton(centralwidget);
+        pb_request->setObjectName("pb_request");
+        QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Maximum);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(pb_request->sizePolicy().hasHeightForWidth());
+        pb_request->setSizePolicy(sizePolicy2);
 
-        gridLayout->addWidget(tb_result, 1, 0, 4, 1);
-
-        pb_clear = new QPushButton(centralwidget);
-        pb_clear->setObjectName("pb_clear");
-        sizePolicy1.setHeightForWidth(pb_clear->sizePolicy().hasHeightForWidth());
-        pb_clear->setSizePolicy(sizePolicy1);
-
-        gridLayout->addWidget(pb_clear, 3, 1, 1, 1);
+        gridLayout->addWidget(pb_request, 4, 1, 1, 1);
 
         lb_statusConnect = new QLabel(centralwidget);
         lb_statusConnect->setObjectName("lb_statusConnect");
-        QSizePolicy sizePolicy4(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Maximum);
-        sizePolicy4.setHorizontalStretch(0);
-        sizePolicy4.setVerticalStretch(0);
-        sizePolicy4.setHeightForWidth(lb_statusConnect->sizePolicy().hasHeightForWidth());
-        lb_statusConnect->setSizePolicy(sizePolicy4);
+        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Maximum);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(lb_statusConnect->sizePolicy().hasHeightForWidth());
+        lb_statusConnect->setSizePolicy(sizePolicy3);
 
         gridLayout->addWidget(lb_statusConnect, 0, 0, 1, 1);
+
+        pb_clear = new QPushButton(centralwidget);
+        pb_clear->setObjectName("pb_clear");
+        sizePolicy2.setHeightForWidth(pb_clear->sizePolicy().hasHeightForWidth());
+        pb_clear->setSizePolicy(sizePolicy2);
+
+        gridLayout->addWidget(pb_clear, 3, 1, 1, 1);
+
+        tv_ableView = new QTableView(centralwidget);
+        tv_ableView->setObjectName("tv_ableView");
+
+        gridLayout->addWidget(tv_ableView, 1, 0, 2, 1);
 
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 483, 22));
+        menubar->setGeometry(QRect(0, 0, 780, 22));
         menu = new QMenu(menubar);
         menu->setObjectName("menu");
         MainWindow->setMenuBar(menubar);
@@ -150,7 +145,6 @@ public:
         menu->addAction(act_connect);
 
         retranslateUi(MainWindow);
-        QObject::connect(pb_clear, &QPushButton::clicked, tb_result, qOverload<>(&QTableWidget::clear));
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
@@ -160,15 +154,15 @@ public:
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
         act_connect->setText(QCoreApplication::translate("MainWindow", "\320\237\320\276\320\264\320\272\320\273\321\216\321\207\320\270\321\202\321\214\321\201\321\217", nullptr));
         act_addData->setText(QCoreApplication::translate("MainWindow", "\320\222\320\262\320\265\321\201\321\202\320\270 \320\264\320\260\320\275\320\275\321\213\320\265", nullptr));
-        pb_request->setText(QCoreApplication::translate("MainWindow", "\320\237\320\276\320\273\321\203\321\207\320\270\321\202\321\214", nullptr));
         gb_filters->setTitle(QCoreApplication::translate("MainWindow", "\320\244\320\270\320\273\321\214\321\202\321\200\321\213", nullptr));
         lb_category->setText(QCoreApplication::translate("MainWindow", "\320\226\320\260\320\275\321\200:", nullptr));
         cb_category->setItemText(0, QCoreApplication::translate("MainWindow", "\320\222\321\201\320\265", nullptr));
         cb_category->setItemText(1, QCoreApplication::translate("MainWindow", "\320\232\320\276\320\274\320\265\320\264\320\270\321\217", nullptr));
         cb_category->setItemText(2, QCoreApplication::translate("MainWindow", "\320\243\320\266\320\260\321\201\321\213", nullptr));
 
-        pb_clear->setText(QCoreApplication::translate("MainWindow", "\320\236\321\207\320\270\321\201\321\202\320\270\321\202\321\214", nullptr));
+        pb_request->setText(QCoreApplication::translate("MainWindow", "\320\237\320\276\320\273\321\203\321\207\320\270\321\202\321\214", nullptr));
         lb_statusConnect->setText(QCoreApplication::translate("MainWindow", "\320\236\321\202\320\272\320\273\321\216\321\207\320\265\320\275\320\276", nullptr));
+        pb_clear->setText(QCoreApplication::translate("MainWindow", "\320\236\321\207\320\270\321\201\321\202\320\270\321\202\321\214", nullptr));
         menu->setTitle(QCoreApplication::translate("MainWindow", "\320\237\320\276\320\264\320\272\320\273\321\216\321\207\320\265\320\275\320\270\320\265", nullptr));
     } // retranslateUi
 

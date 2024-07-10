@@ -7,10 +7,7 @@
 #include <QSqlQueryModel>
 #include <QSqlError>
 #include <QSqlTableModel>
-<<<<<<< HEAD
 #include <QSqlQuery>
-=======
->>>>>>> 1
 
 
 
@@ -55,25 +52,22 @@ public:
     QSqlError GetLastError(void);
     void ConnectToDataBase(QVector<QString> dataForConnect);
     void ReadAnswerFromDB(QVector<QString> request, quint32 requestIndex);
+    void ClearForm();
 
 signals:
 
-   void sig_SendDataFromDB(QTableView *view, quint32 typeR);
+   void sig_SendDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, quint32 typeR);
+   void sig_SendDataFromDBTableMod(QSqlTableModel* tableTableMod);
    void sig_SendStatusConnection(bool);
    void sig_SendStatusRequest(QSqlError err, quint32 requestIndex);
 
 
 private:
 
-    QSqlDatabase* dataBase;
-<<<<<<< HEAD
+    QSqlDatabase* dB;
     QSqlQueryModel* tableQueryMod;
     QSqlTableModel* tableTableMod;
     QTableView *view;
-=======
-    QSqlQueryModel* tableQuery;
-    QSqlTableModel* tableSql;
->>>>>>> 1
 };
 
 #endif // DATABASE_H

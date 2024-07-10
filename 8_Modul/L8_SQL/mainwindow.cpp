@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -18,9 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     request.resize(NumberOfRequestTypes);
-    request[requestAllFilms] = "SELECT title, release_year, c.name  FROM film f "
-                       "JOIN film_category fc on f.film_id = fc.film_id "
-                       "JOIN category c on c.category_id  = fc.category_id";
+    request[requestAllFilms] = "film";
 
     request[requestComedy] = "SELECT title, description "
                        "FROM film f "
@@ -59,7 +58,8 @@ MainWindow::MainWindow(QWidget *parent)
     /*
      * Соединяем сигнал, который передает ответ от БД с методом, который отображает ответ в ПИ
      */
-     connect(dataBase, &DataBase::sig_SendDataFromDB, this, &MainWindow::ScreenDataFromDB);
+     connect(dataBase, &DataBase::sig_SendDataFromDBTableMod, this, &MainWindow::ScreenDataFromDBTableMod);
+     connect(dataBase, &DataBase::sig_SendDataFromDBQueryMod, this, &MainWindow::ScreenDataFromDBQueryMod);
 
     /*
      *  Сигнал для подключения к БД
@@ -135,23 +135,39 @@ void MainWindow::on_pb_request_clicked()
  * \param widget
  * \param typeRequest
  */
-void MainWindow::ScreenDataFromDB(QTableView *view, quint32 typeRequest)
+void MainWindow::ScreenDataFromDBTableMod(QSqlTableModel* tableTableMod)
 {
-    switch (typeRequest) {
-
-    case requestAllFilms:{
-
-        view->show();
-        break;
+    ui->tv_ableView->setModel(tableTableMod);
+    // скрываем все столбцы
+    for(int i = 0; i < tableTableMod->columnCount(); ++i) {
+        ui->tv_ableView->setColumnHidden(i, true);
     }
+    // Отображает нужные столбцы
+    ui->tv_ableView->setColumnHidden(tableTableMod->fieldIndex("title"), false);
+    ui->tv_ableView->setColumnHidden(2, false);
+    ui->tv_ableView->setColumnHidden(3, false);
+    //автоподбор ширины
+    ui->tv_ableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    //автоподбор ширины по содержимому столбца
+    ui->tv_ableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
+
+    //ui->tv_ableView->show();
+
+}
+
+
+void MainWindow::ScreenDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, quint32 typeRequest){
+    switch (typeRequest){
     case requestHorrors:{
-         view->horizontalHeader()->setVisible(true); // Показать горизонтальные заголовки
-        view->show();
+        ui->tv_ableView->setModel(tableQueryMod);
+        ui->tv_ableView->horizontalHeader()->setVisible(true); // Показать горизонтальные заголовки
+        ui->tv_ableView->show();
         break;
     }
     case requestComedy:{
-        view->horizontalHeader()->setVisible(true); // Показать горизонтальные заголовки
-        view->show();
+        ui->tv_ableView->setModel(tableQueryMod);
+        ui->tv_ableView->horizontalHeader()->setVisible(true); // Показать горизонтальные заголовки
+        ui->tv_ableView->show();;
         break;
 
     }
@@ -196,6 +212,13 @@ void MainWindow::ReceiveStatusRequestToDB(QSqlError err, quint32 requestIndex)
         dataBase->ReadAnswerFromDB(request, requestIndex);
 
     }
+
+}
+
+
+void MainWindow::on_pb_clear_clicked()
+{
+    dataBase->ClearForm();
 
 }
 

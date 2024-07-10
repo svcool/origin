@@ -120,9 +120,13 @@ D:/gitrepo/origin/8_Modul/L8_SQL/database.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtSql/QSqlDatabase
  mdp:D:/QT/6.4.2/mingw_64/include/QtSql/QSqlError
  mdp:D:/QT/6.4.2/mingw_64/include/QtSql/QSqlQuery
+ mdp:D:/QT/6.4.2/mingw_64/include/QtSql/QSqlQueryModel
+ mdp:D:/QT/6.4.2/mingw_64/include/QtSql/QSqlTableModel
  mdp:D:/QT/6.4.2/mingw_64/include/QtSql/qsqldatabase.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtSql/qsqlerror.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtSql/qsqlquery.h
+ mdp:D:/QT/6.4.2/mingw_64/include/QtSql/qsqlquerymodel.h
+ mdp:D:/QT/6.4.2/mingw_64/include/QtSql/qsqltablemodel.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtSql/qtsql-config.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtSql/qtsqlexports.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtSql/qtsqlglobal.h
@@ -982,9 +986,13 @@ D:/gitrepo/origin/8_Modul/L8_SQL/mainwindow.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtSql/QSqlDatabase
  mdp:D:/QT/6.4.2/mingw_64/include/QtSql/QSqlError
  mdp:D:/QT/6.4.2/mingw_64/include/QtSql/QSqlQuery
+ mdp:D:/QT/6.4.2/mingw_64/include/QtSql/QSqlQueryModel
+ mdp:D:/QT/6.4.2/mingw_64/include/QtSql/QSqlTableModel
  mdp:D:/QT/6.4.2/mingw_64/include/QtSql/qsqldatabase.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtSql/qsqlerror.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtSql/qsqlquery.h
+ mdp:D:/QT/6.4.2/mingw_64/include/QtSql/qsqlquerymodel.h
+ mdp:D:/QT/6.4.2/mingw_64/include/QtSql/qsqltablemodel.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtSql/qtsql-config.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtSql/qtsqlexports.h
  mdp:D:/QT/6.4.2/mingw_64/include/QtSql/qtsqlglobal.h
@@ -1334,8 +1342,8 @@ D:/gitrepo/origin/8_Modul/L8_SQL/mainwindow.h
  mdp:D:/QT/Tools/mingw1120_64/x86_64-w64-mingw32/include/wctype.h
  mdp:D:/gitrepo/origin/8_Modul/L8_SQL/database.h
  mdp:D:/gitrepo/origin/8_Modul/L8_SQL/dbdata.h
-D:/gitrepo/origin/8_Modul/L8_SQL/database.cpp
 D:/gitrepo/origin/8_Modul/L8_SQL/main.cpp
+D:/gitrepo/origin/8_Modul/L8_SQL/database.cpp
 D:/gitrepo/origin/8_Modul/L8_SQL/dbdata.cpp
  uic:ui_dbdata.h
 D:/gitrepo/origin/8_Modul/L8_SQL/mainwindow.cpp

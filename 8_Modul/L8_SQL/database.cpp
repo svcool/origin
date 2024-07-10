@@ -7,33 +7,16 @@ DataBase::DataBase(QObject *parent)
      *Объект QSqlDatabase является основным классом низкого уровня,
      *в котором настраивается подключение к БД.
     */
-<<<<<<< HEAD
     view = new QTableView;
-    dataBase = new QSqlDatabase;
-    //Объект QSqlQueryModel отвечает за формирование запросов к БД
-    tableQueryMod = new QSqlQueryModel;
-    //QSqlTableModel необходим для формирования отображения ответа и передачи его в форму.
-    tableTableMod = new QSqlTableModel;
-=======
-    dataBase = new QSqlDatabase;
-    //Объект QSqlQueryModel отвечает за формирование запросов к БД
-    tableQuery = new QSqlQueryModel;
-    //QSqlTableModel необходим для формирования отображения ответа и передачи его в форму.
-    tableSql = new QSqlTableModel;
->>>>>>> 1
+    dB = new QSqlDatabase;
 
 }
 
 DataBase::~DataBase()
 {
-    delete dataBase;
-<<<<<<< HEAD
+    delete dB;
     delete tableQueryMod;
     delete tableTableMod;
-=======
-    delete tableQuery;
-    delete tableSql;
->>>>>>> 1
 }
 
 /*!
@@ -44,7 +27,7 @@ DataBase::~DataBase()
 void DataBase::AddDataBase(QString driver, QString nameDB)
 {
 
-    *dataBase = QSqlDatabase::addDatabase(driver, nameDB);
+    *dB = QSqlDatabase::addDatabase(driver, nameDB);
 
 }
 
@@ -56,18 +39,15 @@ void DataBase::AddDataBase(QString driver, QString nameDB)
 void DataBase::ConnectToDataBase(QVector<QString> data)
 {
 
-    dataBase->setHostName(data[hostName]);
-    dataBase->setDatabaseName(data[dbName]);
-    dataBase->setUserName(data[login]);
-    dataBase->setPassword(data[pass]);
-    dataBase->setPort(data[port].toInt());
-
-
-    ///Тут должен быть код ДЗ
-
+    dB->setHostName(data[hostName]);
+    dB->setDatabaseName(data[dbName]);
+    dB->setUserName(data[login]);
+    dB->setPassword(data[pass]);
+    dB->setPort(data[port].toInt());
 
     bool status;
-    status = dataBase->open( );
+    status = dB->open( );
+
     emit sig_SendStatusConnection(status);
 
 }
@@ -78,8 +58,8 @@ void DataBase::ConnectToDataBase(QVector<QString> data)
 void DataBase::DisconnectFromDataBase(QString nameDb)
 {
 
-    *dataBase = QSqlDatabase::database(nameDb);
-    dataBase->close();
+    *dB = QSqlDatabase::database(nameDb);
+    dB->close();
 
 }
 /*!
@@ -91,59 +71,35 @@ void DataBase::RequestToDB(QString request, quint32 requestIndex)
 {
     //для     QSqlQueryModel
     QSqlError err;
+
     if(requestIndex == 0){
-        tableTableMod->setTable(request);
+        //выделяем память под QSqlTableModel
+        tableTableMod = new QSqlTableModel(nullptr, *dB);
+        tableTableMod->setTable("film");
+        tableTableMod->setEditStrategy(QSqlTableModel::OnManualSubmit);
         tableTableMod->select();
 
-<<<<<<< HEAD
+
         if(tableTableMod->lastError().isValid()){
             err = tableTableMod->lastError();
 
         }
 
-        emit sig_SendStatusRequest(err, requestIndex);
-
-
     }
     //для QSqlTableModel
     else {
-        tableQueryMod->setQuery(request);
+        //выделяем память под QSqlQueryModel
+        tableQueryMod = new QSqlQueryModel();
+        tableQueryMod->setQuery(request, *dB);
 
         if(tableQueryMod->lastError().isValid()){
             err = tableQueryMod->lastError();
         }
 
-        emit sig_SendStatusRequest(err, requestIndex);
-
     }
+    emit sig_SendStatusRequest(err, requestIndex);
 
 }
-=======
-    /*  Для фоомирования запроса будем использовать
-     *  объект QSqlQuery.
-     *  В конструктор передадим адрес объекта QSqlDatabase
-    */
-    *tableQuery = QSqlQueryModel(*dataBase);
-    /*
-       Выполнение запроса выполняется при помощи
-       метода exec. В случае успешного запроса он вернет true.
-       Если возникает какая либо ошибка, ее можно посмотреть
-       при помощи метода lastError. Этот метод возвращает
-       экземпляр класса QSqlError.
-    */
-    QSqlError err;
-    if(simpleQuery->exec(request) == false){
-        err = simpleQuery->lastError();
-    }
-
-    emit sig_SendStatusRequest(err);
-
-
-
-
-
-    ///Тут должен быть код ДЗ
->>>>>>> 1
 
 void DataBase::ReadAnswerFromDB(QVector<QString> request, quint32 requestIndex){
     switch (requestIndex) {
@@ -151,29 +107,31 @@ void DataBase::ReadAnswerFromDB(QVector<QString> request, quint32 requestIndex){
     case requestAllFilms:{
 
         tableTableMod->setTable(request[requestAllFilms]);
+        tableTableMod->setEditStrategy(QSqlTableModel::OnFieldChange);// Стратегия редактирования
+        tableTableMod->setHeaderData(1, Qt::Horizontal, tr("Название фильма"));
+        tableTableMod->setHeaderData(2, Qt::Horizontal, tr("Описание фильма"));
+        tableTableMod->setHeaderData(3, Qt::Horizontal, tr("Год выпуска"));
         tableTableMod->select();
-        tableTableMod->setEditStrategy(QSqlTableModel::OnFieldChange); // Стратегия редактирования
-        tableTableMod->setHeaderData(0, Qt::Horizontal, tr("Name"));
-        tableTableMod->setHeaderData(1, Qt::Horizontal, tr("Salary"));
-        view->setModel(tableTableMod);
-        view->setWindowTitle("Комедии и Ужасы");
+        emit sig_SendDataFromDBTableMod(tableTableMod);
         break;
     }
 
     case requestComedy:{
-        tableQueryMod->setQuery(request[requestComedy]);
+        tableQueryMod->setQuery(request[requestComedy], *dB);
         tableQueryMod->setHeaderData(0, Qt::Horizontal, QObject::tr("Название фильма"));
         tableQueryMod->setHeaderData(1, Qt::Horizontal, QObject::tr("Описание фильма"));
-        view->setModel(tableQueryMod);
+
+        emit sig_SendDataFromDBQueryMod(tableQueryMod, requestIndex);
         break;
     }
 
     case requestHorrors:{
 
-        tableQueryMod->setQuery(request[requestHorrors]);
+        tableQueryMod->setQuery(request[requestHorrors], *dB);
         tableQueryMod->setHeaderData(0, Qt::Horizontal, QObject::tr("Название фильма"));
         tableQueryMod->setHeaderData(1, Qt::Horizontal, QObject::tr("Описание фильма"));
-        view->setModel(tableQueryMod);
+
+        emit sig_SendDataFromDBQueryMod(tableQueryMod, requestIndex);
         break;
     }
 
@@ -181,7 +139,12 @@ void DataBase::ReadAnswerFromDB(QVector<QString> request, quint32 requestIndex){
         break;
     }
 
-    emit sig_SendDataFromDB(view, requestIndex);
+}
+
+void DataBase::ClearForm()
+{
+    tableQueryMod->clear();
+    tableTableMod->clear();
 }
 
 /*!
@@ -189,5 +152,5 @@ void DataBase::ReadAnswerFromDB(QVector<QString> request, quint32 requestIndex){
  */
 QSqlError DataBase::GetLastError()
 {
-    return dataBase->lastError();
+    return dB->lastError();
 }

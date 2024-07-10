@@ -1,5 +1,0 @@
-D:/Program Files/MyProject/origin/origin/8_Modul/08_SQL/08_DataBaseLect/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/CMakeFiles/08_DataBaseLect.dir
-D:/Program Files/MyProject/origin/origin/8_Modul/08_SQL/08_DataBaseLect/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/CMakeFiles/edit_cache.dir
-D:/Program Files/MyProject/origin/origin/8_Modul/08_SQL/08_DataBaseLect/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/CMakeFiles/rebuild_cache.dir
-D:/Program Files/MyProject/origin/origin/8_Modul/08_SQL/08_DataBaseLect/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/CMakeFiles/08_DataBaseLect_autogen_timestamp_deps.dir
-D:/Program Files/MyProject/origin/origin/8_Modul/08_SQL/08_DataBaseLect/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/CMakeFiles/08_DataBaseLect_autogen.dir

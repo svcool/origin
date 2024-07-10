@@ -781,11 +781,16 @@ CMakeFiles/08_PreDataBase.dir/main.cpp.obj: \
  D:/QT/6.4.2/mingw_64/include/QtSql/qtsqlglobal.h \
  D:/QT/6.4.2/mingw_64/include/QtSql/qtsql-config.h \
  D:/QT/6.4.2/mingw_64/include/QtSql/qtsqlexports.h \
- D:/QT/6.4.2/mingw_64/include/QtSql/QSqlQuery \
- D:/QT/6.4.2/mingw_64/include/QtSql/qsqlquery.h \
+ D:/QT/6.4.2/mingw_64/include/QtSql/QSqlQueryModel \
+ D:/QT/6.4.2/mingw_64/include/QtSql/qsqlquerymodel.h \
  D:/QT/6.4.2/mingw_64/include/QtSql/qsqldatabase.h \
  D:/QT/6.4.2/mingw_64/include/QtSql/QSqlError \
  D:/QT/6.4.2/mingw_64/include/QtSql/qsqlerror.h \
+ D:/QT/6.4.2/mingw_64/include/QtSql/QSqlTableModel \
+ D:/QT/6.4.2/mingw_64/include/QtSql/qsqltablemodel.h \
+ D:/QT/6.4.2/mingw_64/include/QtSql/qsqlquerymodel.h \
+ D:/QT/6.4.2/mingw_64/include/QtSql/QSqlQuery \
+ D:/QT/6.4.2/mingw_64/include/QtSql/qsqlquery.h \
  D:\gitrepo\origin\8_Modul\L8_SQL\dbdata.h \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/QDialog \
  D:/QT/6.4.2/mingw_64/include/QtWidgets/qdialog.h \

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dbdata.ui'
 **
-** Created by: Qt User Interface Compiler version 6.7.1
+** Created by: Qt User Interface Compiler version 6.4.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -46,7 +46,7 @@ public:
         gridLayout->setObjectName("gridLayout");
         lb_host = new QLabel(DbData);
         lb_host->setObjectName("lb_host");
-        QSizePolicy sizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Minimum);
+        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);
         sizePolicy.setHorizontalStretch(35);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(lb_host->sizePolicy().hasHeightForWidth());
@@ -57,7 +57,7 @@ public:
 
         le_host = new QLineEdit(DbData);
         le_host->setObjectName("le_host");
-        QSizePolicy sizePolicy1(QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
+        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Fixed);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
         sizePolicy1.setHeightForWidth(le_host->sizePolicy().hasHeightForWidth());
@@ -67,7 +67,7 @@ public:
 
         lb_dbName = new QLabel(DbData);
         lb_dbName->setObjectName("lb_dbName");
-        QSizePolicy sizePolicy2(QSizePolicy::Policy::Maximum, QSizePolicy::Policy::Preferred);
+        QSizePolicy sizePolicy2(QSizePolicy::Maximum, QSizePolicy::Preferred);
         sizePolicy2.setHorizontalStretch(0);
         sizePolicy2.setVerticalStretch(0);
         sizePolicy2.setHeightForWidth(lb_dbName->sizePolicy().hasHeightForWidth());
@@ -78,7 +78,7 @@ public:
 
         le_dbName = new QLineEdit(DbData);
         le_dbName->setObjectName("le_dbName");
-        QSizePolicy sizePolicy3(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Fixed);
+        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Fixed);
         sizePolicy3.setHorizontalStretch(0);
         sizePolicy3.setVerticalStretch(0);
         sizePolicy3.setHeightForWidth(le_dbName->sizePolicy().hasHeightForWidth());

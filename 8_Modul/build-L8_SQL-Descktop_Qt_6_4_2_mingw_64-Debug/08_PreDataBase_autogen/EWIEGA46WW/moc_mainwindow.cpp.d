@@ -283,9 +283,13 @@ D:/gitrepo/origin/8_Modul/build-L8_SQL-Descktop_Qt_6_4_2_mingw_64-Debug/08_PreDa
   D:/QT/6.4.2/mingw_64/include/QtSql/QSqlDatabase \
   D:/QT/6.4.2/mingw_64/include/QtSql/QSqlError \
   D:/QT/6.4.2/mingw_64/include/QtSql/QSqlQuery \
+  D:/QT/6.4.2/mingw_64/include/QtSql/QSqlQueryModel \
+  D:/QT/6.4.2/mingw_64/include/QtSql/QSqlTableModel \
   D:/QT/6.4.2/mingw_64/include/QtSql/qsqldatabase.h \
   D:/QT/6.4.2/mingw_64/include/QtSql/qsqlerror.h \
   D:/QT/6.4.2/mingw_64/include/QtSql/qsqlquery.h \
+  D:/QT/6.4.2/mingw_64/include/QtSql/qsqlquerymodel.h \
+  D:/QT/6.4.2/mingw_64/include/QtSql/qsqltablemodel.h \
   D:/QT/6.4.2/mingw_64/include/QtSql/qtsql-config.h \
   D:/QT/6.4.2/mingw_64/include/QtSql/qtsqlexports.h \
   D:/QT/6.4.2/mingw_64/include/QtSql/qtsqlglobal.h \
