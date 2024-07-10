@@ -6,8 +6,8 @@ DbData::DbData(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DbData)
 {
-    ui->setupUi(this);
 
+    ui->setupUi(this);
     ui->le_host->setText("981757-ca08998.tmweb.ru");
     ui->le_dbName->setText("netology_cpp");
     ui->le_login->setText("netology_usr_cpp");

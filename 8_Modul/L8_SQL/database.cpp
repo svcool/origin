@@ -7,7 +7,6 @@ DataBase::DataBase(QObject *parent)
      *Объект QSqlDatabase является основным классом низкого уровня,
      *в котором настраивается подключение к БД.
     */
-    view = new QTableView;
     dB = new QSqlDatabase;
 
 }
@@ -47,6 +46,9 @@ void DataBase::ConnectToDataBase(QVector<QString> data)
 
     bool status;
     status = dB->open( );
+    //иницилизация QSqlTableModel, QSqlQueryModel
+    tableTableMod = new QSqlTableModel(nullptr, *dB);//необходимо подключить базу через конструктор
+    tableQueryMod = new QSqlQueryModel();// база подключается в методе setQuery
 
     emit sig_SendStatusConnection(status);
 
@@ -74,13 +76,15 @@ void DataBase::RequestToDB(QString request, quint32 requestIndex)
 
     if(requestIndex == 0){
         //выделяем память под QSqlTableModel
-        tableTableMod = new QSqlTableModel(nullptr, *dB);
-        tableTableMod->setTable("film");
+
+        DataBase::ClearForm();//очистка формы
+        tableTableMod->setTable("film"); //выполняем запрос в конкретной базе
         tableTableMod->setEditStrategy(QSqlTableModel::OnManualSubmit);
         tableTableMod->select();
 
 
         if(tableTableMod->lastError().isValid()){
+
             err = tableTableMod->lastError();
 
         }
@@ -88,11 +92,11 @@ void DataBase::RequestToDB(QString request, quint32 requestIndex)
     }
     //для QSqlTableModel
     else {
-        //выделяем память под QSqlQueryModel
-        tableQueryMod = new QSqlQueryModel();
-        tableQueryMod->setQuery(request, *dB);
+        DataBase::ClearForm();//очистка формы
+        tableQueryMod->setQuery(request, *dB); //выполняем запрос в конкретной базе
 
         if(tableQueryMod->lastError().isValid()){
+
             err = tableQueryMod->lastError();
         }
 
@@ -108,6 +112,8 @@ void DataBase::ReadAnswerFromDB(QVector<QString> request, quint32 requestIndex){
 
         tableTableMod->setTable(request[requestAllFilms]);
         tableTableMod->setEditStrategy(QSqlTableModel::OnFieldChange);// Стратегия редактирования
+
+        //наименование столбцов
         tableTableMod->setHeaderData(1, Qt::Horizontal, tr("Название фильма"));
         tableTableMod->setHeaderData(2, Qt::Horizontal, tr("Описание фильма"));
         tableTableMod->setHeaderData(3, Qt::Horizontal, tr("Год выпуска"));
@@ -118,6 +124,7 @@ void DataBase::ReadAnswerFromDB(QVector<QString> request, quint32 requestIndex){
 
     case requestComedy:{
         tableQueryMod->setQuery(request[requestComedy], *dB);
+         //наименование столбцов
         tableQueryMod->setHeaderData(0, Qt::Horizontal, QObject::tr("Название фильма"));
         tableQueryMod->setHeaderData(1, Qt::Horizontal, QObject::tr("Описание фильма"));
 
@@ -143,8 +150,12 @@ void DataBase::ReadAnswerFromDB(QVector<QString> request, quint32 requestIndex){
 
 void DataBase::ClearForm()
 {
-    tableQueryMod->clear();
+    if(tableQueryMod != nullptr){
+      tableQueryMod->clear();
+    }
+    if(tableTableMod != nullptr){
     tableTableMod->clear();
+         }
 }
 
 /*!

@@ -67,7 +67,6 @@ private:
     QSqlDatabase* dB;
     QSqlQueryModel* tableQueryMod;
     QSqlTableModel* tableTableMod;
-    QTableView *view;
 };
 
 #endif // DATABASE_H

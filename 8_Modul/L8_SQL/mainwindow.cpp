@@ -95,9 +95,6 @@ void MainWindow::on_act_connect_triggered()
      * "Отключено" мы осуществляем подключение, если "Подключено" то
      * отключаемся
     */
-
-
-
     if(ui->lb_statusConnect->text() == "Отключено"){
 
        ui->lb_statusConnect->setText("Подключение");
@@ -123,11 +120,12 @@ void MainWindow::on_act_connect_triggered()
  */
 void MainWindow::on_pb_request_clicked()
 {
-    //передаем запрос из вектора по индексу комбо бокса
+    ui->pb_request->setEnabled(false);
+    ui->pb_clear->setEnabled(false);
+     //передаем запрос из вектора по индексу комбо бокса
     requestIndex = ui->cb_category->currentIndex();
     auto req = [&]{dataBase->RequestToDB(request[requestIndex], requestIndex);};
     (void)QtConcurrent::run(req);
-
 }
 
 /*!
@@ -150,7 +148,9 @@ void MainWindow::ScreenDataFromDBTableMod(QSqlTableModel* tableTableMod)
     ui->tv_ableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     //автоподбор ширины по содержимому столбца
     ui->tv_ableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
-
+    //включаем кнопки
+    ui->pb_request->setEnabled(true);
+    ui->pb_clear->setEnabled(true);
     //ui->tv_ableView->show();
 
 }
@@ -161,20 +161,25 @@ void MainWindow::ScreenDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, quint32
     case requestHorrors:{
         ui->tv_ableView->setModel(tableQueryMod);
         ui->tv_ableView->horizontalHeader()->setVisible(true); // Показать горизонтальные заголовки
-        ui->tv_ableView->show();
-        break;
+        ui->tv_ableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch); //растягиваем колонке по форме
+       // ui->tv_ableView->show();
+         break;
     }
     case requestComedy:{
         ui->tv_ableView->setModel(tableQueryMod);
         ui->tv_ableView->horizontalHeader()->setVisible(true); // Показать горизонтальные заголовки
-        ui->tv_ableView->show();;
+        ui->tv_ableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        //ui->tv_ableView->show();
+
         break;
 
     }
     default:
         break;
     }
-
+    //включаем кнопки
+     ui->pb_request->setEnabled(true);
+     ui->pb_clear->setEnabled(true);
 
 }
 /*!
@@ -206,6 +211,9 @@ void MainWindow::ReceiveStatusRequestToDB(QSqlError err, quint32 requestIndex)
     if(err.type() != QSqlError::NoError){
         msg->setText(err.text());
         msg->exec();
+        //включаем кнопки
+        ui->pb_request->setEnabled(true);
+        ui->pb_clear->setEnabled(true);
     }
     else{
 
