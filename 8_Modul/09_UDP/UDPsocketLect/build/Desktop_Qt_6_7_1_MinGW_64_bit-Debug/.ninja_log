@@ -1,0 +1,16 @@
+# ninja log v5
+2	1099	7424059061203448	09_UDPsocket_autogen/timestamp	2a6fd6fdb9057d55
+2	1099	7424059061203448	09_UDPsocket_autogen/mocs_compilation.cpp	2a6fd6fdb9057d55
+2	1099	7424059061203448	D:/Program Files/MyProject/origin/origin/8_Modul/09_UDP/UDPsocketLect/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/09_UDPsocket_autogen/timestamp	2a6fd6fdb9057d55
+2	1099	7424059061203448	D:/Program Files/MyProject/origin/origin/8_Modul/09_UDP/UDPsocketLect/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/09_UDPsocket_autogen/mocs_compilation.cpp	2a6fd6fdb9057d55
+1106	4311	7424059094446823	CMakeFiles/09_UDPsocket.dir/udpworker.cpp.obj	35ed09f5c9594f99
+1113	4629	7424059097627005	CMakeFiles/09_UDPsocket.dir/main.cpp.obj	5acbd8a01e4b23bc
+1100	4737	7424059098696731	CMakeFiles/09_UDPsocket.dir/09_UDPsocket_autogen/mocs_compilation.cpp.obj	50536a5af8812b77
+1119	5004	7424059101366817	CMakeFiles/09_UDPsocket.dir/mainwindow.cpp.obj	fdef0e600cacf467
+5004	5307	7424059104177004	09_UDPsocket.exe	e2b97ed3a4012117
+5	189	7424059483707537	09_UDPsocket_autogen/timestamp	2a6fd6fdb9057d55
+5	189	7424059483707537	09_UDPsocket_autogen/mocs_compilation.cpp	2a6fd6fdb9057d55
+5	189	7424059483707537	D:/Program Files/MyProject/origin/origin/8_Modul/09_UDP/UDPsocketLect/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/09_UDPsocket_autogen/timestamp	2a6fd6fdb9057d55
+5	189	7424059483707537	D:/Program Files/MyProject/origin/origin/8_Modul/09_UDP/UDPsocketLect/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/09_UDPsocket_autogen/mocs_compilation.cpp	2a6fd6fdb9057d55
+193	2415	7424059505942526	CMakeFiles/09_UDPsocket.dir/mainwindow.cpp.obj	fdef0e600cacf467
+2415	2636	7424059507819674	09_UDPsocket.exe	e2b97ed3a4012117

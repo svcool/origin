@@ -1,0 +1,78 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "09_UDPsocket",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "09_UDPsocket::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-09_UDPsocket-Debug-87d2faa74b085d662339.json",
+					"name" : "09_UDPsocket",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "09_UDPsocket_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-09_UDPsocket_autogen-Debug-d91e1bd609dc2e04121f.json",
+					"name" : "09_UDPsocket_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "09_UDPsocket_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-09_UDPsocket_autogen_timestamp_deps-Debug-8906ef29960fc38457b7.json",
+					"name" : "09_UDPsocket_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/Program Files/MyProject/origin/origin/8_Modul/09_UDP/UDPsocketLect/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug",
+		"source" : "D:/Program Files/MyProject/origin/origin/8_Modul/09_UDP/UDPsocketLect"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}
