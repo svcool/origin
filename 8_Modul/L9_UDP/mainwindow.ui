@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>UDP тестировщик</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -49,7 +49,11 @@
      </widget>
     </item>
     <item row="3" column="0">
-     <widget class="QTextEdit" name="te_result"/>
+     <widget class="QTextEdit" name="te_result">
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
     </item>
     <item row="6" column="0">
      <widget class="QPushButton" name="pb_start">
@@ -80,8 +84,8 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>171</x>
-     <y>337</y>
+     <x>180</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
      <x>155</x>

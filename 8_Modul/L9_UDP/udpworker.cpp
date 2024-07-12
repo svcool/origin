@@ -65,7 +65,8 @@ void UDPworker::ReadDatagram(QNetworkDatagram datagram, typeUDP type)
 void UDPworker::SendDatagram(QByteArray data, typeUDP type )
 {
     /*
-     *  Отправляем данные на localhost и задефайненный порт
+     *  Отправляем данные на localhost и задефайненный порт.
+     *  Далее работает метод InitSocket() который ожидает сигнала о получении датаграммы
      */
     switch (type){
         case timeUDP:{

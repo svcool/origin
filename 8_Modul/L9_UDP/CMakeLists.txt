@@ -15,6 +15,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt6 COMPONENTS Widgets network REQUIRED)
 
 
+
 set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
@@ -31,9 +32,10 @@ qt_add_executable(PreUDPsocket
 )
 
 
-target_link_libraries(PreUDPsocket PRIVATE Qt6::Widgets  Qt6::Network)
+target_link_libraries(PreUDPsocket PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Network)
 
 
+if(QT_VERSION_MAJOR EQUAL 6)
 
 qt_finalize_executable(PreUDPsocket)
-
+endif()

@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent)
     udpWorker = new UDPworker(this);
     udpWorker->InitSocket();
 
+    ui->pb_stop->setEnabled(false);
+
     connect(udpWorker, &UDPworker::sig_sendTimeToGUI, this, &MainWindow::DisplayTime);//для таймере
     connect(udpWorker, &UDPworker::sig_sendTextToGUI, this, &MainWindow::DisplayText);//для текста
 
@@ -51,6 +53,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pb_start_clicked()
 {
+    ui->pb_start->setEnabled(false);
+    ui->pb_stop->setEnabled(true);
     timer->start(TIMER_DELAY);
 }
 
@@ -82,5 +86,7 @@ void MainWindow::DisplayText(QString data, QNetworkDatagram &datagram)
 void MainWindow::on_pb_stop_clicked()
 {
     timer->stop();
+    ui->pb_stop->setEnabled(false);
+    ui->pb_start->setEnabled(true);
 }
 
