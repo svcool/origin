@@ -1,0 +1,5 @@
+D:/Program Files/MyProject/origin/origin/8_Modul/10_TCP/10_TCPserver_Source/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/CMakeFiles/10_TCPserver.dir
+D:/Program Files/MyProject/origin/origin/8_Modul/10_TCP/10_TCPserver_Source/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/CMakeFiles/edit_cache.dir
+D:/Program Files/MyProject/origin/origin/8_Modul/10_TCP/10_TCPserver_Source/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/CMakeFiles/rebuild_cache.dir
+D:/Program Files/MyProject/origin/origin/8_Modul/10_TCP/10_TCPserver_Source/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/CMakeFiles/10_TCPserver_autogen_timestamp_deps.dir
+D:/Program Files/MyProject/origin/origin/8_Modul/10_TCP/10_TCPserver_Source/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/CMakeFiles/10_TCPserver_autogen.dir

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>780</width>
+    <width>828</width>
     <height>548</height>
    </rect>
   </property>
@@ -20,126 +20,312 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="1">
-     <widget class="QGroupBox" name="gb_filters">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="title">
-       <string>Фильтры</string>
-      </property>
-      <layout class="QFormLayout" name="formLayout">
-       <item row="0" column="0">
-        <widget class="QLabel" name="lb_category">
-         <property name="text">
-          <string>Жанр:</string>
-         </property>
-        </widget>
+   <widget class="QGroupBox" name="gb_filters">
+    <property name="geometry">
+     <rect>
+      <x>653</x>
+      <y>11</y>
+      <width>164</width>
+      <height>70</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="title">
+     <string>Фильтры</string>
+    </property>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="1">
+      <widget class="QComboBox" name="cb_category">
+       <item>
+        <property name="text">
+         <string>Все</string>
+        </property>
        </item>
-       <item row="0" column="1">
-        <widget class="QComboBox" name="cb_category">
-         <item>
-          <property name="text">
-           <string>Все</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Комедия</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Ужасы</string>
-          </property>
-         </item>
-        </widget>
+       <item>
+        <property name="text">
+         <string>Комедия</string>
+        </property>
        </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Minimum</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="4" column="1">
-     <widget class="QPushButton" name="pb_request">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="text">
-       <string>Получить</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="lb_statusConnect">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="text">
-       <string>Отключено</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QPushButton" name="pb_clear">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="text">
-       <string>Очистить</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0" rowspan="2">
-     <widget class="QTableView" name="tv_ableView"/>
-    </item>
-   </layout>
+       <item>
+        <property name="text">
+         <string>Ужасы</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QTableView" name="tv_tableView">
+    <property name="geometry">
+     <rect>
+      <x>11</x>
+      <y>11</y>
+      <width>256</width>
+      <height>192</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pb_clear">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>350</y>
+      <width>93</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="text">
+     <string>Очистить</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lb_statusConnect">
+    <property name="geometry">
+     <rect>
+      <x>11</x>
+      <y>461</y>
+      <width>78</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="text">
+     <string>Отключено</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_2">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>380</y>
+      <width>221</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>221</width>
+      <height>101</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>221</width>
+      <height>101</height>
+     </size>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="2" column="1">
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>pushButton</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QPushButton" name="pb_help">
+       <property name="text">
+        <string>Помощь</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" colspan="2">
+      <widget class="QPushButton" name="pb_graphic">
+       <property name="text">
+        <string>Загруженность аэропортов</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0" colspan="2">
+      <widget class="QPushButton" name="pb_request">
+       <property name="text">
+        <string>Получить расписание рейсов</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>401</x>
+      <y>15</y>
+      <width>197</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Выбор аэропорта:</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="rb_arrival">
+    <property name="geometry">
+     <rect>
+      <x>401</x>
+      <y>106</y>
+      <width>197</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Прилет</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>401</x>
+      <y>137</y>
+      <width>197</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Выбор даты:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>401</x>
+      <y>197</y>
+      <width>17</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>16</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>17</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>по:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>401</x>
+      <y>164</y>
+      <width>16</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>16</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>c:</string>
+    </property>
+   </widget>
+   <widget class="QDateEdit" name="dtfrom_dateEdit">
+    <property name="geometry">
+     <rect>
+      <x>425</x>
+      <y>164</y>
+      <width>173</width>
+      <height>26</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="rb_Departure">
+    <property name="geometry">
+     <rect>
+      <x>401</x>
+      <y>75</y>
+      <width>197</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Вылет</string>
+    </property>
+   </widget>
+   <widget class="QDateEdit" name="dtby_dateEdit">
+    <property name="geometry">
+     <rect>
+      <x>425</x>
+      <y>197</y>
+      <width>173</width>
+      <height>26</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="cb_comboBox">
+    <property name="geometry">
+     <rect>
+      <x>401</x>
+      <y>42</y>
+      <width>197</width>
+      <height>26</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>780</width>
-     <height>22</height>
+     <width>828</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
     <property name="title">
-     <string>Подключение</string>
+     <string>Файл</string>
     </property>
     <addaction name="act_addData"/>
     <addaction name="separator"/>
     <addaction name="act_connect"/>
    </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>Окно</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>Помощь</string>
+    </property>
+   </widget>
    <addaction name="menu"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_3"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="act_connect">

@@ -9,30 +9,34 @@ MainWindow::MainWindow(QWidget *parent)
     //Исходное состояние виджетов
     ui->setupUi(this);
     ui->lb_statusConnect->setStyleSheet("color:red");
-    ui->pb_request->setEnabled(false);
 
 
-    /*
-     * Выделим память под необходимые объекты. Все они наследники
-     * QObject, поэтому воспользуемся иерархией.
-    */
+    request[requestAirport] = "SELECT airport_name->>'ru' as airportName, airport_code "
+                              "FROM bookings.airports_data";
 
+    request[requestArriving] = "SELECT f.flight_no, f.scheduled_arrival, ad.airport_name->>'ru' as \"Якутск\" "
+                               "FROM bookings.flights f "
+                               "JOIN bookings.airports_data ad ON ad.airport_code = f.departure_airport "
+                               "WHERE f.arrival_airport = 'YKS'";
 
-    request.resize(NumberOfRequestTypes);
-    request[requestAllFilms] = "film";
+    request[requestDeparture] = "SELECT flight_no, scheduled_departure, ad.airport_name->>'ru' as \"Name\" "
+                                "FROM bookings.flights f "
+                                "JOIN bookings.airports_data ad on ad.airport_code = f.arrival_airport "
+                                "WHERE f.departure_airport = 'YKS'";
 
-    request[requestComedy] = "SELECT title, description "
-                       "FROM film f "
-                       "JOIN film_category fc ON f.film_id = fc.film_id "
-                       "JOIN category c ON c.category_id = fc.category_id "
-                       "WHERE c.name = 'Comedy';";
+    request[requestStatisticsYear] = "SELECT count(flight_no), date_trunc('month', scheduled_departure) as \"Month\" "
+                                     "FROM bookings.flights f "
+                                     "WHERE (scheduled_departure::date > date('2016-08-31') "
+                                     "and scheduled_departure::date <= date('2017-08-31')) "
+                                     "and (departure_airport = airportCode or arrival_airport = airportCode) "
+                                     "GROUP BY \"Month\"";
 
-    request[requestHorrors] = "SELECT title, description "
-                       "FROM film f "
-                       "JOIN film_category fc ON f.film_id = fc.film_id "
-                       "JOIN category c ON c.category_id = fc.category_id "
-                       "WHERE c.name = 'Horror';";
-
+    request[requestStatisticsDay] = "SELECT count(flight_no), date_trunc('day', scheduled_departure) as \"Day\" "
+                                    "FROM bookings.flights f "
+                                    "WHERE (scheduled_departure::date > date('2016-08-31') "
+                                    "and scheduled_departure::date <= date('2017-08-31')) "
+                                    "and (departure_airport = airportCode or arrival_airport = airportCode) "
+                                    "GROUP BY \"Day\"";
 
 
     dataDb = new DbData(this);
@@ -58,9 +62,8 @@ MainWindow::MainWindow(QWidget *parent)
     /*
      * Соединяем сигнал, который передает ответ от БД с методом, который отображает ответ в ПИ
      */
-     connect(dataBase, &DataBase::sig_SendDataFromDBTableMod, this, &MainWindow::ScreenDataFromDBTableMod);
-     connect(dataBase, &DataBase::sig_SendDataFromDBQueryMod, this, &MainWindow::ScreenDataFromDBQueryMod);
-
+    connect(dataBase, &DataBase::sig_SendDataFromDBQueryMod, this, &MainWindow::ScreenDataFromDBQueryMod);
+connect(dataBase, &DataBase::sig_SendDataFromDBQueryForComboBox, this, &MainWindow::ScreenDataFromDBQueryComboBox);
     /*
      *  Сигнал для подключения к БД
      */
@@ -70,6 +73,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+
     delete ui;
 }
 
@@ -110,7 +114,6 @@ void MainWindow::on_act_connect_triggered()
         ui->lb_statusConnect->setText("Отключено");
         ui->act_connect->setText("Подключиться");
         ui->lb_statusConnect->setStyleSheet("color:red");
-        ui->pb_request->setEnabled(false);
     }
 
 }
@@ -120,66 +123,31 @@ void MainWindow::on_act_connect_triggered()
  */
 void MainWindow::on_pb_request_clicked()
 {
-    ui->pb_request->setEnabled(false);
-    ui->pb_clear->setEnabled(false);
+
      //передаем запрос из вектора по индексу комбо бокса
-    requestIndex = ui->cb_category->currentIndex();
+    requestIndex =0;
     auto req = [&]{dataBase->RequestToDB(request[requestIndex], requestIndex);};
     (void)QtConcurrent::run(req);
 }
 
-/*!
- * \brief Слот отображает значение в QTableWidget
- * \param widget
- * \param typeRequest
- */
-void MainWindow::ScreenDataFromDBTableMod(QSqlTableModel* tableTableMod)
-{
-    ui->tv_ableView->setModel(tableTableMod);
-    // скрываем все столбцы
-    for(int i = 0; i < tableTableMod->columnCount(); ++i) {
-        ui->tv_ableView->setColumnHidden(i, true);
-    }
-    // Отображает нужные столбцы
-    ui->tv_ableView->setColumnHidden(tableTableMod->fieldIndex("title"), false);
-    ui->tv_ableView->setColumnHidden(2, false);
-    ui->tv_ableView->setColumnHidden(3, false);
-    //автоподбор ширины
-    ui->tv_ableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    //автоподбор ширины по содержимому столбца
-    ui->tv_ableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
-    //включаем кнопки
-    ui->pb_request->setEnabled(true);
-    ui->pb_clear->setEnabled(true);
-    //ui->tv_ableView->show();
-
-}
-
 
 void MainWindow::ScreenDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, quint32 typeRequest){
-    switch (typeRequest){
-    case requestHorrors:{
-        ui->tv_ableView->setModel(tableQueryMod);
-        ui->tv_ableView->horizontalHeader()->setVisible(true); // Показать горизонтальные заголовки
-        ui->tv_ableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch); //растягиваем колонке по форме
-       // ui->tv_ableView->show();
-         break;
-    }
-    case requestComedy:{
-        ui->tv_ableView->setModel(tableQueryMod);
-        ui->tv_ableView->horizontalHeader()->setVisible(true); // Показать горизонтальные заголовки
-        ui->tv_ableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-        //ui->tv_ableView->show();
-
+    switch (typeRequest) {
+    case requestAirport: {
+        ui->tv_tableView->setModel(tableQueryMod);
+        ui->tv_tableView->horizontalHeader()->setVisible(true);
+        ui->tv_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
         break;
-
+    }
+    case requestArriving: {
+        ui->tv_tableView->setModel(tableQueryMod);
+        ui->tv_tableView->horizontalHeader()->setVisible(true);
+        ui->tv_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        break;
     }
     default:
         break;
     }
-    //включаем кнопки
-     ui->pb_request->setEnabled(true);
-     ui->pb_clear->setEnabled(true);
 
 }
 /*!
@@ -192,7 +160,7 @@ void MainWindow::ReceiveStatusConnectionToDB(bool status)
         ui->act_connect->setText("Отключиться");
         ui->lb_statusConnect->setText("Подключено к БД");
         ui->lb_statusConnect->setStyleSheet("color:green");
-        ui->pb_request->setEnabled(true);
+
     }
     else{
         dataBase->DisconnectFromDataBase(DB_NAME);
@@ -205,16 +173,22 @@ void MainWindow::ReceiveStatusConnectionToDB(bool status)
 
 }
 
-void MainWindow::ReceiveStatusRequestToDB(QSqlError err, quint32 requestIndex)
+
+void MainWindow::on_pb_clear_clicked()
+{
+    dataBase->ClearForm();
+
+}
+
+void MainWindow::ReceiveStatusRequestToDB(QSqlError err, QString request, qint32 requestIndex)
 {
 
     if(err.type() != QSqlError::NoError){
         msg->setText(err.text());
         msg->exec();
-        //включаем кнопки
-        ui->pb_request->setEnabled(true);
-        ui->pb_clear->setEnabled(true);
+
     }
+
     else{
 
         dataBase->ReadAnswerFromDB(request, requestIndex);
@@ -223,10 +197,18 @@ void MainWindow::ReceiveStatusRequestToDB(QSqlError err, quint32 requestIndex)
 
 }
 
-
-void MainWindow::on_pb_clear_clicked()
+void MainWindow::ScreenDataFromDBQueryComboBox(QList<QPair<QString, QString>> airportList, qint32 numberRequest)
 {
-    dataBase->ClearForm();
+    if (airportList.isEmpty()) {
+        qDebug() << "Airport list is empty. No items to add to comboBox.";
+        return;
+    }
+    ui->cb_comboBox->clear(); // Очистка текущих элементов
+    for (const auto &pair : airportList) {
+        QString displayText = pair.first + " : " + pair.second;
+        ui->cb_comboBox->addItem(displayText, pair.second);
+    }
 
 }
+
 

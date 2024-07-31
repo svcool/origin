@@ -29,9 +29,11 @@ enum fieldsForConnect{
 //Типы запросов
 enum requestType{
 
-    requestAllFilms = 0,
-    requestComedy   = 1,
-    requestHorrors  = 2,
+    requestAirport = 0,
+    requestArriving   = 1,
+    requestDeparture = 2,
+    requestStatisticsYear = 3,
+    requestStatisticsDay = 4,
     NumberOfRequestTypes
 
 };
@@ -51,22 +53,27 @@ public:
     void RequestToDB(QString request, quint32 requestIndex);
     QSqlError GetLastError(void);
     void ConnectToDataBase(QVector<QString> dataForConnect);
-    void ReadAnswerFromDB(QVector<QString> request, quint32 requestIndex);
+    void ReadAnswerFromDB(QString request, quint32 requestIndex);
     void ClearForm();
 
 signals:
 
-   void sig_SendDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, quint32 typeR);
-   void sig_SendDataFromDBTableMod(QSqlTableModel* tableTableMod);
    void sig_SendStatusConnection(bool);
-   void sig_SendStatusRequest(QSqlError err, quint32 requestIndex);
+   void sig_sendData(QVector<QString> data); //сигнал для подключения БД
+   void sig_SendDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, qint32 numberRequest);
+   void sig_SendStatusRequest(QSqlError err, QString request, qint32 requestIndex);
+   void sig_SendDataFromDBQueryForComboBox(QList<QPair<QString, QString>> airportList, qint32 numberRequest);
+
 
 
 private:
 
     QSqlDatabase* dB;
     QSqlQueryModel* tableQueryMod;
-    QSqlTableModel* tableTableMod;
+    QSqlQuery* query;
+    QString airportName;
+    QString airportCode;
+    QList<QPair<QString, QString>> airportList;
 };
 
 #endif // DATABASE_H

@@ -1,0 +1,13 @@
+# ninja log v5
+9	1717	7438534805454196	08_DataBaseLect_autogen/timestamp	f29177b401a66b45
+9	1717	7438534805454196	D:/Program Files/MyProject/origin/origin/8_Modul/08_SQL/08_DataBaseLect/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/08_DataBaseLect_autogen/mocs_compilation.cpp	f29177b401a66b45
+9	1717	7438534805454196	08_DataBaseLect_autogen/mocs_compilation.cpp	f29177b401a66b45
+9	1717	7438534805454196	D:/Program Files/MyProject/origin/origin/8_Modul/08_SQL/08_DataBaseLect/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/08_DataBaseLect_autogen/timestamp	f29177b401a66b45
+1726	5299	7438534842295891	CMakeFiles/08_DataBaseLect.dir/database.cpp.obj	d5c9da0411d76dd
+1718	8494	7438534874239717	CMakeFiles/08_DataBaseLect.dir/08_DataBaseLect_autogen/mocs_compilation.cpp.obj	4e2a051484fd337
+1736	5648	7438534845765804	CMakeFiles/08_DataBaseLect.dir/dbdata.cpp.obj	69bc796d7d22e522
+1731	7957	7438534868851931	CMakeFiles/08_DataBaseLect.dir/main.cpp.obj	22f7602029e1730d
+8648	9225	7438534881189895	08_DataBaseLect.exe	5b539ace9a4766c2
+1722	8648	7438534875759652	CMakeFiles/08_DataBaseLect.dir/mainwindow.cpp.obj	38569d8e1b76aee9
+0	28	0	CMakeFiles/clean.additional	cee7e56548ea36fa
+29	41	0	clean	101d0f6048d5fe99

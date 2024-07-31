@@ -1,0 +1,9 @@
+# ninja log v5
+1	538	7424957117453536	10_TCPserver_autogen/timestamp	17c76b8040b52e20
+1	538	7424957117453536	10_TCPserver_autogen/mocs_compilation.cpp	17c76b8040b52e20
+1	538	7424957117453536	D:/Program Files/MyProject/origin/origin/8_Modul/10_TCP/10_TCPserver_Source/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/10_TCPserver_autogen/timestamp	17c76b8040b52e20
+1	538	7424957117453536	D:/Program Files/MyProject/origin/origin/8_Modul/10_TCP/10_TCPserver_Source/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/10_TCPserver_autogen/mocs_compilation.cpp	17c76b8040b52e20
+542	2415	7424957136811754	CMakeFiles/10_TCPserver.dir/main.cpp.obj	433c9fbda14808a3
+539	2519	7424957137871663	CMakeFiles/10_TCPserver.dir/10_TCPserver_autogen/mocs_compilation.cpp.obj	1fc9ae6c00ae34b
+546	2850	7424957141151773	CMakeFiles/10_TCPserver.dir/tcpserver.cpp.obj	f7d51a3bb4518007
+2850	3124	7424957143684592	10_TCPserver.exe	f03049d9e39eb0b4
