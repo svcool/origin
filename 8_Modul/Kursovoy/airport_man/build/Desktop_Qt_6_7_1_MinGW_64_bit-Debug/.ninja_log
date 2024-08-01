@@ -18,3 +18,23 @@
 363	5892	7438943292922391	CMakeFiles/08_PreDataBase.dir/dbdata.cpp.obj	1b62604f31db76f1
 370	8702	7438943321041979	CMakeFiles/08_PreDataBase.dir/mainwindow.cpp.obj	ca29c1efa574f21c
 8702	9213	7438943325741885	08_PreDataBase.exe	8e37ca33d8151c82
+6	156	7442043341724086	08_PreDataBase_autogen/timestamp	aeb7e02db3d4d234
+6	156	7442043341724086	08_PreDataBase_autogen/mocs_compilation.cpp	aeb7e02db3d4d234
+6	156	7442043341724086	D:/Program Files/MyProject/origin/origin/8_Modul/L8_SQL/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/08_PreDataBase_autogen/timestamp	aeb7e02db3d4d234
+6	156	7442043341724086	D:/Program Files/MyProject/origin/origin/8_Modul/L8_SQL/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/08_PreDataBase_autogen/mocs_compilation.cpp	aeb7e02db3d4d234
+6	1052	7442044339361687	08_PreDataBase_autogen/timestamp	aeb7e02db3d4d234
+6	1052	7442044339361687	08_PreDataBase_autogen/mocs_compilation.cpp	aeb7e02db3d4d234
+6	1052	7442044339361687	D:/Program Files/MyProject/origin/origin/8_Modul/L8_SQL/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/08_PreDataBase_autogen/timestamp	aeb7e02db3d4d234
+6	1052	7442044339361687	D:/Program Files/MyProject/origin/origin/8_Modul/L8_SQL/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/08_PreDataBase_autogen/mocs_compilation.cpp	aeb7e02db3d4d234
+6	1062	7442045773736847	08_PreDataBase_autogen/timestamp	aeb7e02db3d4d234
+6	1062	7442045773736847	08_PreDataBase_autogen/mocs_compilation.cpp	aeb7e02db3d4d234
+6	1062	7442045773736847	D:/Program Files/MyProject/origin/origin/8_Modul/L8_SQL/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/08_PreDataBase_autogen/timestamp	aeb7e02db3d4d234
+6	1062	7442045773736847	D:/Program Files/MyProject/origin/origin/8_Modul/L8_SQL/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/08_PreDataBase_autogen/mocs_compilation.cpp	aeb7e02db3d4d234
+1080	3939	7442045802486589	CMakeFiles/08_PreDataBase.dir/database.cpp.obj	bdc192273d222744
+1074	4271	7442045805924924	CMakeFiles/08_PreDataBase.dir/dbdata.cpp.obj	1b62604f31db76f1
+1067	6196	7442045825142931	CMakeFiles/08_PreDataBase.dir/main.cpp.obj	614fa75caa1069e7
+1077	6231	7442045825459340	CMakeFiles/08_PreDataBase.dir/mainwindow.cpp.obj	ca29c1efa574f21c
+1071	6398	7442045827179272	CMakeFiles/08_PreDataBase.dir/08_PreDataBase_autogen/mocs_compilation.cpp.obj	16ac25310ba1abb1
+6398	6886	7442045831706186	08_PreDataBase.exe	8e37ca33d8151c82
+0	30	0	CMakeFiles/clean.additional	cee7e56548ea36fa
+31	45	0	clean	101d0f6048d5fe99

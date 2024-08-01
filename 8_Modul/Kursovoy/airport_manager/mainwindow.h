@@ -5,8 +5,10 @@
 #include <QMessageBox>
 #include <QtConcurrent>
 #include <QTimer>
+#include <memory>
 #include "graphic.h"
 #include "database.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -21,32 +23,36 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void initializeSettings(); // Метод для инициализации настроек
+    //void initializeSettings(); // Метод для инициализации настроек
 
 
     void updateConnectionStatus(const QString &statusText);
     void tryingToConnect();//попытка подключения после иницилизации данных
 
 public slots:
-    void ReceiveStatusRequestToDB(QSqlError err, QString request, qint32 numberRequest);
+    void ReceiveStatusRequestToDB(QSqlError err, QVector<QString> request, int numberRequest);
     void ScreenDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, quint32 typeRequest);
-    void ScreenDataFromDBQueryComboBox(QList<QPair<QString, QString>> airportList, qint32 numberRequest);
+    void ScreenDataFromDBQueryComboBox(QList<QPair<QString, QString>> airportList, int numberRequest);
     void ReceiveStatusConnectionToDB(bool status);
-    void requestToDb(qint32 numberRequest);
+    void requestToDb(int numberRequest);
     void on_pb_graphic_clicked();
     void on_pb_get_clicked();
 
 signals:
-    void sig_RequestToDbAirports(qint32 numberRequest);
-    void sig_RequestToDb(qint32 numberRequest);
+
+
+    void sig_RequestToDbAirports(int numberRequest);
+    void sig_RequestToDb(int numberRequest);
 private:
     Ui::MainWindow *ui;
-    QMessageBox* msg;
-    Graphic* graphicWin;
-    QVector<QString> dataForConnect; //данные для подключения
-    DataBase* dataBase;
-    QVector<QString> request;//запросы
+    std::unique_ptr<QMessageBox> msg;
+    std::unique_ptr<Graphic> graphicWin;
+    QVector<QString> dataForConnect; // Данные для подключения
+    std::unique_ptr<DataBase> dataBase;
+    QVector<QString> request; // Запросы
+    QVector<QString> templrequest;//шаблонные запросы для редактирования
     QLabel* statusLabel;
-    QTimer *timer;
+    std::unique_ptr<QTimer> timer;
+    int numberRequest = 0;
 };
 #endif // MAINWINDOW_H

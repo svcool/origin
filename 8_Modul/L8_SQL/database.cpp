@@ -8,19 +8,14 @@ DataBase::DataBase(QObject *parent)
      *в котором настраивается подключение к БД.
     */
     dB = new QSqlDatabase;
-    tableQueryMod = new QSqlQueryModel();// база подключается в методе setQuery
-
 
 }
 
 DataBase::~DataBase()
 {
-    if (dB->isOpen()) {
-        dB->close();
-        qDebug() << "Database closed in destructor";
-    }
     delete dB;
     delete tableQueryMod;
+    delete tableTableMod;
 }
 
 /*!
@@ -51,6 +46,10 @@ void DataBase::ConnectToDataBase(QVector<QString> data)
 
     bool status;
     status = dB->open( );
+    //иницилизация QSqlTableModel, QSqlQueryModel
+    tableTableMod = new QSqlTableModel(nullptr, *dB);//необходимо подключить базу через конструктор
+    tableQueryMod = new QSqlQueryModel();// база подключается в методе setQuery
+
     emit sig_SendStatusConnection(status);
 
 }
@@ -60,16 +59,9 @@ void DataBase::ConnectToDataBase(QVector<QString> data)
  */
 void DataBase::DisconnectFromDataBase(QString nameDb)
 {
-   // QSqlDatabase db = QSqlDatabase::database(nameDb);
-    if (dB->isOpen()) {
-       dB->close();
-        qDebug() << "Database" << nameDb << "closed";
-    } else {
-        qDebug() << "Database" << nameDb << "is not open";
-    }
 
-    // Remove the database connection to clean up
-    //QSqlDatabase::removeDatabase(nameDb);
+    *dB = QSqlDatabase::database(nameDb);
+    dB->close();
 
 }
 /*!
@@ -79,85 +71,76 @@ void DataBase::DisconnectFromDataBase(QString nameDb)
  */
 void DataBase::RequestToDB(QString request, quint32 requestIndex)
 {
-    *query = QSqlQuery(*dB);
+    //для     QSqlQueryModel
     QSqlError err;
-    if(requestIndex== 0){
-        if(query->exec(request) == false){
-            err = query->lastError();
+
+    if(requestIndex == 0){
+        //выделяем память под QSqlTableModel
+
+        DataBase::ClearForm();//очистка формы
+        tableTableMod->setTable("film"); //выполняем запрос в конкретной базе
+        tableTableMod->setEditStrategy(QSqlTableModel::OnManualSubmit);
+        tableTableMod->select();
+
+
+        if(tableTableMod->lastError().isValid()){
+
+            err = tableTableMod->lastError();
+
         }
+
     }
+    //для QSqlTableModel
     else {
+        DataBase::ClearForm();//очистка формы
+        tableQueryMod->setQuery(request, *dB); //выполняем запрос в конкретной базе
 
-        if(tableQueryMod != nullptr){
-            //очистка формы
-            tableQueryMod->clear();
-            tableQueryMod->setQuery(request, *dB); //выполняем запрос в конкретной базе
+        if(tableQueryMod->lastError().isValid()){
 
-            if(tableQueryMod->lastError().isValid()){
-
-                err = tableQueryMod->lastError();
-            }
+            err = tableQueryMod->lastError();
         }
+
     }
-    emit sig_SendStatusRequest(err, request, requestIndex);
+    emit sig_SendStatusRequest(err, requestIndex);
 
 }
 
-void DataBase::ReadAnswerFromDB(QString request, quint32 requestIndex){
+void DataBase::ReadAnswerFromDB(QVector<QString> request, quint32 requestIndex){
     switch (requestIndex) {
+    //Для наших запросов вид таблицы не поменяетя. Поэтому бужет единый обработчик.
+    case requestAllFilms:{
 
-    case requestAirport:{
-        //airportList.clear();
-        while (query->next()) {
-            QString airportName = query->value("airportName").toString();
-            QString airportCode = query->value("airport_code").toString();
-            airportList.append(qMakePair(airportName, airportCode));
-        }
+        tableTableMod->setTable(request[requestAllFilms]);
+        tableTableMod->setEditStrategy(QSqlTableModel::OnFieldChange);// Стратегия редактирования
 
-        emit sig_SendDataFromDBQueryForComboBox(airportList, requestIndex);
-
+        //наименование столбцов
+        tableTableMod->setHeaderData(1, Qt::Horizontal, tr("Название фильма"));
+        tableTableMod->setHeaderData(2, Qt::Horizontal, tr("Описание фильма"));
+        tableTableMod->setHeaderData(3, Qt::Horizontal, tr("Год выпуска"));
+        tableTableMod->select();
+        emit sig_SendDataFromDBTableMod(tableTableMod);
         break;
     }
 
-    case requestArriving:{
-        tableQueryMod->setQuery(request[requestArriving], *dB);
-            //наименование столбцов
-        // tableQueryMod->setHeaderData(0, Qt::Horizontal, QObject::tr("Название фильма"));
-        // tableQueryMod->setHeaderData(1, Qt::Horizontal, QObject::tr("Описание фильма"));
+    case requestComedy:{
+        tableQueryMod->setQuery(request[requestComedy], *dB);
+         //наименование столбцов
+        tableQueryMod->setHeaderData(0, Qt::Horizontal, QObject::tr("Название фильма"));
+        tableQueryMod->setHeaderData(1, Qt::Horizontal, QObject::tr("Описание фильма"));
 
         emit sig_SendDataFromDBQueryMod(tableQueryMod, requestIndex);
         break;
     }
 
-        // case requestDeparture:{
+    case requestHorrors:{
 
-        //     tableQueryMod->setQuery(request[requestDeparture], *dB);
-        //     // tableQueryMod->setHeaderData(0, Qt::Horizontal, QObject::tr("Название фильма"));
-        //     // tableQueryMod->setHeaderData(1, Qt::Horizontal, QObject::tr("Описание фильма"));
+        tableQueryMod->setQuery(request[requestHorrors], *dB);
+        tableQueryMod->setHeaderData(0, Qt::Horizontal, QObject::tr("Название фильма"));
+        tableQueryMod->setHeaderData(1, Qt::Horizontal, QObject::tr("Описание фильма"));
 
-        //     emit sig_SendDataFromDBQueryMod(tableQueryMod, numberRequest);
-        //     break;
-        // }
-
-        // case requestStatisticsYear:{
-
-        //     tableQueryMod->setQuery(request[requestStatisticsYear], *dB);
-        //     tableQueryMod->setHeaderData(0, Qt::Horizontal, QObject::tr("Название фильма"));
-        //     tableQueryMod->setHeaderData(1, Qt::Horizontal, QObject::tr("Описание фильма"));
-
-        //     emit sig_SendDataFromDBQueryMod(tableQueryMod, numberRequest);
-        //     break;
-        // }
-
-        // case requestStatisticsDay:{
-
-        //     tableQueryMod->setQuery(request[requestStatisticsDay], *dB);
-        //     tableQueryMod->setHeaderData(0, Qt::Horizontal, QObject::tr("Название фильма"));
-        //     tableQueryMod->setHeaderData(1, Qt::Horizontal, QObject::tr("Описание фильма"));
-
-        //     emit sig_SendDataFromDBQueryMod(tableQueryMod, numberRequest);
-        //     break;
-        // }
+        emit sig_SendDataFromDBQueryMod(tableQueryMod, requestIndex);
+        break;
+    }
 
     default:
         break;
@@ -170,6 +153,9 @@ void DataBase::ClearForm()
     if(tableQueryMod != nullptr){
       tableQueryMod->clear();
     }
+    if(tableTableMod != nullptr){
+    tableTableMod->clear();
+         }
 }
 
 /*!

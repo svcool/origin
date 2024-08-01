@@ -23,11 +23,11 @@ public:
 
 
 public slots:
+    void ScreenDataFromDBTableMod(QSqlTableModel* tableTableMod);
     void ScreenDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, quint32 typeRequest);
     void ReceiveStatusConnectionToDB(bool status);
-    void ReceiveStatusRequestToDB(QSqlError err, QString request, qint32 requestIndex);
+    void ReceiveStatusRequestToDB(QSqlError err, quint32 requestIndex);
 
-    void ScreenDataFromDBQueryComboBox(QList<QPair<QString, QString> > airportList, qint32 numberRequest);
 private slots:
     void on_act_addData_triggered();
     void on_act_connect_triggered();
@@ -36,14 +36,13 @@ private slots:
 
     void on_pb_clear_clicked();
 
-
 signals:
     void sig_RequestToDb(QString request);
 
 private:
 
     QVector<QString> dataForConnect; //Данные для подключения к БД.
-
+    QVector<QString> dataForConnect1;
     Ui::MainWindow *ui;
     DbData *dataDb;
     DataBase* dataBase;

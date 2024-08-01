@@ -30,15 +30,14 @@ enum fieldsForConnect{
 };
 
 //Типы запросов
-enum requestType{
+enum requestType : int {
 
     requestAirport = 0,
     requestArriving   = 1,
     requestDeparture = 2,
     requestStatisticsYear = 3,
     requestStatisticsDay = 4,
-    NumberOfRequestTypes
-
+    NumberOfRequestTypes = 5
 };
 
 
@@ -49,21 +48,21 @@ class DataBase : public QObject
 public:
     explicit DataBase(QObject *parent = nullptr);
     ~DataBase();
-
+public slots:
    // void DataForConnection(); //данные для подключения БД
     void AddDataBase(QString driver, QString nameDB = "");
     void DisconnectFromDataBase(QString nameDb = "");
-    void RequestToDB(QString request, qint32 numberRequest);
+    void RequestToDB(QVector<QString> request, int numberRequest);
     QSqlError GetLastError(void);
     void ConnectToDataBase(QVector<QString> dataForConnect);
-    void ReadAnswerFromDB(QString request, quint32 numberRequest);
+    void ReadAnswerFromDB(QVector<QString> request, quint32 numberRequest);
 
 signals:
     void sig_sendData(QVector<QString> data); //сигнал для подключения БД
-    void sig_SendDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, qint32 numberRequest);
+    void sig_SendDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, int numberRequest);
     void sig_SendStatusConnection(bool);
-    void sig_SendStatusRequest(QSqlError err, QString request, qint32 numberRequest);
-    void sig_SendDataFromDBQueryForComboBox(QList<QPair<QString, QString>> airportList, qint32 numberRequest);
+    void sig_SendStatusRequest(QSqlError err, QVector<QString> request, int numberRequest);
+    void sig_SendDataFromDBQueryForComboBox(QList<QPair<QString, QString>> airportList, int numberRequest);
 
 private:
 
@@ -73,6 +72,7 @@ private:
     QString airportName;
     QString airportCode;
     QList<QPair<QString, QString>> airportList;
+    int numberRequest = 0;
 };
 
 #endif // DATABASE_H

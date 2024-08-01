@@ -16,10 +16,13 @@ DataBase::DataBase(QObject *parent)
 
 DataBase::~DataBase()
 {
+
+   // QSqlDatabase::removeDatabase(DB_NAME);
     if (dB->isOpen()) {
         dB->close();
         qDebug() << "Database closed in destructor";
     }
+
     delete dB;
     delete tableQueryMod;
     delete query;
@@ -33,7 +36,7 @@ DataBase::~DataBase()
 void DataBase::AddDataBase(QString driver, QString nameDB)
 {
 
-    *dB = QSqlDatabase::addDatabase(driver, nameDB);
+    *dB = QSqlDatabase::addDatabase(driver, nameDB.isEmpty() ? DB_NAME : nameDB);
 
 }
 
@@ -44,6 +47,12 @@ void DataBase::AddDataBase(QString driver, QString nameDB)
  */
 void DataBase::ConnectToDataBase(QVector<QString> data)
 {
+    if (data.size() != NUM_DATA_FOR_CONNECT_TO_DB) {
+        qWarning() << "Invalid data for database connection";
+        emit sig_SendStatusConnection(false);
+        return;
+    }
+
     data[hostName] = HOSTNAME;
     data[dbName] = DBNAME;
     data[login] = LOGIN;
@@ -56,18 +65,18 @@ void DataBase::ConnectToDataBase(QVector<QString> data)
     dB->setPort(data[port].toInt());
 
 
-    bool status;
-    status = dB->open( );
+    bool status = dB->open();
     emit sig_SendStatusConnection(status);
 
 }
 
-void DataBase::RequestToDB(QString request, qint32 numberRequest)
-{
+void DataBase::RequestToDB(QVector<QString> request, int numberRequest) {
+    qDebug() << "Received numberRequest:" << numberRequest;
     *query = QSqlQuery(*dB);
     QSqlError err;
-    if(numberRequest == 0){
-        if(query->exec(request) == false){
+
+    if(numberRequest == requestAirport){
+        if(!query->exec(request[numberRequest])){
             err = query->lastError();
         }
     }
@@ -76,7 +85,7 @@ void DataBase::RequestToDB(QString request, qint32 numberRequest)
     if(tableQueryMod != nullptr){
         //очистка формы
         tableQueryMod->clear();
-        tableQueryMod->setQuery(request, *dB); //выполняем запрос в конкретной базе
+        tableQueryMod->setQuery(request[numberRequest], *dB); //выполняем запрос в конкретной базе
 
         if(tableQueryMod->lastError().isValid()){
 
@@ -88,61 +97,49 @@ void DataBase::RequestToDB(QString request, qint32 numberRequest)
 
 }
 
-void DataBase::ReadAnswerFromDB(QString request, quint32 numberRequest){
+void DataBase::ReadAnswerFromDB(QVector<QString> request, quint32 numberRequest){
     switch (numberRequest) {
 
     case requestAirport:{
-        //airportList.clear();
+        airportList.clear();
         while (query->next()) {
             QString airportName = query->value("airportName").toString();
             QString airportCode = query->value("airport_code").toString();
             airportList.append(qMakePair(airportName, airportCode));
         }
 
-        emit sig_SendDataFromDBQueryForComboBox(airportList, numberRequest);
+       emit sig_SendDataFromDBQueryForComboBox(airportList, numberRequest);
 
         break;
     }
 
     case requestArriving:{
-        tableQueryMod->setQuery(request[requestArriving], *dB);
-            //наименование столбцов
-        // tableQueryMod->setHeaderData(0, Qt::Horizontal, QObject::tr("Название фильма"));
-        // tableQueryMod->setHeaderData(1, Qt::Horizontal, QObject::tr("Описание фильма"));
+        tableQueryMod->setQuery(request[requestDeparture], *dB);
+        tableQueryMod->setHeaderData(0, Qt::Horizontal, QObject::tr("Номер рейса"));
+        tableQueryMod->setHeaderData(1, Qt::Horizontal, QObject::tr("Время прилета"));
+        tableQueryMod->setHeaderData(2, Qt::Horizontal, QObject::tr("Аэропорт назначения"));
+        tableQueryMod->setQuery(request[numberRequest], *dB);
+        emit sig_SendDataFromDBQueryMod(tableQueryMod, numberRequest);
+        break;
 
+    }
+
+    case requestDeparture:{
+        tableQueryMod->setQuery(request[requestDeparture], *dB);
+        tableQueryMod->setHeaderData(0, Qt::Horizontal, QObject::tr("Номер рейса"));
+        tableQueryMod->setHeaderData(1, Qt::Horizontal, QObject::tr("Время вылета"));
+        tableQueryMod->setHeaderData(2, Qt::Horizontal, QObject::tr("Аэропорт назначения"));
+        tableQueryMod->setQuery(request[numberRequest], *dB);
+        emit sig_SendDataFromDBQueryMod(tableQueryMod, numberRequest);
+        break;
+
+    }
+    case requestStatisticsYear:
+    case requestStatisticsDay: {
+        tableQueryMod->setQuery(request[numberRequest], *dB);
         emit sig_SendDataFromDBQueryMod(tableQueryMod, numberRequest);
         break;
     }
-
-    // case requestDeparture:{
-
-    //     tableQueryMod->setQuery(request[requestDeparture], *dB);
-    //     // tableQueryMod->setHeaderData(0, Qt::Horizontal, QObject::tr("Название фильма"));
-    //     // tableQueryMod->setHeaderData(1, Qt::Horizontal, QObject::tr("Описание фильма"));
-
-    //     emit sig_SendDataFromDBQueryMod(tableQueryMod, numberRequest);
-    //     break;
-    // }
-
-    // case requestStatisticsYear:{
-
-    //     tableQueryMod->setQuery(request[requestStatisticsYear], *dB);
-    //     tableQueryMod->setHeaderData(0, Qt::Horizontal, QObject::tr("Название фильма"));
-    //     tableQueryMod->setHeaderData(1, Qt::Horizontal, QObject::tr("Описание фильма"));
-
-    //     emit sig_SendDataFromDBQueryMod(tableQueryMod, numberRequest);
-    //     break;
-    // }
-
-    // case requestStatisticsDay:{
-
-    //     tableQueryMod->setQuery(request[requestStatisticsDay], *dB);
-    //     tableQueryMod->setHeaderData(0, Qt::Horizontal, QObject::tr("Название фильма"));
-    //     tableQueryMod->setHeaderData(1, Qt::Horizontal, QObject::tr("Описание фильма"));
-
-    //     emit sig_SendDataFromDBQueryMod(tableQueryMod, numberRequest);
-    //     break;
-    // }
 
     default:
         break;
@@ -163,6 +160,7 @@ void DataBase::DisconnectFromDataBase(QString nameDb)
     } else {
         qDebug() << "Database" << nameDb << "is not open";
     }
+
 
 }
 

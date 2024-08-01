@@ -42,19 +42,20 @@
          <string/>
         </property>
         <layout class="QGridLayout" name="gridLayout_3">
-         <item row="6" column="1">
-          <widget class="QDateEdit" name="dtby_dateEdit"/>
-         </item>
-         <item row="5" column="1">
-          <widget class="QDateEdit" name="dtfrom_dateEdit"/>
-         </item>
-         <item row="1" column="0" colspan="2">
-          <widget class="QComboBox" name="cb_comboBox"/>
-         </item>
          <item row="3" column="0" colspan="2">
           <widget class="QRadioButton" name="rb_arrival">
            <property name="text">
             <string>Прилет</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="QComboBox" name="cb_comboBox"/>
+         </item>
+         <item row="5" column="0" colspan="2">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Выбор даты:</string>
            </property>
           </widget>
          </item>
@@ -65,7 +66,23 @@
            </property>
           </widget>
          </item>
-         <item row="5" column="0">
+         <item row="6" column="1">
+          <widget class="QDateEdit" name="dtfrom_dateEdit"/>
+         </item>
+         <item row="8" column="1">
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="6" column="0">
           <widget class="QLabel" name="label_3">
            <property name="minimumSize">
             <size>
@@ -84,14 +101,10 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="0" colspan="2">
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>Выбор даты:</string>
-           </property>
-          </widget>
+         <item row="7" column="1">
+          <widget class="QDateEdit" name="dtby_dateEdit"/>
          </item>
-         <item row="6" column="0">
+         <item row="7" column="0">
           <widget class="QLabel" name="label_4">
            <property name="minimumSize">
             <size>
@@ -110,25 +123,12 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="0" colspan="2">
+         <item row="4" column="0">
           <widget class="QRadioButton" name="rb_Departure">
            <property name="text">
             <string>Вылет</string>
            </property>
           </widget>
-         </item>
-         <item row="7" column="1">
-          <spacer name="verticalSpacer">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
          </item>
         </layout>
        </widget>
@@ -192,7 +192,7 @@
      <x>0</x>
      <y>0</y>
      <width>640</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
