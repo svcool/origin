@@ -15,6 +15,9 @@ public:
     explicit Graphic(QWidget *parent = nullptr);
     ~Graphic();
 
+private slots:
+
+
 private:
     Ui::Graphic *ui;
 };

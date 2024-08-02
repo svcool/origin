@@ -38,6 +38,7 @@ public slots:
     void on_pb_graphic_clicked();
     void on_pb_get_clicked();
 
+    void openGraphiclWindow();
 signals:
 
 

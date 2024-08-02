@@ -12,3 +12,4 @@ Graphic::~Graphic()
 {
     delete ui;
 }
+

@@ -69,6 +69,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(dataBase.get(), &DataBase::sig_SendDataFromDBQueryMod, this, &MainWindow::ScreenDataFromDBQueryMod);
     connect(dataBase.get(), &DataBase::sig_SendDataFromDBQueryForComboBox, this, &MainWindow::ScreenDataFromDBQueryComboBox);
 
+//для окна с графиком
+ connect(ui->pb_graphic, &QAction::triggered, this, &MainWindow::openGraphiclWindow);
+
+
     tryingToConnect();
 }
 
@@ -88,8 +92,14 @@ void MainWindow::tryingToConnect() {
     (void)QtConcurrent::run(conn);
 }
 
-void MainWindow::on_pb_graphic_clicked() {
-    graphicWin->show();
+
+
+
+
+
+void MainWindow::openGraphiclWindow() {
+   graphicWin->setWindowModality(Qt::ApplicationModal);
+   graphicWin->exec();
 }
 
 void MainWindow::ReceiveStatusConnectionToDB(bool status) {
@@ -164,10 +174,17 @@ void MainWindow::on_pb_get_clicked()
     QString targetWord = "airportCode";
     QString newWord = ui->cb_comboBox->currentData().toString();
     ui->cb_comboBox->currentData();
+    QString startDate = ui->dtby_dateEdit->date().toString("yyyy-MM-dd");
+    QString endDate = ui->dtfrom_dateEdit->date().toString("yyyy-MM-dd");
+    qDebug() << "Received numberRequest:" << startDate;
+    qDebug() << "Received numberRequest:" << endDate;
+
     //прилет
     if(ui->rb_arrival->isChecked()){
         //замена airportCode на код аэропорта
         request[requestArriving].replace(targetWord,newWord);
+        request[requestArriving] += " AND f.scheduled_arrival BETWEEN '" + endDate + "' AND '" + startDate + "'";
+         qDebug() << "Received numberRequest:" << request[requestArriving];
         emit sig_RequestToDb(requestArriving);
     }
 
@@ -175,7 +192,8 @@ void MainWindow::on_pb_get_clicked()
     if(ui->rb_Departure->isChecked()){
         //замена airportCode на код аэропорта
         request[requestDeparture].replace(targetWord,newWord);
-
+        request[requestDeparture] += " AND f.scheduled_arrival BETWEEN '" + endDate + "' AND '" + startDate + "'";
+        qDebug() << "Received numberRequest:" << request[requestDeparture];
         emit sig_RequestToDb(requestDeparture);
 
     }
