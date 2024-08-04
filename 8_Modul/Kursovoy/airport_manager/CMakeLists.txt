@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools Core Concurrent Sql)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets PrintSupport LinguistTools Core Concurrent Sql Charts)
 
 set(TS_FILES airport_manager_en_US.ts)
 
@@ -19,17 +19,27 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        graphicwin.cpp
+        graphicwin.h
+        graphicwin.ui
+        database.h database.cpp
         ${TS_FILES}
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+
     qt_add_executable(airport_manager
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        graphic.h graphic.cpp graphic.ui
-        database.h database.cpp
+        graphicwin.h graphicwin.cpp graphicwin.ui
+        cp_graphic.h cp_graphic.cpp
+        request.h
+
+
+
        #settings.h settings.cpp settings.ui
     )
+
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET airport_manager APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
@@ -51,12 +61,20 @@ else()
 
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
-target_link_directories(airport_manager PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/PG_Libs)
+
+#Необходимо при использовании динамической библиотеки QCustomPlot
+add_compile_definitions(QCUSTOMPLOT_USE_LIBRARY)
+
+target_link_directories(airport_manager PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
+                                            ${CMAKE_CURRENT_SOURCE_DIR}/PG_Libs)
 target_link_libraries(airport_manager PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
+    Qt6::PrintSupport
+    qcustomplot2.dll
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Concurrent
     Qt6::Sql
+    Qt6::Charts
     libcrypto-3-x64
     libiconv-2
     libintl-9

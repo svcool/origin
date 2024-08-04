@@ -1,0 +1,37 @@
+# ninja log v5
+2	1937	7443725128232306	07_GraphicsCustomPlot_autogen/timestamp	e4923fade48d5643
+2	1937	7443725128232306	07_GraphicsCustomPlot_autogen/mocs_compilation.cpp	e4923fade48d5643
+2	1937	7443725128232306	D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCustomPlot/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/07_GraphicsCustomPlot_autogen/timestamp	e4923fade48d5643
+2	1937	7443725128232306	D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCustomPlot/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/07_GraphicsCustomPlot_autogen/mocs_compilation.cpp	e4923fade48d5643
+1947	9190	7443725201456116	CMakeFiles/07_GraphicsCustomPlot.dir/main.cpp.obj	5cea0f0440759c5a
+1938	9304	7443725202596098	CMakeFiles/07_GraphicsCustomPlot.dir/07_GraphicsCustomPlot_autogen/mocs_compilation.cpp.obj	995f847f5ed224df
+1941	9413	7443725203668513	CMakeFiles/07_GraphicsCustomPlot.dir/graphic.cpp.obj	c712487cd14e6e04
+1944	9443	7443725203978516	CMakeFiles/07_GraphicsCustomPlot.dir/mainwindow.cpp.obj	f19f288221fa0a6
+9443	9796	7443725207118617	07_GraphicsCustomPlot.exe	2d3759430208e5b1
+7	230	7443726475671460	07_GraphicsCustomPlot_autogen/timestamp	e4923fade48d5643
+7	230	7443726475671460	07_GraphicsCustomPlot_autogen/mocs_compilation.cpp	e4923fade48d5643
+7	230	7443726475671460	D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCustomPlot/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/07_GraphicsCustomPlot_autogen/timestamp	e4923fade48d5643
+7	230	7443726475671460	D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCustomPlot/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/07_GraphicsCustomPlot_autogen/mocs_compilation.cpp	e4923fade48d5643
+238	7069	7443726544146331	CMakeFiles/07_GraphicsCustomPlot.dir/mainwindow.cpp.obj	f19f288221fa0a6
+7070	7430	7443726547376015	07_GraphicsCustomPlot.exe	2d3759430208e5b1
+7	217	7443728706608736	07_GraphicsCustomPlot_autogen/timestamp	e4923fade48d5643
+7	217	7443728706608736	07_GraphicsCustomPlot_autogen/mocs_compilation.cpp	e4923fade48d5643
+7	217	7443728706608736	D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCustomPlot/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/07_GraphicsCustomPlot_autogen/timestamp	e4923fade48d5643
+7	217	7443728706608736	D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCustomPlot/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/07_GraphicsCustomPlot_autogen/mocs_compilation.cpp	e4923fade48d5643
+6	218	7443729438443085	07_GraphicsCustomPlot_autogen/timestamp	e4923fade48d5643
+6	218	7443729438443085	07_GraphicsCustomPlot_autogen/mocs_compilation.cpp	e4923fade48d5643
+6	218	7443729438443085	D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCustomPlot/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/07_GraphicsCustomPlot_autogen/timestamp	e4923fade48d5643
+6	218	7443729438443085	D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCustomPlot/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/07_GraphicsCustomPlot_autogen/mocs_compilation.cpp	e4923fade48d5643
+224	8610	7443729522345455	CMakeFiles/07_GraphicsCustomPlot.dir/mainwindow.cpp.obj	f19f288221fa0a6
+8611	9085	7443729526669028	07_GraphicsCustomPlot.exe	2d3759430208e5b1
+9	3333	7443922565730868	07_GraphicsCustomPlot_autogen/timestamp	e4923fade48d5643
+9	3333	7443922565730868	07_GraphicsCustomPlot_autogen/mocs_compilation.cpp	e4923fade48d5643
+9	3333	7443922565730868	D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCustomPlot/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/07_GraphicsCustomPlot_autogen/timestamp	e4923fade48d5643
+9	3333	7443922565730868	D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCustomPlot/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/07_GraphicsCustomPlot_autogen/mocs_compilation.cpp	e4923fade48d5643
+3408	16771	7443922701357443	CMakeFiles/07_GraphicsCustomPlot.dir/main.cpp.obj	5cea0f0440759c5a
+3394	16819	7443922701837442	CMakeFiles/07_GraphicsCustomPlot.dir/graphic.cpp.obj	c712487cd14e6e04
+3334	16823	7443922701897470	CMakeFiles/07_GraphicsCustomPlot.dir/07_GraphicsCustomPlot_autogen/mocs_compilation.cpp.obj	995f847f5ed224df
+3401	17007	7443922703717422	CMakeFiles/07_GraphicsCustomPlot.dir/mainwindow.cpp.obj	f19f288221fa0a6
+17007	17511	7443922708317467	07_GraphicsCustomPlot.exe	2d3759430208e5b1
+0	41	0	CMakeFiles/clean.additional	cee7e56548ea36fa
+41	60	0	clean	101d0f6048d5fe99

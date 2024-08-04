@@ -1,25 +1,48 @@
-#ifndef GRAPHIC_H
-#define GRAPHIC_H
+#ifndef GRAPHICWIN_H
+#define GRAPHICWIN_H
 
 #include <QDialog>
+#include "request.h"
+#include "cp_graphic.h"
+
+//При использовании динамической библиотеки необходимо подключить заголовочный файл,
+//но не добавлять его в проект.
+//Типы запросов
 
 namespace Ui {
-class Graphic;
+class GraphicWin;
 }
 
-class Graphic : public QDialog
+class GraphicWin : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit Graphic(QWidget *parent = nullptr);
-    ~Graphic();
+    explicit GraphicWin(QWidget *parent = nullptr);
+    ~GraphicWin();
+    void graphicBuild();
+    void graphicClear();
+    void addMonthsComboBox();
+    void ScreenDataFromDBQueryGraphic(QList<QPair<QDateTime, int>> statistic, int numberRequest);
 
+
+    void ScreenDataGraphicLine(QList<QPair<QDateTime, int> > data, int index);
+    void ScreenDataGraphicBars(QList<QPair<QDateTime, int> > data);
+    void FetchDataRequest(QList<QPair<QDateTime, int> > data, int numberRequest);
 private slots:
 
 
+    void on_cb_comboBox_currentIndexChanged(int index);
+
 private:
-    Ui::Graphic *ui;
+    Ui::GraphicWin *ui;
+    QStringList months = {"Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
+                          "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"};
+    QCPGraph* graphic;
+    CpGraphic* graphClassYear;
+    CpGraphic* graphClassMonth;
+    QList<QPair<QDateTime, int>> dataBars, dataLine;
+    int numberMonth=0;
 };
 
-#endif // GRAPHIC_H
+#endif // GRAPHICWIN_H

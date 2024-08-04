@@ -44,21 +44,13 @@
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-<<<<<<< HEAD:8_Modul/07_Grafic/GraphicsCharts/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/.cmake/api/v1/reply/target-07_GraphicsCharts_autogen_timestamp_deps-Debug-c65e3db6180ed505a9fd.json
 			"path" : "build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/CMakeFiles/07_GraphicsCharts_autogen_timestamp_deps",
-=======
-			"path" : "D:/gitrepo/origin/8_Modul/build-L8_SQL-Descktop_Qt_6_4_2_mingw_64-Debug/CMakeFiles/08_PreDataBase_autogen",
->>>>>>> 1:8_Modul/build-L8_SQL-Descktop_Qt_6_4_2_mingw_64-Debug/.cmake/api/v1/reply.prev/target-08_PreDataBase_autogen-Debug-c4c7ead0a81ac5837221.json
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-<<<<<<< HEAD:8_Modul/07_Grafic/GraphicsCharts/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/.cmake/api/v1/reply/target-07_GraphicsCharts_autogen_timestamp_deps-Debug-c65e3db6180ed505a9fd.json
 			"path" : "build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/CMakeFiles/07_GraphicsCharts_autogen_timestamp_deps.rule",
-=======
-			"path" : "D:/gitrepo/origin/8_Modul/build-L8_SQL-Descktop_Qt_6_4_2_mingw_64-Debug/CMakeFiles/08_PreDataBase_autogen.rule",
->>>>>>> 1:8_Modul/build-L8_SQL-Descktop_Qt_6_4_2_mingw_64-Debug/.cmake/api/v1/reply.prev/target-08_PreDataBase_autogen-Debug-c4c7ead0a81ac5837221.json
 			"sourceGroupIndex" : 1
 		}
 	],

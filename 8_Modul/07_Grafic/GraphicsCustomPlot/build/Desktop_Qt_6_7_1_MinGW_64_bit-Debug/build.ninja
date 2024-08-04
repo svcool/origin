@@ -159,7 +159,7 @@ build 07_GraphicsCustomPlot_autogen/timestamp 07_GraphicsCustomPlot_autogen/mocs
 #############################################
 # Phony custom command for CMakeFiles\07_GraphicsCustomPlot_autogen_timestamp_deps
 
-build CMakeFiles/07_GraphicsCustomPlot_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/07_GraphicsCustomPlot_autogen_timestamp_deps: phony D$:/Qt/6.7.1/mingw_64/lib/libQt6PrintSupport.a D$:/Qt/6.7.1/mingw_64/lib/libQt6Widgets.a D$:/Qt/6.7.1/mingw_64/lib/libQt6Core.a D$:/Qt/6.7.1/mingw_64/./bin/uic.exe D$:/Qt/6.7.1/mingw_64/./bin/moc.exe
+build CMakeFiles/07_GraphicsCustomPlot_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/07_GraphicsCustomPlot_autogen_timestamp_deps: phony D$:/Qt/6.7.1/mingw_64/lib/libQt6PrintSupport.a D$:/Qt/6.7.1/mingw_64/lib/libQt6Core.a D$:/Qt/6.7.1/mingw_64/lib/libQt6Widgets.a D$:/Qt/6.7.1/mingw_64/./bin/uic.exe D$:/Qt/6.7.1/mingw_64/./bin/moc.exe
 
 
 #############################################

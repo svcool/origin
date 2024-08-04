@@ -25,6 +25,7 @@ private:
     //Определияем указатель QCPGraph, который отвечает именно за наполнение графика.
     QList<QCPGraph*> ptrGraph;
 
+
 };
 
 #endif // GRAPHIC_H

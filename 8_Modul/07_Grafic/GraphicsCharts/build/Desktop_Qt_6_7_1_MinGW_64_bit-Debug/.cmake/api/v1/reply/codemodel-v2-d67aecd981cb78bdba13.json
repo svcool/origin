@@ -1,0 +1,78 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "07_GraphicsCharts",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "07_GraphicsCharts::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-07_GraphicsCharts-Debug-a0c84de73c08b9a1908d.json",
+					"name" : "07_GraphicsCharts",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "07_GraphicsCharts_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-07_GraphicsCharts_autogen-Debug-b0940c103886fb545a6d.json",
+					"name" : "07_GraphicsCharts_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "07_GraphicsCharts_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-07_GraphicsCharts_autogen_timestamp_deps-Debug-c65e3db6180ed505a9fd.json",
+					"name" : "07_GraphicsCharts_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCharts/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug",
+		"source" : "D:/Program Files/MyProject/origin/origin/8_Modul/07_Grafic/GraphicsCharts"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}

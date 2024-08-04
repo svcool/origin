@@ -71,16 +71,16 @@ void DataBase::ConnectToDataBase(QVector<QString> data)
 }
 
 void DataBase::RequestToDB(QVector<QString> request, int numberRequest) {
-    qDebug() << "Received numberRequest:" << numberRequest;
+    qDebug() << "RequestToDB Received numberRequest:" << numberRequest;
     *query = QSqlQuery(*dB);
     QSqlError err;
 
-    if(numberRequest == requestAirport){
+    if(numberRequest == requestAirport || numberRequest == requestStatisticsYear || numberRequest == requestStatisticsDay){
         if(!query->exec(request[numberRequest])){
             err = query->lastError();
         }
     }
-    else {
+    else if(numberRequest == requestArriving || numberRequest == requestDeparture ) {
 
     if(tableQueryMod != nullptr){
         //очистка формы
@@ -92,12 +92,14 @@ void DataBase::RequestToDB(QVector<QString> request, int numberRequest) {
             err = tableQueryMod->lastError();
         }
     }
+
+
     }
     emit sig_SendStatusRequest(err, request, numberRequest);
 
 }
 
-void DataBase::ReadAnswerFromDB(QVector<QString> request, quint32 numberRequest){
+void DataBase::ReadAnswerFromDB(QVector<QString> request, int numberRequest){
     switch (numberRequest) {
 
     case requestAirport:{
@@ -119,6 +121,7 @@ void DataBase::ReadAnswerFromDB(QVector<QString> request, quint32 numberRequest)
         tableQueryMod->setHeaderData(1, Qt::Horizontal, QObject::tr("Время прилета"));
         tableQueryMod->setHeaderData(2, Qt::Horizontal, QObject::tr("Аэропорт назначения"));
         tableQueryMod->setQuery(request[numberRequest], *dB);
+
         emit sig_SendDataFromDBQueryMod(tableQueryMod, numberRequest);
         break;
 
@@ -130,14 +133,38 @@ void DataBase::ReadAnswerFromDB(QVector<QString> request, quint32 numberRequest)
         tableQueryMod->setHeaderData(1, Qt::Horizontal, QObject::tr("Время вылета"));
         tableQueryMod->setHeaderData(2, Qt::Horizontal, QObject::tr("Аэропорт назначения"));
         tableQueryMod->setQuery(request[numberRequest], *dB);
+
         emit sig_SendDataFromDBQueryMod(tableQueryMod, numberRequest);
         break;
 
     }
-    case requestStatisticsYear:
+
+
+    case requestStatisticsYear:{
+        //QList<QPair<QDateTime, int>> statYear;
+        statYear.clear();
+        while (query->next()) {
+            QDateTime sYear = query->value("Month").toDateTime(); //из столбца "Month"
+            int flightCountYear = query->value("count").toInt(); //из столбца "count"
+            qDebug() << "Yar data:" << sYear << ":" << flightCountYear;
+            statYear.append(qMakePair(sYear, flightCountYear));
+        }
+
+        emit sig_SendDataFromDBQueryForGraphic(statYear, numberRequest);
+        break;
+    }
+
     case requestStatisticsDay: {
-        tableQueryMod->setQuery(request[numberRequest], *dB);
-        emit sig_SendDataFromDBQueryMod(tableQueryMod, numberRequest);
+       // QList<QPair<QDateTime, int>> statDay;
+        statDay.clear();
+        while (query->next()) {
+            QDateTime sDay = query->value("Day").toDateTime(); //из столбца "Month"
+            int flightCountDay = query->value("count").toInt(); //из столбца "count"
+            qDebug() << "Yar data:" << sDay << ":" << flightCountDay;
+            statDay.append(qMakePair(sDay, flightCountDay));
+        }
+
+        emit sig_SendDataFromDBQueryForGraphic(statDay, numberRequest);
         break;
     }
 

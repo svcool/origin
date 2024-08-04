@@ -7,6 +7,8 @@
 #include <QSqlQueryModel>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QDateTime>
+#include "request.h"
 
 #define POSTGRE_DRIVER "QPSQL"
 #define DB_NAME "MyDB"
@@ -29,16 +31,17 @@ enum fieldsForConnect{
     port = 4
 };
 
-//Типы запросов
-enum requestType : int {
+// //Типы запросов
+// enum requestType : int {
 
-    requestAirport = 0,
-    requestArriving   = 1,
-    requestDeparture = 2,
-    requestStatisticsYear = 3,
-    requestStatisticsDay = 4,
-    NumberOfRequestTypes = 5
-};
+//     requestAirport = 0,
+//     requestArriving   = 1,
+//     requestDeparture = 2,
+//     requestStatisticsYear = 3,
+//     requestStatisticsDay = 4,
+//     NumberOfRequestTypes = 5
+// };
+
 
 
 class DataBase : public QObject
@@ -55,7 +58,7 @@ public slots:
     void RequestToDB(QVector<QString> request, int numberRequest);
     QSqlError GetLastError(void);
     void ConnectToDataBase(QVector<QString> dataForConnect);
-    void ReadAnswerFromDB(QVector<QString> request, quint32 numberRequest);
+    void ReadAnswerFromDB(QVector<QString> request, int numberRequest);
 
 signals:
     void sig_sendData(QVector<QString> data); //сигнал для подключения БД
@@ -63,16 +66,20 @@ signals:
     void sig_SendStatusConnection(bool);
     void sig_SendStatusRequest(QSqlError err, QVector<QString> request, int numberRequest);
     void sig_SendDataFromDBQueryForComboBox(QList<QPair<QString, QString>> airportList, int numberRequest);
-
+    void sig_SendDataFromDBQueryForGraphic(QList<QPair<QDateTime, int>> statistic, int numberRequest);
 private:
 
     QSqlDatabase* dB;
     QSqlQueryModel* tableQueryMod;
     QSqlQuery* query;
-    QString airportName;
-    QString airportCode;
+   // QString airportName;
+   // QString airportCode;
     QList<QPair<QString, QString>> airportList;
-    int numberRequest = 0;
+   // QDateTime sYear, sDay;
+    //int flightCountYear, flightCountDay;
+   QList<QPair<QDateTime, int>> statYear;
+   QList<QPair<QDateTime, int>> statDay;
+    //int numberRequest = 0;
 };
 
 #endif // DATABASE_H

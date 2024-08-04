@@ -5,7 +5,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , msg(std::make_unique<QMessageBox>(this))
-    , graphicWin(std::make_unique<Graphic>(this))
+    , graphicWin(std::make_unique<GraphicWin>(this))
     , dataBase(std::make_unique<DataBase>(this))
     , timer(std::make_unique<QTimer>(this))
 {
@@ -31,15 +31,15 @@ MainWindow::MainWindow(QWidget *parent)
     request[requestStatisticsYear] = "SELECT count(flight_no), date_trunc('month', scheduled_departure) as \"Month\" "
                                      "FROM bookings.flights f "
                                      "WHERE (scheduled_departure::date > date('2016-08-31') "
-                                     "and scheduled_departure::date <= date('2017-08-31')) "
-                                     "and (departure_airport = airportCode or arrival_airport = airportCode) "
+                                     "AND scheduled_departure::date <= date('2017-08-31')) "
+                                     "AND (departure_airport = 'airportCode' or arrival_airport = 'airportCode') "
                                      "GROUP BY \"Month\"";
 
     request[requestStatisticsDay] = "SELECT count(flight_no), date_trunc('day', scheduled_departure) as \"Day\" "
                                     "FROM bookings.flights f "
                                     "WHERE (scheduled_departure::date > date('2016-08-31') "
-                                    "and scheduled_departure::date <= date('2017-08-31')) "
-                                    "and (departure_airport = airportCode or arrival_airport = airportCode) "
+                                    "AND scheduled_departure::date <= date('2017-08-31')) "
+                                    "AND (departure_airport = 'airportCode' or arrival_airport = 'airportCode') "
                                     "GROUP BY \"Day\"";
 
     templrequest=request; //шаблонные запросы для редактирования
@@ -56,8 +56,9 @@ MainWindow::MainWindow(QWidget *parent)
     dataBase->AddDataBase(POSTGRE_DRIVER, DB_NAME);
 
     // Получение данных для подключения
-   connect(dataBase.get(), &DataBase::sig_SendStatusConnection, this, &MainWindow::ReceiveStatusConnectionToDB);
+    connect(dataBase.get(), &DataBase::sig_SendStatusConnection, this, &MainWindow::ReceiveStatusConnectionToDB);
     connect(dataBase.get(), &DataBase::sig_SendStatusRequest, this, &MainWindow::ReceiveStatusRequestToDB);
+
 
     // Таймер для автоматического подключения к базе данных
     //connect(timer, &QTimer::timeout, this, &MainWindow::tryingToConnect);
@@ -68,9 +69,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(dataBase.get(), &DataBase::sig_SendDataFromDBQueryMod, this, &MainWindow::ScreenDataFromDBQueryMod);
     connect(dataBase.get(), &DataBase::sig_SendDataFromDBQueryForComboBox, this, &MainWindow::ScreenDataFromDBQueryComboBox);
-
-//для окна с графиком
- connect(ui->pb_graphic, &QAction::triggered, this, &MainWindow::openGraphiclWindow);
+    connect(dataBase.get(), &DataBase::sig_SendDataFromDBQueryForGraphic, graphicWin.get(), &GraphicWin::FetchDataRequest);
+//вызов окна с графиком
+ connect(ui->pb_graphic, &QPushButton::clicked, this, &MainWindow::openGraphiclWindow);
 
 
     tryingToConnect();
@@ -98,8 +99,49 @@ void MainWindow::tryingToConnect() {
 
 
 void MainWindow::openGraphiclWindow() {
-   graphicWin->setWindowModality(Qt::ApplicationModal);
-   graphicWin->exec();
+
+    graphicWin->addMonthsComboBox();//обработка окна во вкладке месяц
+    //запрос данных из БД
+
+    request=templrequest;//копируем шаблон
+    QString targetWord = "airportCode";
+    QString newWord = ui->cb_comboBox->currentData().toString();
+    ui->cb_comboBox->currentData();
+    graphicWin->setWindowModality(Qt::ApplicationModal);
+
+    qDebug() << "Received aitcod_openGraphiclWindow:" << newWord;
+         //замена airportCode на код аэропорта
+        request[requestStatisticsYear].replace(targetWord,newWord);
+       // graphicWin->exec();
+        QVector<QString> req1 = request;
+        int rSY = requestStatisticsYear;
+        qDebug() << "graphic Received numberRequest:" << request[requestStatisticsYear];
+        (void)QtConcurrent::run([this, req1, rSY]() {
+            dataBase->RequestToDB(req1, rSY);
+        });
+
+        request[requestStatisticsDay].replace(targetWord,newWord);
+        QVector<QString> req2 = request;
+        int rSD = requestStatisticsDay;
+        qDebug() << "graphic Received numberRequest:" << request[requestStatisticsDay];
+        (void)QtConcurrent::run([this, req2, rSD]() {
+            dataBase->RequestToDB(req2, rSD);
+        });
+       //emit sig_RequestToDb(requestStatisticsDay);
+
+        // auto conrace1 = [this, req1, rSY]() {
+        //     dataBase->RequestToDB(req1, rSY);
+        // };
+        // auto conrace2 = [this, req2, rSD]() {
+        //     dataBase->RequestToDB(req2, rSD);
+        // };
+
+        // QtConcurrent::run(conrace1).then(conrace2);
+
+        graphicWin->exec();
+
+
+
 }
 
 void MainWindow::ReceiveStatusConnectionToDB(bool status) {
@@ -125,7 +167,7 @@ void MainWindow::ReceiveStatusConnectionToDB(bool status) {
 
 
 
-void MainWindow::ScreenDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, quint32 typeRequest) {
+void MainWindow::ScreenDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, int typeRequest) {
     switch (typeRequest) {
     case requestAirport:
     case requestArriving: {
@@ -162,18 +204,24 @@ void MainWindow::ScreenDataFromDBQueryComboBox(QList<QPair<QString, QString>> ai
 void MainWindow::requestToDb(int numberRequest)
 {
     qDebug() << "Received numberRequest:" << numberRequest;
-    int numberReq=numberRequest;
-    auto req = [&]{dataBase->RequestToDB(request, numberReq);};
-    (void)QtConcurrent::run(req);
+   // int numberReq=numberRequest;
+    QVector<QString> req = request;
+    // auto req = [&]{dataBase->RequestToDB(request, numberReq);}; // неправильно передает numberRequest
+    // (void)QtConcurrent::run(req);
+    (void)QtConcurrent::run([this, req, numberRequest]() {
+        dataBase->RequestToDB(req, numberRequest);
+    });
 }
 
 
 void MainWindow::on_pb_get_clicked()
 {
-    request=templrequest;//копируем шаблон
+    request[requestArriving]=templrequest[requestArriving];//копируем шаблон
+    request[requestDeparture]=templrequest[requestDeparture];//копируем шаблон
+
     QString targetWord = "airportCode";
     QString newWord = ui->cb_comboBox->currentData().toString();
-    ui->cb_comboBox->currentData();
+
     QString startDate = ui->dtby_dateEdit->date().toString("yyyy-MM-dd");
     QString endDate = ui->dtfrom_dateEdit->date().toString("yyyy-MM-dd");
     qDebug() << "Received numberRequest:" << startDate;

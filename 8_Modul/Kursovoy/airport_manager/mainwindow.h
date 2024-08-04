@@ -6,9 +6,9 @@
 #include <QtConcurrent>
 #include <QTimer>
 #include <memory>
-#include "graphic.h"
+#include "graphicwin.h"
 #include "database.h"
-
+#include "request.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -31,11 +31,11 @@ public:
 
 public slots:
     void ReceiveStatusRequestToDB(QSqlError err, QVector<QString> request, int numberRequest);
-    void ScreenDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, quint32 typeRequest);
+    void ScreenDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, int typeRequest);
     void ScreenDataFromDBQueryComboBox(QList<QPair<QString, QString>> airportList, int numberRequest);
     void ReceiveStatusConnectionToDB(bool status);
     void requestToDb(int numberRequest);
-    void on_pb_graphic_clicked();
+
     void on_pb_get_clicked();
 
     void openGraphiclWindow();
@@ -44,16 +44,18 @@ signals:
 
     void sig_RequestToDbAirports(int numberRequest);
     void sig_RequestToDb(int numberRequest);
+private slots:
+
+
 private:
     Ui::MainWindow *ui;
     std::unique_ptr<QMessageBox> msg;
-    std::unique_ptr<Graphic> graphicWin;
+    std::unique_ptr<GraphicWin> graphicWin;
     QVector<QString> dataForConnect; // Данные для подключения
     std::unique_ptr<DataBase> dataBase;
     QVector<QString> request; // Запросы
     QVector<QString> templrequest;//шаблонные запросы для редактирования
     QLabel* statusLabel;
     std::unique_ptr<QTimer> timer;
-    int numberRequest = 0;
 };
 #endif // MAINWINDOW_H
