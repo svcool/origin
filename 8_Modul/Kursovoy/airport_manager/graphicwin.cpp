@@ -34,6 +34,15 @@ void GraphicWin::addMonthsComboBox(){
     //ui->cb_comboBox->clear();
     ui->cb_comboBox->addItems(months);
     ui->cb_comboBox->setCurrentIndex(0);
+
+}
+
+void GraphicWin::setLabel(const QString &text){
+
+    QString newtext = text.section(':', 0, 0).trimmed();
+
+
+    ui->lb_airport->setText(newtext);
 }
 
 void GraphicWin::ScreenDataFromDBQueryGraphic(QList<QPair<QDateTime, int>> data, int numberRequest)
@@ -92,7 +101,6 @@ void GraphicWin::ScreenDataGraphicBars(QList<QPair<QDateTime, int>> data){
 void GraphicWin::on_cb_comboBox_currentIndexChanged(int index)
 {
     GraphicWin::ScreenDataGraphicLine(dataLine, index);
-
 
 }
 

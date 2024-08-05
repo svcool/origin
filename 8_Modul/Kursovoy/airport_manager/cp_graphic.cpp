@@ -7,7 +7,7 @@ CpGraphic::CpGraphic(QCustomPlot* cPlot)
     передать оси, по которым будет строиться график.
    */
 
-    ptrGraph = new QCPGraph(cPlot->xAxis, cPlot->yAxis);
+   // ptrGraph = new QCPGraph(cPlot->xAxis, cPlot->yAxis);
     ptrGraphBars = new QCPBars(cPlot->xAxis, cPlot->yAxis);
 
     //В отличии от QtCharts QCustomPlot поддерживает встроенные функции масштабирования.
@@ -104,19 +104,26 @@ void CpGraphic::UpdateGraph(QCustomPlot *cPlot, QList<QPair<int, int>> month_day
          //  qDebug() << "y:" << flCount[i];
     }
 
+  cPlot->addGraph();
+  cPlot->graph(0)->setData(x,y);
 
-    cPlot->addGraph();
-     cPlot->graph(0)->setData(x,y);
     cPlot->setInteraction(QCP::iRangeZoom, true);
     cPlot->setInteraction(QCP::iRangeDrag, true);
-    cPlot->xAxis->setLabel("Day of Month");
-    cPlot->yAxis->setLabel("Number of Flights");
+    cPlot->xAxis->setLabel("День месяца");
+    cPlot->yAxis->setLabel("Количество вылетов");
+
+    // Вычисляем максимальное значение на оси Y
+    //double maxY = *std::max_element(y.begin(), y.end());
+    //double yOffset = 10; // Смещение для оси Y
+    //cPlot->yAxis->setRange(0, maxY + yOffset);
+    cPlot->yAxis->ticker()->setTickCount(5);
+    cPlot->xAxis->ticker()->setTickCount(31);
     cPlot->xAxis->setRange(1, 31); // Диапазон от 1 до 31 дня
 
-  //  cPlot->yAxis->setRange(0, *std::max_element(y.begin(), y.end()) + 10);
+  //  cPlot->yAxis->setRange(0, *std::max_element(y.begin(),y.end() + 10);
 
 
-    //ptrGraph->addData(x,y);
+
 
 
     //Масштабируем оси

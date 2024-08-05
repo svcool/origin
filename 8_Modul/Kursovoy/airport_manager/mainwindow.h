@@ -29,6 +29,8 @@ public:
     void updateConnectionStatus(const QString &statusText);
     void tryingToConnect();//попытка подключения после иницилизации данных
 
+    void processNextTask();
+    void onTaskFinished();
 public slots:
     void ReceiveStatusRequestToDB(QSqlError err, QVector<QString> request, int numberRequest);
     void ScreenDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, int typeRequest);
@@ -57,5 +59,11 @@ private:
     QVector<QString> templrequest;//шаблонные запросы для редактирования
     QLabel* statusLabel;
     std::unique_ptr<QTimer> timer;
+
+    QQueue<int> taskQueue;  // Очередь запросов
+        bool isProcessing = false;
+
+        QFutureWatcher<void> futureWatcher;
+
 };
 #endif // MAINWINDOW_H

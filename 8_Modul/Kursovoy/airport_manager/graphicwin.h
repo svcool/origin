@@ -29,6 +29,7 @@ public:
     void ScreenDataGraphicLine(QList<QPair<QDateTime, int> > data, int index);
     void ScreenDataGraphicBars(QList<QPair<QDateTime, int> > data);
     void FetchDataRequest(QList<QPair<QDateTime, int> > data, int numberRequest);
+    void setLabel(const QString &text);
 private slots:
 
 

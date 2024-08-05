@@ -45,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
     templrequest=request; //шаблонные запросы для редактирования
     connect(this,&MainWindow::sig_RequestToDbAirports, this, &MainWindow::requestToDb);
     connect(this,&MainWindow::sig_RequestToDb, this, &MainWindow::requestToDb);
+    connect(&futureWatcher, &QFutureWatcher<void>::finished, this, &MainWindow::processNextTask);
     // Инициализация объектов
 
     // Инициализация метки состояния подключения
@@ -94,54 +95,25 @@ void MainWindow::tryingToConnect() {
 }
 
 
-
-
-
-
 void MainWindow::openGraphiclWindow() {
 
     graphicWin->addMonthsComboBox();//обработка окна во вкладке месяц
+    graphicWin->setLabel(ui->cb_comboBox->currentText());
     //запрос данных из БД
-
     request=templrequest;//копируем шаблон
     QString targetWord = "airportCode";
     QString newWord = ui->cb_comboBox->currentData().toString();
     ui->cb_comboBox->currentData();
     graphicWin->setWindowModality(Qt::ApplicationModal);
-
-    qDebug() << "Received aitcod_openGraphiclWindow:" << newWord;
          //замена airportCode на код аэропорта
         request[requestStatisticsYear].replace(targetWord,newWord);
-       // graphicWin->exec();
-        QVector<QString> req1 = request;
-        int rSY = requestStatisticsYear;
-        qDebug() << "graphic Received numberRequest:" << request[requestStatisticsYear];
-        (void)QtConcurrent::run([this, req1, rSY]() {
-            dataBase->RequestToDB(req1, rSY);
-        });
+        emit sig_RequestToDb(requestStatisticsYear);
 
         request[requestStatisticsDay].replace(targetWord,newWord);
-        QVector<QString> req2 = request;
-        int rSD = requestStatisticsDay;
-        qDebug() << "graphic Received numberRequest:" << request[requestStatisticsDay];
-        (void)QtConcurrent::run([this, req2, rSD]() {
-            dataBase->RequestToDB(req2, rSD);
-        });
-       //emit sig_RequestToDb(requestStatisticsDay);
 
-        // auto conrace1 = [this, req1, rSY]() {
-        //     dataBase->RequestToDB(req1, rSY);
-        // };
-        // auto conrace2 = [this, req2, rSD]() {
-        //     dataBase->RequestToDB(req2, rSD);
-        // };
+        emit sig_RequestToDb(requestStatisticsDay);
 
-        // QtConcurrent::run(conrace1).then(conrace2);
-
-        graphicWin->exec();
-
-
-
+       graphicWin->exec();
 }
 
 void MainWindow::ReceiveStatusConnectionToDB(bool status) {
@@ -201,18 +173,6 @@ void MainWindow::ScreenDataFromDBQueryComboBox(QList<QPair<QString, QString>> ai
 
 }
 
-void MainWindow::requestToDb(int numberRequest)
-{
-    qDebug() << "Received numberRequest:" << numberRequest;
-   // int numberReq=numberRequest;
-    QVector<QString> req = request;
-    // auto req = [&]{dataBase->RequestToDB(request, numberReq);}; // неправильно передает numberRequest
-    // (void)QtConcurrent::run(req);
-    (void)QtConcurrent::run([this, req, numberRequest]() {
-        dataBase->RequestToDB(req, numberRequest);
-    });
-}
-
 
 void MainWindow::on_pb_get_clicked()
 {
@@ -262,4 +222,45 @@ void MainWindow::ReceiveStatusRequestToDB(QSqlError err, QVector<QString> reques
 
     }
 
+}
+
+
+void MainWindow::requestToDb(int numberRequest) {
+    qDebug() << "Received numberRequest:" << numberRequest;
+
+    // Добавляем запрос в очередь
+    taskQueue.enqueue(numberRequest);
+
+    // Если ничего не обрабатывается, запускаем обработку очереди
+    if (!isProcessing) {
+        isProcessing = true;
+        processNextTask();
+    }
+
+
+
+
+}
+
+
+void MainWindow::processNextTask() {
+    if (taskQueue.isEmpty()) {
+        isProcessing = false;
+        return;
+    }
+
+    // Извлекаем следующий запрос из очереди
+    int numberRequest = taskQueue.dequeue();
+
+    QVector<QString> req = request;
+
+    // Выполняем запрос в отдельном потоке
+    QFuture<void> future = QtConcurrent::run([this, req, numberRequest]() {
+        dataBase->RequestToDB(req, numberRequest);
+    });
+
+    futureWatcher.setFuture(future);
+
+    // Обработчик завершения задачи
+        connect(&futureWatcher, &QFutureWatcher<void>::finished, this, &MainWindow::processNextTask);
 }
