@@ -95,3 +95,4 @@ void Settings::on_def_Button_clicked()
     ui->spB_port->setValue(QString(PORT).toInt());
 }
 
+

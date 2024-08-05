@@ -35,11 +35,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Таймер для автоматического подключения к базе данных
     //connect(timer, &QTimer::timeout, this, &MainWindow::tryingToConnect);
-    connect(timer.get(), &QTimer::timeout, this, &MainWindow::tryingToConnect);
+    connect(timer.get(), &QTimer::timeout, this, &MainWindow::tryingToConnect, Qt::DirectConnection);
 
     dataForConnect.resize(NUM_DATA_FOR_CONNECT_TO_DB);
 
-    connect(m_settings, &Settings::sig_sendData, this, &MainWindow::timeConnect);
+    connect(m_settings, &Settings::sig_sendData, this, &MainWindow::timeConnect, Qt::DirectConnection);
 
 
     //Соединяем сигнал, который передает ответ от БД с методом, который отображает ответ в ПИ
@@ -109,7 +109,6 @@ void MainWindow::timeConnect(QVector<QString> receivData){
     dataForConnect = receivData;
     receivData.clear();
     timer->start(5000);
-
 }
 
 

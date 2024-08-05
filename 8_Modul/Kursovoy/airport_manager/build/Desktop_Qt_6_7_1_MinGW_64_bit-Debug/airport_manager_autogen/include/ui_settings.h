@@ -27,6 +27,7 @@ class Ui_Settings
 {
 public:
     QGridLayout *gridLayout_2;
+    QDialogButtonBox *bb_Box;
     QGroupBox *groupBox_2;
     QGridLayout *gridLayout_3;
     QLabel *lb_host;
@@ -42,7 +43,7 @@ public:
     QLabel *lb_pass;
     QLabel *lb_login;
     QPushButton *def_Button;
-    QDialogButtonBox *bb_Box;
+    QPushButton *pushButton;
 
     void setupUi(QDialog *Settings)
     {
@@ -53,6 +54,13 @@ public:
         Settings->setMaximumSize(QSize(16777215, 254));
         gridLayout_2 = new QGridLayout(Settings);
         gridLayout_2->setObjectName("gridLayout_2");
+        bb_Box = new QDialogButtonBox(Settings);
+        bb_Box->setObjectName("bb_Box");
+        bb_Box->setOrientation(Qt::Horizontal);
+        bb_Box->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+
+        gridLayout_2->addWidget(bb_Box, 3, 1, 1, 1);
+
         groupBox_2 = new QGroupBox(Settings);
         groupBox_2->setObjectName("groupBox_2");
         gridLayout_3 = new QGridLayout(groupBox_2);
@@ -158,14 +166,12 @@ public:
         def_Button = new QPushButton(Settings);
         def_Button->setObjectName("def_Button");
 
-        gridLayout_2->addWidget(def_Button, 2, 0, 1, 1);
+        gridLayout_2->addWidget(def_Button, 3, 0, 1, 1);
 
-        bb_Box = new QDialogButtonBox(Settings);
-        bb_Box->setObjectName("bb_Box");
-        bb_Box->setOrientation(Qt::Horizontal);
-        bb_Box->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+        pushButton = new QPushButton(Settings);
+        pushButton->setObjectName("pushButton");
 
-        gridLayout_2->addWidget(bb_Box, 2, 1, 1, 1);
+        gridLayout_2->addWidget(pushButton, 2, 0, 1, 1);
 
 
         retranslateUi(Settings);
@@ -184,6 +190,7 @@ public:
         lb_pass->setText(QCoreApplication::translate("Settings", "\320\237\320\260\321\200\320\276\320\273\321\214:", nullptr));
         lb_login->setText(QCoreApplication::translate("Settings", "\320\233\320\276\320\263\320\270\320\275:", nullptr));
         def_Button->setText(QCoreApplication::translate("Settings", "\320\243\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214 \320\277\320\276 \321\203\320\274\320\276\320\273\321\207\320\260\320\275\320\270\321\216", nullptr));
+        pushButton->setText(QCoreApplication::translate("Settings", "PushButton", nullptr));
     } // retranslateUi
 
 };

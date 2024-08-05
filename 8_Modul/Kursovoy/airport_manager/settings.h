@@ -31,6 +31,8 @@ public slots:
 signals:
     void sig_sendData(QVector<QString> data);
 
+
+
 private:
     Ui::Settings *ui;
     QVector<QString> data;
