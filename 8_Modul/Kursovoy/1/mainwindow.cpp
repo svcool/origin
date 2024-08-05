@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include <unistd.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -12,9 +11,53 @@ MainWindow::MainWindow(QWidget *parent)
 {
 
     ui->setupUi(this);
-    // Инициализация запросов к базе данных
-    request.resize(NumberOfRequestTypes);
+    initRequests(); //иницилизация запросов
+    QSettings settings("Company", "App");
 
+    connect(this,&MainWindow::sig_RequestToDbAirports, this, &MainWindow::requestToDb);
+    connect(this,&MainWindow::sig_RequestToDb, this, &MainWindow::requestToDb);
+    connect(&futureWatcher, &QFutureWatcher<void>::finished, this, &MainWindow::processNextTask);
+    // Инициализация объектов
+     m_settings = new Settings(this);
+
+    // Инициализация метки состояния подключения
+    statusLabel = new QLabel(this);
+    statusBar()->addWidget(statusLabel);
+    updateConnectionStatus(tr("Отключено  "));
+
+    // Добавление базы данных и её настройка
+    dataBase->AddDataBase(POSTGRE_DRIVER, DB_NAME);
+
+    // Получение данных для подключения
+    connect(dataBase.get(), &DataBase::sig_SendStatusConnection, this, &MainWindow::ReceiveStatusConnectionToDB);
+    connect(dataBase.get(), &DataBase::sig_SendStatusRequest, this, &MainWindow::ReceiveStatusRequestToDB);
+
+
+    // Таймер для автоматического подключения к базе данных
+    //connect(timer, &QTimer::timeout, this, &MainWindow::tryingToConnect);
+    connect(timer.get(), &QTimer::timeout, this, &MainWindow::tryingToConnect, Qt::DirectConnection);
+
+    dataForConnect.resize(NUM_DATA_FOR_CONNECT_TO_DB);
+
+    connect(m_settings, &Settings::sig_sendData, this, &MainWindow::timeConnect, Qt::DirectConnection);
+
+
+    //Соединяем сигнал, который передает ответ от БД с методом, который отображает ответ в ПИ
+
+    connect(dataBase.get(), &DataBase::sig_SendDataFromDBQueryMod, this, &MainWindow::ScreenDataFromDBQueryMod);
+    connect(dataBase.get(), &DataBase::sig_SendDataFromDBQueryForComboBox, this, &MainWindow::ScreenDataFromDBQueryComboBox);
+    connect(dataBase.get(), &DataBase::sig_SendDataFromDBQueryForGraphic, graphicWin.get(), &GraphicWin::FetchDataRequest);
+    //вызов окна с графиком
+    connect(ui->pb_graphic, &QPushButton::clicked, this, &MainWindow::openGraphiclWindow);
+
+    //отключаем кнопки
+    disablesPushButtom(false);
+
+   m_settings->initSettings();
+}
+
+void MainWindow::initRequests() {
+    request.resize(NumberOfRequestTypes);
 
     request[requestAirport] = "SELECT airport_name->>'ru' as airportName, airport_code "
                               "FROM bookings.airports_data";
@@ -43,51 +86,40 @@ MainWindow::MainWindow(QWidget *parent)
                                     "AND (departure_airport = 'airportCode' or arrival_airport = 'airportCode') "
                                     "GROUP BY \"Day\"";
 
-    templrequest=request; //шаблонные запросы для редактирования
-    connect(this,&MainWindow::sig_RequestToDbAirports, this, &MainWindow::requestToDb);
-    connect(this,&MainWindow::sig_RequestToDb, this, &MainWindow::requestToDb);
-    // Инициализация объектов
-
-    // Инициализация метки состояния подключения
-    statusLabel = new QLabel(this);
-    statusBar()->addWidget(statusLabel);
-    updateConnectionStatus(tr("Отключено  "));
-
-    // Добавление базы данных и её настройка
-    dataBase->AddDataBase(POSTGRE_DRIVER, DB_NAME);
-
-    // Получение данных для подключения
-    connect(dataBase.get(), &DataBase::sig_SendStatusConnection, this, &MainWindow::ReceiveStatusConnectionToDB);
-    connect(dataBase.get(), &DataBase::sig_SendStatusRequest, this, &MainWindow::ReceiveStatusRequestToDB);
-
-
-    // Таймер для автоматического подключения к базе данных
-    //connect(timer, &QTimer::timeout, this, &MainWindow::tryingToConnect);
-
-    dataForConnect.resize(NUM_DATA_FOR_CONNECT_TO_DB);
-
-//Соединяем сигнал, который передает ответ от БД с методом, который отображает ответ в ПИ
-
-    connect(dataBase.get(), &DataBase::sig_SendDataFromDBQueryMod, this, &MainWindow::ScreenDataFromDBQueryMod);
-    connect(dataBase.get(), &DataBase::sig_SendDataFromDBQueryForComboBox, this, &MainWindow::ScreenDataFromDBQueryComboBox);
-    connect(dataBase.get(), &DataBase::sig_SendDataFromDBQueryForGraphic, graphicWin.get(), &GraphicWin::FetchDataRequest);
-//вызов окна с графиком
- connect(ui->pb_graphic, &QPushButton::clicked, this, &MainWindow::openGraphiclWindow);
-
-
-    tryingToConnect();
+    templrequest = request; // Шаблонные запросы для редактирования
 }
+
+
+
+
+
+
 
 MainWindow::~MainWindow() {
+    m_settings->saveSettings();
     delete ui;
 }
+
+
+void MainWindow::timeConnect(QVector<QString> receivData){
+    timer->stop();
+    dataBase->DisconnectFromDataBase(DB_NAME);
+    updateConnectionStatus(tr("Отключено  "));
+    ui->statusbar->setStyleSheet("color:red");
+    dataForConnect = receivData;
+    receivData.clear();
+    timer->start(5000);
+}
+
+
+
 
 void MainWindow::updateConnectionStatus(const QString &statusText) {
     statusLabel->setText(statusText);
 }
 
 void MainWindow::tryingToConnect() {
-    //timer->stop();
+    timer->stop();
     updateConnectionStatus(tr("Подключение...     "));
     ui->statusbar->setStyleSheet("color:green");
     auto conn = [&]{ dataBase->ConnectToDataBase(dataForConnect); };
@@ -95,55 +127,25 @@ void MainWindow::tryingToConnect() {
 }
 
 
-
-
-
-
 void MainWindow::openGraphiclWindow() {
 
     graphicWin->addMonthsComboBox();//обработка окна во вкладке месяц
+    graphicWin->setLabel(ui->cb_comboBox->currentText());
     //запрос данных из БД
-
     request=templrequest;//копируем шаблон
     QString targetWord = "airportCode";
     QString newWord = ui->cb_comboBox->currentData().toString();
     ui->cb_comboBox->currentData();
     graphicWin->setWindowModality(Qt::ApplicationModal);
+        //замена airportCode на код аэропорта
+    request[requestStatisticsYear].replace(targetWord,newWord);
+    emit sig_RequestToDb(requestStatisticsYear);
 
-    qDebug() << "Received aitcod_openGraphiclWindow:" << newWord;
-         //замена airportCode на код аэропорта
-        request[requestStatisticsYear].replace(targetWord,newWord);
-       // graphicWin->exec();
-        QVector<QString> req1 = request;
-        int rSY = requestStatisticsYear;
-        qDebug() << "graphic Received numberRequest:" << request[requestStatisticsYear];
-//        (void)QtConcurrent::run([this, req1, rSY]() {
-//            dataBase->RequestToDB(req1, rSY);
-//        });
-        emit sig_RequestToDb(requestStatisticsYear);
-        request[requestStatisticsDay].replace(targetWord,newWord);
-        QVector<QString> req2 = request;
-        int rSD = requestStatisticsDay;
-        qDebug() << "graphic Received numberRequest:" << request[requestStatisticsDay];
-//        (void)QtConcurrent::run([this, req2, rSD]() {
-//            dataBase->RequestToDB(req2, rSD);
-//        });
-        sleep(2);
-       emit sig_RequestToDb(requestStatisticsDay);
+    request[requestStatisticsDay].replace(targetWord,newWord);
 
-//         auto conrace1 = [this, req1, rSY]() {
-//             dataBase->RequestToDB(req1, rSY);
-//         };
-//         auto conrace2 = [this, req2, rSD]() {
-//             dataBase->RequestToDB(req2, rSD);
-//         };
+    emit sig_RequestToDb(requestStatisticsDay);
 
-//         QtConcurrent::run(conrace1).then(conrace2);
-
-        graphicWin->exec();
-
-
-
+    graphicWin->exec();
 }
 
 void MainWindow::ReceiveStatusConnectionToDB(bool status) {
@@ -151,7 +153,6 @@ void MainWindow::ReceiveStatusConnectionToDB(bool status) {
     if (status) {
         updateConnectionStatus(tr("Подключено к БД  "));
         ui->statusbar->setStyleSheet("color:green");
-
         emit sig_RequestToDbAirports(requestAirport);
 
     } else {
@@ -161,13 +162,9 @@ void MainWindow::ReceiveStatusConnectionToDB(bool status) {
         updateConnectionStatus(tr("Отключено  "));
         ui->statusbar->setStyleSheet("color:red");
         msg->exec();
-        //timer->start(5000);
+        timer->start(5000);
     }
 }
-
-
-
-
 
 void MainWindow::ScreenDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, int typeRequest) {
     switch (typeRequest) {
@@ -176,12 +173,14 @@ void MainWindow::ScreenDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, int typ
         ui->tv_tableView->setModel(tableQueryMod);
         ui->tv_tableView->horizontalHeader()->setVisible(true);
         ui->tv_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        disablesPushButtom(true);
         break;
     }
     case requestDeparture: {
         ui->tv_tableView->setModel(tableQueryMod);
         ui->tv_tableView->horizontalHeader()->setVisible(true);
         ui->tv_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        disablesPushButtom(true);
         break;
     }
     default:
@@ -199,25 +198,15 @@ void MainWindow::ScreenDataFromDBQueryComboBox(QList<QPair<QString, QString>> ai
     for (const auto &pair : airportList) {
         QString displayText = pair.first + " : " + pair.second;
         ui->cb_comboBox->addItem(displayText, pair.second);
+        disablesPushButtom(true);
     }
 
-}
-
-void MainWindow::requestToDb(int numberRequest)
-{
-    qDebug() << "Received numberRequest:" << numberRequest;
-   // int numberReq=numberRequest;
-    QVector<QString> req = request;
-    // auto req = [&]{dataBase->RequestToDB(request, numberReq);}; // неправильно передает numberRequest
-    // (void)QtConcurrent::run(req);
-    (void)QtConcurrent::run([this, req, numberRequest]() {
-        dataBase->RequestToDB(req, numberRequest);
-    });
 }
 
 
 void MainWindow::on_pb_get_clicked()
 {
+    disablesPushButtom(false);
     request[requestArriving]=templrequest[requestArriving];//копируем шаблон
     request[requestDeparture]=templrequest[requestDeparture];//копируем шаблон
 
@@ -234,7 +223,7 @@ void MainWindow::on_pb_get_clicked()
         //замена airportCode на код аэропорта
         request[requestArriving].replace(targetWord,newWord);
         request[requestArriving] += " AND f.scheduled_arrival BETWEEN '" + endDate + "' AND '" + startDate + "'";
-         qDebug() << "Received numberRequest:" << request[requestArriving];
+        qDebug() << "Received numberRequest:" << request[requestArriving];
         emit sig_RequestToDb(requestArriving);
     }
 
@@ -250,7 +239,7 @@ void MainWindow::on_pb_get_clicked()
 
 }
 
-void MainWindow::ReceiveStatusRequestToDB(QSqlQuery query, QSqlError err, QVector<QString> request, int requestIndex)
+void MainWindow::ReceiveStatusRequestToDB(QSqlError err, QVector<QString> request, int requestIndex)
 {
 
     if(err.type() != QSqlError::NoError){
@@ -260,8 +249,56 @@ void MainWindow::ReceiveStatusRequestToDB(QSqlQuery query, QSqlError err, QVecto
     }
     else{
 
-        dataBase->ReadAnswerFromDB(query, request, requestIndex);
+        dataBase->ReadAnswerFromDB(request, requestIndex);
 
     }
 
+}
+
+
+void MainWindow::requestToDb(int numberRequest) {
+    qDebug() << "Received numberRequest:" << numberRequest;
+
+    // Добавляем запрос в очередь
+    taskQueue.enqueue(numberRequest);
+
+    // Если ничего не обрабатывается, запускаем обработку очереди
+    if (!isProcessing) {
+        isProcessing = true;
+        processNextTask();
+    }
+
+}
+
+
+void MainWindow::processNextTask() {
+    if (taskQueue.isEmpty()) {
+        isProcessing = false;
+        return;
+    }
+
+    // Извлекаем следующий запрос из очереди
+    int numberRequest = taskQueue.dequeue();
+
+    QVector<QString> req = request;
+
+    // Выполняем запрос в отдельном потоке
+    QFuture<void> future = QtConcurrent::run([this, req, numberRequest]() {
+        dataBase->RequestToDB(req, numberRequest);
+    });
+
+    futureWatcher.setFuture(future);
+
+    // Обработчик завершения задачи
+    connect(&futureWatcher, &QFutureWatcher<void>::finished, this, &MainWindow::processNextTask);
+}
+
+void MainWindow::disablesPushButtom(bool status){
+    ui->pb_get->setEnabled(status);
+    ui->pb_graphic->setEnabled(status);
+
+}
+
+void MainWindow::on_menu_settings_triggered() {
+    m_settings->show();
 }

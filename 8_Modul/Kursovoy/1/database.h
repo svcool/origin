@@ -58,20 +58,20 @@ public slots:
     void RequestToDB(QVector<QString> request, int numberRequest);
     QSqlError GetLastError(void);
     void ConnectToDataBase(QVector<QString> dataForConnect);
-    void ReadAnswerFromDB(QSqlQuery& query, QVector<QString> request, int numberRequest);
+    void ReadAnswerFromDB(QVector<QString> request, int numberRequest);
 
 signals:
     void sig_sendData(QVector<QString> data); //сигнал для подключения БД
     void sig_SendDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, int numberRequest);
     void sig_SendStatusConnection(bool);
-    void sig_SendStatusRequest(QSqlQuery query, QSqlError err, QVector<QString> request, int numberRequest);
+    void sig_SendStatusRequest(QSqlError err, QVector<QString> request, int numberRequest);
     void sig_SendDataFromDBQueryForComboBox(QList<QPair<QString, QString>> airportList, int numberRequest);
     void sig_SendDataFromDBQueryForGraphic(QList<QPair<QDateTime, int>> statistic, int numberRequest);
 private:
 
     QSqlDatabase* dB;
     QSqlQueryModel* tableQueryMod;
-    QSqlQuery query;
+    QSqlQuery* query;
    // QString airportName;
    // QString airportCode;
     QList<QPair<QString, QString>> airportList;

@@ -34,10 +34,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         graphicwin.h graphicwin.cpp graphicwin.ui
         cp_graphic.h cp_graphic.cpp
         request.h
-
-
-
-       #settings.h settings.cpp settings.ui
+        settings.h settings.cpp settings.ui
     )
 
 # Define target properties for Android with Qt 6 as:

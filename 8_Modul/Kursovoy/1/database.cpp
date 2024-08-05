@@ -8,7 +8,7 @@ DataBase::DataBase(QObject *parent)
      *в котором настраивается подключение к БД.
     */
     dB = new QSqlDatabase;
-    //query = new QSqlQuery();
+    query = new QSqlQuery();
     tableQueryMod = new QSqlQueryModel();// база подключается в методе setQuery
 
 
@@ -25,7 +25,7 @@ DataBase::~DataBase()
 
     delete dB;
     delete tableQueryMod;
-    //delete query;
+    delete query;
 }
 
 /*!
@@ -53,11 +53,11 @@ void DataBase::ConnectToDataBase(QVector<QString> data)
         return;
     }
 
-    data[hostName] = HOSTNAME;
-    data[dbName] = DBNAME;
-    data[login] = LOGIN;
-    data[pass] = PASSWORD;
-    data[port] = PORT;
+    // data[hostName] = HOSTNAME;
+    // data[dbName] = DBNAME;
+    // data[login] = LOGIN;
+    // data[pass] = PASSWORD;
+    // data[port] = PORT;
     dB->setHostName(data[hostName]);
     dB->setDatabaseName(data[dbName]);
     dB->setUserName(data[login]);
@@ -72,13 +72,12 @@ void DataBase::ConnectToDataBase(QVector<QString> data)
 
 void DataBase::RequestToDB(QVector<QString> request, int numberRequest) {
     qDebug() << "RequestToDB Received numberRequest:" << numberRequest;
-    //*query = QSqlQuery(*dB);
-      QSqlQuery query(*dB);
+    *query = QSqlQuery(*dB);
     QSqlError err;
 
     if(numberRequest == requestAirport || numberRequest == requestStatisticsYear || numberRequest == requestStatisticsDay){
-        if(!query.exec(request[numberRequest])){
-            err = query.lastError();
+        if(!query->exec(request[numberRequest])){
+            err = query->lastError();
         }
     }
     else if(numberRequest == requestArriving || numberRequest == requestDeparture ) {
@@ -96,22 +95,22 @@ void DataBase::RequestToDB(QVector<QString> request, int numberRequest) {
 
 
     }
-    emit sig_SendStatusRequest(query, err, request, numberRequest);
+    emit sig_SendStatusRequest(err, request, numberRequest);
 
 }
 
-void DataBase::ReadAnswerFromDB(QSqlQuery& query, QVector<QString> request, int numberRequest){
+void DataBase::ReadAnswerFromDB(QVector<QString> request, int numberRequest){
     switch (numberRequest) {
 
     case requestAirport:{
         airportList.clear();
-        while (query.next()) {
-            QString airportName = query.value("airportName").toString();
-            QString airportCode = query.value("airport_code").toString();
+        while (query->next()) {
+            QString airportName = query->value("airportName").toString();
+            QString airportCode = query->value("airport_code").toString();
             airportList.append(qMakePair(airportName, airportCode));
         }
 
-       emit sig_SendDataFromDBQueryForComboBox(airportList, numberRequest);
+        emit sig_SendDataFromDBQueryForComboBox(airportList, numberRequest);
 
         break;
     }
@@ -144,9 +143,9 @@ void DataBase::ReadAnswerFromDB(QSqlQuery& query, QVector<QString> request, int 
     case requestStatisticsYear:{
         //QList<QPair<QDateTime, int>> statYear;
         statYear.clear();
-        while (query.next()) {
-            QDateTime sYear = query.value("Month").toDateTime(); //из столбца "Month"
-            int flightCountYear = query.value("count").toInt(); //из столбца "count"
+        while (query->next()) {
+            QDateTime sYear = query->value("Month").toDateTime(); //из столбца "Month"
+            int flightCountYear = query->value("count").toInt(); //из столбца "count"
             qDebug() << "Yar data:" << sYear << ":" << flightCountYear;
             statYear.append(qMakePair(sYear, flightCountYear));
         }
@@ -158,9 +157,9 @@ void DataBase::ReadAnswerFromDB(QSqlQuery& query, QVector<QString> request, int 
     case requestStatisticsDay: {
        // QList<QPair<QDateTime, int>> statDay;
         statDay.clear();
-        while (query.next()) {
-            QDateTime sDay = query.value("Day").toDateTime(); //из столбца "Month"
-            int flightCountDay = query.value("count").toInt(); //из столбца "count"
+        while (query->next()) {
+            QDateTime sDay = query->value("Day").toDateTime(); //из столбца "Month"
+            int flightCountDay = query->value("count").toInt(); //из столбца "count"
             qDebug() << "Yar data:" << sDay << ":" << flightCountDay;
             statDay.append(qMakePair(sDay, flightCountDay));
         }

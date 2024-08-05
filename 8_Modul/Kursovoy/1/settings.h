@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QSettings>
 #include "ui_settings.h"
+#include <QSettings>
 
 
 namespace Ui {
@@ -24,15 +25,18 @@ public:
 
 public slots:
     void on_bb_Box_accepted();
+    void on_bb_Box_rejected();
     void on_def_Button_clicked();
 
 signals:
     void sig_sendData(QVector<QString> data);
 
+
+
 private:
     Ui::Settings *ui;
     QVector<QString> data;
-    QSettings *settings;
+    QSettings settings;
 };
 
 #endif // SETTINGS_H
