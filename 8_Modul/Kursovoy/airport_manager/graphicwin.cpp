@@ -6,6 +6,7 @@ GraphicWin::GraphicWin(QWidget *parent)
     , ui(new Ui::GraphicWin)
 {
     ui->setupUi(this);
+    ui->tabWidget->setCurrentIndex(0);
     //Создаем объект нашего класса
     graphClassYear = new CpGraphic(ui->cp_widget_1);
     graphClassMonth = new CpGraphic(ui->cp_widget_2);
@@ -20,8 +21,8 @@ GraphicWin::~GraphicWin()
 void GraphicWin::graphicBuild()
 {
     //обновить графики
-   // graphClassYear->UpdateGraph(ui->cp_widget_1);
- //   graphClassMonth->UpdateGraph(ui->cp_widget_2);
+    // graphClassYear->UpdateGraph(ui->cp_widget_1);
+    //   graphClassMonth->UpdateGraph(ui->cp_widget_2);
 }
 //очистка графиков
 void GraphicWin::graphicClear()
@@ -31,7 +32,7 @@ void GraphicWin::graphicClear()
 }
 
 void GraphicWin::addMonthsComboBox(){
-    //ui->cb_comboBox->clear();
+    ui->cb_comboBox->clear();
     ui->cb_comboBox->addItems(months);
     ui->cb_comboBox->setCurrentIndex(0);
 
@@ -79,7 +80,7 @@ void GraphicWin::ScreenDataGraphicLine(QList<QPair<QDateTime, int>> data, int in
         }
     }
     graphClassMonth->UpdateGraph(ui->cp_widget_2, x_month_day, y_flCounts);
-   // graphClassMonth->UpdateGraph(ui->cp_widget_2);
+    // graphClassMonth->UpdateGraph(ui->cp_widget_2);
 }
 
 void GraphicWin::ScreenDataGraphicBars(QList<QPair<QDateTime, int>> data){
@@ -88,14 +89,14 @@ void GraphicWin::ScreenDataGraphicBars(QList<QPair<QDateTime, int>> data){
     QVector<double> flCounts;
 
 
-        for (int i = 0; i < data.size(); ++i) {
-            qDebug() << "Data:" << data[i].first.toString("dd MMM yyyy");
-            ticks.append(i + 1);
-            labels.append(data[i].first.toString("MMM yyyy"));
-            flCounts.append(data[i].second);
-        }
-        graphClassYear->UpdateGraphBars(ui->cp_widget_1,ticks, labels, flCounts);
-       // graphClassYear->UpdateGraphBars(ui->cp_widget_1);
+    for (int i = 0; i < data.size(); ++i) {
+        qDebug() << "Data:" << data[i].first.toString("dd MMM yyyy");
+        ticks.append(i + 1);
+        labels.append(data[i].first.toString("MMM yyyy"));
+        flCounts.append(data[i].second);
+    }
+    graphClassYear->UpdateGraphBars(ui->cp_widget_1,ticks, labels, flCounts);
+    // graphClassYear->UpdateGraphBars(ui->cp_widget_1);
 }
 
 void GraphicWin::on_cb_comboBox_currentIndexChanged(int index)

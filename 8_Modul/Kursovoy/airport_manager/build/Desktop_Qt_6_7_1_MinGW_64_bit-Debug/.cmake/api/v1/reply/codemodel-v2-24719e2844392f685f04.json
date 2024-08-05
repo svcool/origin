@@ -1,0 +1,79 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-4dc5f648fbdb77fad6be.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "airport_manager",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "airport_manager::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-airport_manager-Debug-96404ba2f2f2cb659ea4.json",
+					"name" : "airport_manager",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "airport_manager_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-airport_manager_autogen-Debug-11e4f31227d6fe72c500.json",
+					"name" : "airport_manager_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "airport_manager_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-airport_manager_autogen_timestamp_deps-Debug-6840ac40ef95efea621e.json",
+					"name" : "airport_manager_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/Program Files/MyProject/origin/origin/8_Modul/Kursovoy/airport_manager/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug",
+		"source" : "D:/Program Files/MyProject/origin/origin/8_Modul/Kursovoy/airport_manager"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}

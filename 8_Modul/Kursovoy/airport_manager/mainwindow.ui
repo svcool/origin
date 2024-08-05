@@ -200,7 +200,7 @@
            </property>
            <property name="minimumDateTime">
             <datetime>
-             <hour>22</hour>
+             <hour>2</hour>
              <minute>0</minute>
              <second>0</second>
              <year>2016</year>
@@ -376,6 +376,22 @@
     <hint type="sourcelabel">
      <x>571</x>
      <y>499</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>319</x>
+     <y>275</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>menu_exit</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
     </hint>
     <hint type="destinationlabel">
      <x>319</x>

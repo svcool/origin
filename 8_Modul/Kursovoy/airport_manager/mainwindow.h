@@ -4,10 +4,12 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QtConcurrent>
+#include <QSettings>
 #include <QTimer>
 #include <memory>
 #include "graphicwin.h"
 #include "database.h"
+#include "settings.h"
 #include "request.h"
 
 QT_BEGIN_NAMESPACE
@@ -25,19 +27,22 @@ public:
     ~MainWindow();
     //void initializeSettings(); // Метод для инициализации настроек
 
-
+    void initRequests();//иницилизация запросов
     void updateConnectionStatus(const QString &statusText);
     void tryingToConnect();//попытка подключения после иницилизации данных
 
     void processNextTask();
     void onTaskFinished();
+    void disablesPushButtom(bool status);
+
 public slots:
+    void timeConnect(QVector<QString> receivData);
     void ReceiveStatusRequestToDB(QSqlError err, QVector<QString> request, int numberRequest);
     void ScreenDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, int typeRequest);
     void ScreenDataFromDBQueryComboBox(QList<QPair<QString, QString>> airportList, int numberRequest);
     void ReceiveStatusConnectionToDB(bool status);
     void requestToDb(int numberRequest);
-
+void on_menu_settings_triggered();
     void on_pb_get_clicked();
 
     void openGraphiclWindow();
@@ -47,6 +52,8 @@ signals:
     void sig_RequestToDbAirports(int numberRequest);
     void sig_RequestToDb(int numberRequest);
 private slots:
+
+
 
 
 private:
@@ -59,9 +66,10 @@ private:
     QVector<QString> templrequest;//шаблонные запросы для редактирования
     QLabel* statusLabel;
     std::unique_ptr<QTimer> timer;
-
+    Settings* m_settings;//класс для настроек
+    //QSettings settings;
     QQueue<int> taskQueue;  // Очередь запросов
-        bool isProcessing = false;
+    bool isProcessing = false;
 
         QFutureWatcher<void> futureWatcher;
 

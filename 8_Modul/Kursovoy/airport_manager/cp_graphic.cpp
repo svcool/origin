@@ -7,28 +7,14 @@ CpGraphic::CpGraphic(QCustomPlot* cPlot)
     передать оси, по которым будет строиться график.
    */
 
-   // ptrGraph = new QCPGraph(cPlot->xAxis, cPlot->yAxis);
+    ptrGraph = new QCPGraph(cPlot->xAxis, cPlot->yAxis);
     ptrGraphBars = new QCPBars(cPlot->xAxis, cPlot->yAxis);
 
-    //В отличии от QtCharts QCustomPlot поддерживает встроенные функции масштабирования.
-    cPlot->setInteraction(QCP::iRangeZoom, true);
-    cPlot->setInteraction(QCP::iRangeDrag, true);
+    //В отличии от QtCharts QCustomPlot поддерживает встроенные функции масштабирования мышью.
+    // cPlot->setInteraction(QCP::iRangeZoom, true);
+    //  cPlot->setInteraction(QCP::iRangeDrag, true);
 }
 
-/*!
-    @brief Метод добавляет данные на график
-*/
-void CpGraphic::AddDataToGrahp(QVector<double> x, QVector<double> y)
-{
-    //Добавляем данные на серию
-    ptrGraph->addData(x,y);
-}
-
-void CpGraphic::AddDataToGrahpBars(QVector<double> ticks, QVector<QString> labels, QVector<double> flCounts)
-{
-
-
-}
 
 /*!
     @brief Метод очищает данные хранящиеся в памяти графиков
@@ -37,18 +23,12 @@ void CpGraphic::ClearGraph(QCustomPlot* cPlot)
 {
     //Очищаем данные
     ptrGraph->data().clear();
+    cPlot->graph(0)->data()->clear();
 
-    for(int i = 0; i< cPlot->graphCount(); i++){
-        cPlot->graph(i)->data()->clear();
-    }
     //Обновляем отображение графика
     cPlot->replot();
 
 }
-
-/*!
-    @brief Слот обновляет отрисовку графика
-*/
 
 void CpGraphic::UpdateGraphBars(QCustomPlot *cPlot, QVector<double> ticks, QVector<QString> labels, QVector<double> flCounts){
 
@@ -67,67 +47,50 @@ void CpGraphic::UpdateGraphBars(QCustomPlot *cPlot, QVector<double> ticks, QVect
     cPlot->xAxis->setTickLength(0, 4);
     cPlot->xAxis->grid()->setVisible(true);
     cPlot->xAxis->setRange(0, ticks.size() + 1);
+    auto maxY = *std::max_element(flCounts.begin(), flCounts.end());
+    cPlot->yAxis->setRange(0, maxY + maxY/4);
+    cPlot->yAxis->setLabel("Количество вылетов");
 
-    cPlot->yAxis->setRange(0, *std::max_element(flCounts.begin(), flCounts.end()) + 10);
-    cPlot->yAxis->setLabel("Flight Count");
+    CpGraphic::UpdateGraph(cPlot);
+}
+
+void CpGraphic::UpdateGraph(QCustomPlot *cPlot)
+{
     //Масштабируем оси
     //cPlot->rescaleAxes();
     //Отрисовываем график
     cPlot->replot();
 }
 
-void CpGraphic::UpdateGraph(QCustomPlot *cPlot)
-{
-
-
-    //Масштабируем оси
-    cPlot->rescaleAxes();
-    //Отрисовываем график
-    cPlot->replot();
-
-}
-
-void CpGraphic::UpdateGraphBars(QCustomPlot *cPlot)
-{
-
-
-cPlot->replot();
-}
 
 void CpGraphic::UpdateGraph(QCustomPlot *cPlot, QList<QPair<int, int>> month_day, QVector<int> flCount){
-    QVector<double> x ,y;
-    int selectedMonth = 10;
+
+    QVector<double> day;
+    QVector<double> flcount;
+    double maxday=0 , maxflcount=0;
     for (int i = 0; i < month_day.size(); ++i) {
-            x.append(month_day[i].second);
-            y.append(flCount[i]);
-           // qDebug() << "x:" << month_day[i].second;
-         //  qDebug() << "y:" << flCount[i];
+        day.append(month_day[i].second);
+        flcount.append(flCount[i]);
+        // Обновляем , если текущее значение больше
+        if (month_day[i].second > maxday) {
+            maxday = month_day[i].second;
+        }
+
+        // Обновляем , если текущее значение больше
+        if (flCount[i] > maxflcount) {
+            maxflcount = flCount[i];
+        }
     }
 
-  cPlot->addGraph();
-  cPlot->graph(0)->setData(x,y);
 
-    cPlot->setInteraction(QCP::iRangeZoom, true);
-    cPlot->setInteraction(QCP::iRangeDrag, true);
+    ptrGraph->setData(day, flcount);
     cPlot->xAxis->setLabel("День месяца");
     cPlot->yAxis->setLabel("Количество вылетов");
-
-    // Вычисляем максимальное значение на оси Y
-    //double maxY = *std::max_element(y.begin(), y.end());
-    //double yOffset = 10; // Смещение для оси Y
-    //cPlot->yAxis->setRange(0, maxY + yOffset);
-    cPlot->yAxis->ticker()->setTickCount(5);
+    cPlot->yAxis->setRange(1, maxflcount + 3);
+    cPlot->graph(0)->setBrush(QBrush(QColor(0, 0, 255, 20)));
+    cPlot->yAxis->ticker()->setTickCount(maxflcount);
     cPlot->xAxis->ticker()->setTickCount(31);
-    cPlot->xAxis->setRange(1, 31); // Диапазон от 1 до 31 дня
+    cPlot->xAxis->setRange(1,  maxday); // Диапазон от 1 до 31 дня
 
-  //  cPlot->yAxis->setRange(0, *std::max_element(y.begin(),y.end() + 10);
-
-
-
-
-
-    //Масштабируем оси
-    cPlot->rescaleAxes();
-    //Отрисовываем график
-    cPlot->replot();
+    CpGraphic::UpdateGraph(cPlot);
 }

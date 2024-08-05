@@ -53,11 +53,11 @@ void DataBase::ConnectToDataBase(QVector<QString> data)
         return;
     }
 
-    data[hostName] = HOSTNAME;
-    data[dbName] = DBNAME;
-    data[login] = LOGIN;
-    data[pass] = PASSWORD;
-    data[port] = PORT;
+    // data[hostName] = HOSTNAME;
+    // data[dbName] = DBNAME;
+    // data[login] = LOGIN;
+    // data[pass] = PASSWORD;
+    // data[port] = PORT;
     dB->setHostName(data[hostName]);
     dB->setDatabaseName(data[dbName]);
     dB->setUserName(data[login]);
@@ -110,7 +110,7 @@ void DataBase::ReadAnswerFromDB(QVector<QString> request, int numberRequest){
             airportList.append(qMakePair(airportName, airportCode));
         }
 
-       emit sig_SendDataFromDBQueryForComboBox(airportList, numberRequest);
+        emit sig_SendDataFromDBQueryForComboBox(airportList, numberRequest);
 
         break;
     }
