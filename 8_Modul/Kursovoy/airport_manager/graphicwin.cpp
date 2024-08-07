@@ -16,6 +16,8 @@ GraphicWin::GraphicWin(QWidget *parent)
 GraphicWin::~GraphicWin()
 {
     delete ui;
+    delete graphClassYear;
+    delete graphClassMonth;
 }
 
 void GraphicWin::graphicBuild()
