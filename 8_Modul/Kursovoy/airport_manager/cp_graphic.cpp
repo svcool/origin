@@ -74,11 +74,28 @@ void CpGraphic::updateGraph(QCustomPlot *cPlot, QList<QPair<int, int>> month_day
     ptrGraph->setData(day, flcount);
     cPlot->xAxis->setLabel("День месяца");
     cPlot->yAxis->setLabel("Количество вылетов");
+
+    // Устанавливаем диапазон на оси Y с небольшим запасом сверху
     cPlot->yAxis->setRange(1, maxflcount + 3);
-    cPlot->graph(0)->setBrush(QBrush(QColor(0, 0, 255, 20)));
-    cPlot->yAxis->ticker()->setTickCount(maxflcount/20);
+
+    // Настройка количества делений на оси Y
+    int maxIntervals = 20;
+    int tickCount = std::min(maxIntervals, static_cast<int>(maxflcount));
+
+    // Используем QSharedPointer для настройки делений на оси Y
+    QSharedPointer<QCPAxisTickerFixed> fixedTicker(new QCPAxisTickerFixed);
+    fixedTicker->setTickStep(1.0); // Устанавливаем шаг равный 1 для целых чисел
+    fixedTicker->setScaleStrategy(QCPAxisTickerFixed::ssMultiples); // Устанавливаем стратегию делений
+
+    cPlot->yAxis->setTicker(fixedTicker);
+    cPlot->yAxis->ticker()->setTickCount(tickCount);
+
+    // Устанавливаем количество делений на оси X для дней месяца
     cPlot->xAxis->ticker()->setTickCount(31);
-    cPlot->xAxis->setRange(1,  maxday); // Диапазон от 1 до 31 дня
+    cPlot->xAxis->setRange(1, maxday); // Диапазон от 1 до maxday
+
+    // Добавляем графику заливку
+    cPlot->graph(0)->setBrush(QBrush(QColor(0, 0, 255, 20)));
 
     CpGraphic::updateGraph(cPlot);
 }
