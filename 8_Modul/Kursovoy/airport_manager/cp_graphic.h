@@ -18,7 +18,6 @@ public:
     void updateGraph(QCustomPlot* cPlot);
 private:
 
-    //Определияем указатель QCPGraph, который отвечает именно за наполнение графика.
     QCPGraph* ptrGraph;
     QCPBars* ptrGraphBars;
 };

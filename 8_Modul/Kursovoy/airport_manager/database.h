@@ -31,18 +31,6 @@ enum fieldsForConnect{
     port = 4
 };
 
-// //Типы запросов
-// enum requestType : int {
-
-//     requestAirport = 0,
-//     requestArriving   = 1,
-//     requestDeparture = 2,
-//     requestStatisticsYear = 3,
-//     requestStatisticsDay = 4,
-//     NumberOfRequestTypes = 5
-// };
-
-
 
 class DataBase : public QObject
 {
@@ -52,7 +40,6 @@ public:
     explicit DataBase(QObject *parent = nullptr);
     ~DataBase();
 public slots:
-   // void DataForConnection(); //данные для подключения БД
     void addDataToBase(QString driver, QString nameDB = "");
     void disconnectFromDataBase(QString nameDb = "");
     void requestToDB(QVector<QString> request, int numberRequest);
@@ -73,8 +60,8 @@ private:
     QSqlQueryModel* tableQueryMod;
     QSqlQuery* query;
     QList<QPair<QString, QString>> airportList;
-   QList<QPair<QDateTime, int>> statYear;
-   QList<QPair<QDateTime, int>> statDay;
+    QList<QPair<QDateTime, int>> statYear;
+    QList<QPair<QDateTime, int>> statDay;
 
 };
 

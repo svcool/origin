@@ -2,11 +2,23 @@
 
 CpGraphic::CpGraphic(QCustomPlot* cPlot)
 {
+    /*
+    Выделяем память под объекты графиков. В конструкторе необходимо
+    передать оси, по которым будет строиться график.
+   */
 
     ptrGraph = new QCPGraph(cPlot->xAxis, cPlot->yAxis);
     ptrGraphBars = new QCPBars(cPlot->xAxis, cPlot->yAxis);
+
+    //В отличии от QtCharts QCustomPlot поддерживает встроенные функции масштабирования мышью.
+     //cPlot->setInteraction(QCP::iRangeZoom, true);
+     //cPlot->setInteraction(QCP::iRangeDrag, true);
 }
 
+
+/*!
+    @brief Метод очищает данные хранящиеся в памяти графиков
+*/
 void CpGraphic::clearGraph(QCustomPlot* cPlot)
 {
     //Очищаем данные

@@ -23,12 +23,12 @@ public:
     void graphicBuild();
     void graphicClear();
     void addMonthsComboBox();
-    void ScreenDataFromDBQueryGraphic(QList<QPair<QDateTime, int>> statistic, int numberRequest);
+    void screenDataFromDBQueryGraphic(QList<QPair<QDateTime, int>> statistic, int numberRequest);
 
 
-    void ScreenDataGraphicLine(QList<QPair<QDateTime, int> > data, int index);
-    void ScreenDataGraphicBars(QList<QPair<QDateTime, int> > data);
-    void FetchDataRequest(QList<QPair<QDateTime, int> > data, int numberRequest);
+    void screenDataGraphicLine(QList<QPair<QDateTime, int> > data, int index);
+    void screenDataGraphicBars(QList<QPair<QDateTime, int> > data);
+    void fetchDataRequest(QList<QPair<QDateTime, int> > data, int numberRequest);
     void setLabel(const QString &text);
 private slots:
 

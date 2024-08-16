@@ -33,7 +33,7 @@ DataBase::~DataBase()
  * \param driver драйвер БД
  * \param nameDB имя БД (Если отсутствует Qt задает имя по умолчанию)
  */
-void DataBase::AddDataBase(QString driver, QString nameDB)
+void DataBase::addDataToBase(QString driver, QString nameDB)
 {
 
     *dB = QSqlDatabase::addDatabase(driver, nameDB.isEmpty() ? DB_NAME : nameDB);
@@ -45,7 +45,7 @@ void DataBase::AddDataBase(QString driver, QString nameDB)
  * \param для удобства передаем контейнер с данными необходимыми для подключения
  * \return возвращает тип ошибки
  */
-void DataBase::ConnectToDataBase(QVector<QString> data)
+void DataBase::connectToDataBase(QVector<QString> data)
 {
     if (data.size() != NUM_DATA_FOR_CONNECT_TO_DB) {
         qWarning() << "Invalid data for database connection";
@@ -70,7 +70,7 @@ void DataBase::ConnectToDataBase(QVector<QString> data)
 
 }
 
-void DataBase::RequestToDB(QVector<QString> request, int numberRequest) {
+void DataBase::requestToDB(QVector<QString> request, int numberRequest) {
     qDebug() << "RequestToDB Received numberRequest:" << numberRequest;
     *query = QSqlQuery(*dB);
     QSqlError err;
@@ -99,7 +99,7 @@ void DataBase::RequestToDB(QVector<QString> request, int numberRequest) {
 
 }
 
-void DataBase::ReadAnswerFromDB(QVector<QString> request, int numberRequest){
+void DataBase::readAnswerFromDB(QVector<QString> request, int numberRequest){
     switch (numberRequest) {
 
     case requestAirport:{
@@ -178,7 +178,7 @@ void DataBase::ReadAnswerFromDB(QVector<QString> request, int numberRequest){
  * \brief Метод производит отключение от БД
  * \param Имя БД
  */
-void DataBase::DisconnectFromDataBase(QString nameDb)
+void DataBase::disconnectFromDataBase(QString nameDb)
 {
 
     if (dB->isOpen()) {
@@ -194,7 +194,7 @@ void DataBase::DisconnectFromDataBase(QString nameDb)
 /*!
  * @brief Метод возвращает последнюю ошибку БД
  */
-QSqlError DataBase::GetLastError()
+QSqlError DataBase::getLastError()
 {
     return dB->lastError();
 }

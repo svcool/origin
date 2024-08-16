@@ -6,7 +6,6 @@
 #include <QtConcurrent>
 #include <QSettings>
 #include <QTimer>
-#include <memory>
 #include "graphicwin.h"
 #include "database.h"
 #include "settings.h"
@@ -32,7 +31,6 @@ public:
     void initRequests();//иницилизация запросов
     void updateConnectionStatus(const QString &statusText);
     void tryingToConnect();//попытка подключения после иницилизации данных
-
     void processNextTask();
     void onTaskFinished();
     void disablesPushButtom(bool status);
@@ -62,7 +60,6 @@ private:
     QLabel* statusLabel;
     QTimer* timer;
     Settings* m_settings;//класс для настроек
-    //QSettings settings;
     QQueue<int> taskQueue;  // Очередь запросов
     bool isProcessing = false;
     QFutureWatcher<void> futureWatcher;

@@ -4,21 +4,20 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , msg(std::make_unique<QMessageBox>(this))
-    , graphicWin(std::make_unique<GraphicWin>(this))
-    , dataBase(std::make_unique<DataBase>(this))
-    , timer(std::make_unique<QTimer>(this))
 {
 
     ui->setupUi(this);
     initRequests(); //иницилизация запросов
-    QSettings settings("Company", "App");
 
-    connect(this,&MainWindow::sig_RequestToDbAirports, this, &MainWindow::requestToDb);
-    connect(this,&MainWindow::sig_RequestToDb, this, &MainWindow::requestToDb);
-    connect(&futureWatcher, &QFutureWatcher<void>::finished, this, &MainWindow::processNextTask);
     // Инициализация объектов
-     m_settings = new Settings(this);
+    QSettings settings("Company", "App");
+    msg = new QMessageBox(this);
+    graphicWin = new GraphicWin(this);
+    dataBase = new DataBase(this);
+    timer = new  QTimer(this);
+    connect(&futureWatcher, &QFutureWatcher<void>::finished, this, &MainWindow::processNextTask);
+    m_settings = new Settings(this);
+    ui->dtby_dateEdit->setDisabled(true);
 
     // Инициализация метки состояния подключения
     statusLabel = new QLabel(this);
@@ -26,16 +25,16 @@ MainWindow::MainWindow(QWidget *parent)
     updateConnectionStatus(tr("Отключено  "));
 
     // Добавление базы данных и её настройка
-    dataBase->AddDataBase(POSTGRE_DRIVER, DB_NAME);
+    dataBase->addDataToBase(POSTGRE_DRIVER, DB_NAME);
 
     // Получение данных для подключения
-    connect(dataBase.get(), &DataBase::sig_SendStatusConnection, this, &MainWindow::ReceiveStatusConnectionToDB);
-    connect(dataBase.get(), &DataBase::sig_SendStatusRequest, this, &MainWindow::ReceiveStatusRequestToDB);
+    connect(dataBase, &DataBase::sig_SendStatusConnection, this, &MainWindow::receiveStatusConnectionToDB);
+    connect(dataBase, &DataBase::sig_SendStatusRequest, this, &MainWindow::receiveStatusRequestToDB);
 
 
     // Таймер для автоматического подключения к базе данных
     //connect(timer, &QTimer::timeout, this, &MainWindow::tryingToConnect);
-    connect(timer.get(), &QTimer::timeout, this, &MainWindow::tryingToConnect, Qt::DirectConnection);
+    connect(timer, &QTimer::timeout, this, &MainWindow::tryingToConnect, Qt::DirectConnection);
 
     dataForConnect.resize(NUM_DATA_FOR_CONNECT_TO_DB);
 
@@ -44,9 +43,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     //Соединяем сигнал, который передает ответ от БД с методом, который отображает ответ в ПИ
 
-    connect(dataBase.get(), &DataBase::sig_SendDataFromDBQueryMod, this, &MainWindow::ScreenDataFromDBQueryMod);
-    connect(dataBase.get(), &DataBase::sig_SendDataFromDBQueryForComboBox, this, &MainWindow::ScreenDataFromDBQueryComboBox);
-    connect(dataBase.get(), &DataBase::sig_SendDataFromDBQueryForGraphic, graphicWin.get(), &GraphicWin::FetchDataRequest);
+    connect(dataBase, &DataBase::sig_SendDataFromDBQueryMod, this, &MainWindow::screenDataFromDBQueryMod);
+    connect(dataBase, &DataBase::sig_SendDataFromDBQueryForComboBox, this, &MainWindow::screenDataFromDBQueryComboBox);
+    connect(dataBase, &DataBase::sig_SendDataFromDBQueryForGraphic, graphicWin, &GraphicWin::fetchDataRequest);
     //вызов окна с графиком
     connect(ui->pb_graphic, &QPushButton::clicked, this, &MainWindow::openGraphiclWindow);
 
@@ -62,12 +61,12 @@ void MainWindow::initRequests() {
     request[requestAirport] = "SELECT airport_name->>'ru' as airportName, airport_code "
                               "FROM bookings.airports_data";
 
-    request[requestArriving] = "SELECT f.flight_no, f.scheduled_arrival, ad.airport_name->>'ru' as \"Name\" "
+    request[requestArriving] = "SELECT f.flight_no, f.scheduled_arrival AT TIME ZONE 'Europe/Moscow' AS scheduled_arrival_local, ad.airport_name->>'ru' as \"Name\" "
                                "FROM bookings.flights f "
                                "JOIN bookings.airports_data ad ON ad.airport_code = f.departure_airport "
                                "WHERE f.arrival_airport = 'airportCode'";
 
-    request[requestDeparture] = "SELECT flight_no, scheduled_departure, ad.airport_name->>'ru' as \"Name\" "
+    request[requestDeparture] = "SELECT flight_no, scheduled_departure AT TIME ZONE 'Europe/Moscow' AS scheduled_arrival_local, ad.airport_name->>'ru' as \"Name\" "
                                 "FROM bookings.flights f "
                                 "JOIN bookings.airports_data ad on ad.airport_code = f.arrival_airport "
                                 "WHERE f.departure_airport = 'airportCode'";
@@ -89,6 +88,12 @@ void MainWindow::initRequests() {
     templrequest = request; // Шаблонные запросы для редактирования
 }
 
+
+
+
+
+
+
 MainWindow::~MainWindow() {
     m_settings->saveSettings();
     delete ui;
@@ -97,8 +102,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::timeConnect(QVector<QString> receivData){
     timer->stop();
-    dataBase->DisconnectFromDataBase(DB_NAME);
-    disablesPushButtom(false);
+    dataBase->disconnectFromDataBase(DB_NAME);
     updateConnectionStatus(tr("Отключено  "));
     ui->statusbar->setStyleSheet("color:red");
     dataForConnect = receivData;
@@ -117,7 +121,7 @@ void MainWindow::tryingToConnect() {
     timer->stop();
     updateConnectionStatus(tr("Подключение...     "));
     ui->statusbar->setStyleSheet("color:green");
-    auto conn = [&]{ dataBase->ConnectToDataBase(dataForConnect); };
+    auto conn = [&]{ dataBase->connectToDataBase(dataForConnect); };
     (void)QtConcurrent::run(conn);
 }
 
@@ -134,26 +138,26 @@ void MainWindow::openGraphiclWindow() {
     graphicWin->setWindowModality(Qt::ApplicationModal);
         //замена airportCode на код аэропорта
     request[requestStatisticsYear].replace(targetWord,newWord);
-    emit sig_RequestToDb(requestStatisticsYear);
+    requestToDb(requestStatisticsYear);
 
     request[requestStatisticsDay].replace(targetWord,newWord);
 
-    emit sig_RequestToDb(requestStatisticsDay);
+    requestToDb(requestStatisticsDay);
 
     graphicWin->exec();
 }
 
-void MainWindow::ReceiveStatusConnectionToDB(bool status) {
+void MainWindow::receiveStatusConnectionToDB(bool status) {
 
     if (status) {
         updateConnectionStatus(tr("Подключено к БД  "));
         ui->statusbar->setStyleSheet("color:green");
-        emit sig_RequestToDbAirports(requestAirport);
+        requestToDb(requestAirport);
 
     } else {
-        dataBase->DisconnectFromDataBase(DB_NAME);
+        dataBase->disconnectFromDataBase(DB_NAME);
         msg->setIcon(QMessageBox::Critical);
-        msg->setText(dataBase->GetLastError().text());
+        msg->setText(dataBase->getLastError().text());
         updateConnectionStatus(tr("Отключено  "));
         ui->statusbar->setStyleSheet("color:red");
         msg->exec();
@@ -161,7 +165,7 @@ void MainWindow::ReceiveStatusConnectionToDB(bool status) {
     }
 }
 
-void MainWindow::ScreenDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, int typeRequest) {
+void MainWindow::screenDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, int typeRequest) {
     switch (typeRequest) {
     case requestAirport:
     case requestArriving: {
@@ -183,7 +187,7 @@ void MainWindow::ScreenDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, int typ
     }
 }
 
-void MainWindow::ScreenDataFromDBQueryComboBox(QList<QPair<QString, QString>> airportList, int numberRequest)
+void MainWindow::screenDataFromDBQueryComboBox(QList<QPair<QString, QString>> airportList, int numberRequest)
 {
     if (airportList.isEmpty()) {
         qDebug() << "Airport list is empty. No items to add to comboBox.";
@@ -210,31 +214,42 @@ void MainWindow::on_pb_get_clicked()
 
     QString startDate = ui->dtby_dateEdit->date().toString("yyyy-MM-dd");
     QString endDate = ui->dtfrom_dateEdit->date().toString("yyyy-MM-dd");
+    //если выбран диапазон испльзуем только первую дату
+    if(ui->dif_checkBox->isChecked() == false){
+        startDate = endDate;
+    }
+
     qDebug() << "Received numberRequest:" << startDate;
     qDebug() << "Received numberRequest:" << endDate;
+
 
     //прилет
     if(ui->rb_arrival->isChecked()){
         //замена airportCode на код аэропорта
+
         request[requestArriving].replace(targetWord,newWord);
-        request[requestArriving] += " AND f.scheduled_arrival BETWEEN '" + endDate + "' AND '" + startDate + "'";
+
+        request[requestArriving] += " AND f.scheduled_arrival AT TIME ZONE 'Europe/Moscow' BETWEEN '" + endDate + " 00:00:00' AND '" + startDate + " 23:59:59'";
+
         qDebug() << "Received numberRequest:" << request[requestArriving];
-        emit sig_RequestToDb(requestArriving);
+        requestToDb(requestArriving);
     }
 
     //вылет
     if(ui->rb_Departure->isChecked()){
         //замена airportCode на код аэропорта
         request[requestDeparture].replace(targetWord,newWord);
-        request[requestDeparture] += " AND f.scheduled_arrival BETWEEN '" + endDate + "' AND '" + startDate + "'";
+
+        request[requestDeparture] += " AND f.scheduled_arrival AT TIME ZONE 'Europe/Moscow' BETWEEN '" + endDate + " 00:00:00' AND '" + startDate + " 23:59:59'";
+
         qDebug() << "Received numberRequest:" << request[requestDeparture];
-        emit sig_RequestToDb(requestDeparture);
+        requestToDb(requestDeparture);
 
     }
 
 }
 
-void MainWindow::ReceiveStatusRequestToDB(QSqlError err, QVector<QString> request, int requestIndex)
+void MainWindow::receiveStatusRequestToDB(QSqlError err, QVector<QString> request, int requestIndex)
 {
 
     if(err.type() != QSqlError::NoError){
@@ -244,7 +259,7 @@ void MainWindow::ReceiveStatusRequestToDB(QSqlError err, QVector<QString> reques
     }
     else{
 
-        dataBase->ReadAnswerFromDB(request, requestIndex);
+        dataBase->readAnswerFromDB(request, requestIndex);
 
     }
 
@@ -279,7 +294,7 @@ void MainWindow::processNextTask() {
 
     // Выполняем запрос в отдельном потоке
     QFuture<void> future = QtConcurrent::run([this, req, numberRequest]() {
-        dataBase->RequestToDB(req, numberRequest);
+        dataBase->requestToDB(req, numberRequest);
     });
 
     futureWatcher.setFuture(future);
@@ -297,3 +312,17 @@ void MainWindow::disablesPushButtom(bool status){
 void MainWindow::on_menu_settings_triggered() {
     m_settings->show();
 }
+
+void MainWindow::on_dif_checkBox_clicked(bool checked)
+{
+    if(checked){
+        ui->dtby_dateEdit->setDisabled(false);
+    }
+    else{
+        ui->dtby_dateEdit->setDisabled(true);
+    }
+
+
+}
+
+

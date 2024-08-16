@@ -60,6 +60,8 @@ void Settings::initSettings(){
 
 }
 
+
+
 void Settings::on_bb_Box_accepted()
 {
     //Добавляем данные в контейнер

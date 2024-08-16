@@ -38,7 +38,7 @@ void Settings::loadSettings()
     if(settings.contains("data")){
         data = settings.value("data").value<QVector<QString>>();;
     } else  {
-         qDebug() << "Загрузка параметров по умолчанию";
+        qDebug() << "Загрузка параметров по умолчанию";
         data[hostName] = HOSTNAME;
         data[dbName] = DBNAME;
         data[login] = LOGIN;
@@ -70,11 +70,6 @@ void Settings::on_bb_Box_accepted()
     data[login] = ui->le_login->text();
     data[pass] = ui->le_pass->text();
     data[port] = ui->spB_port->text();
-    qDebug() << "settings pointer:" << &settings;
-    qDebug() << "data size:" << data.size();
-    for (int i = 0; i < data.size(); ++i) {
-        qDebug() << "data[" << i << "]:" << data[i];
-    }
     Settings::saveSettings();
     emit sig_sendData(data);
     accept();

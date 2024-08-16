@@ -20,12 +20,6 @@ GraphicWin::~GraphicWin()
     delete graphClassMonth;
 }
 
-void GraphicWin::graphicBuild()
-{
-    //обновить графики
-    // graphClassYear->updateGraph(ui->cp_widget_1);
-    //   graphClassMonth->updateGraph(ui->cp_widget_2);
-}
 //очистка графиков
 void GraphicWin::graphicClear()
 {
@@ -91,7 +85,6 @@ void GraphicWin::screenDataGraphicBars(QList<QPair<QDateTime, int>> data){
 
 
     for (int i = 0; i < data.size(); ++i) {
-        qDebug() << "Data:" << data[i].first.toString("dd MMM yyyy");
         ticks.append(i + 1);
         labels.append(data[i].first.toString("MMM yyyy"));
         flCounts.append(data[i].second);

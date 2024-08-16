@@ -5,10 +5,6 @@
 #include "request.h"
 #include "cp_graphic.h"
 
-//При использовании динамической библиотеки необходимо подключить заголовочный файл,
-//но не добавлять его в проект.
-//Типы запросов
-
 namespace Ui {
 class GraphicWin;
 }
@@ -20,7 +16,6 @@ class GraphicWin : public QDialog
 public:
     explicit GraphicWin(QWidget *parent = nullptr);
     ~GraphicWin();
-    void graphicBuild();
     void graphicClear();
     void addMonthsComboBox();
     void screenDataFromDBQueryGraphic(QList<QPair<QDateTime, int>> statistic, int numberRequest);

@@ -5,7 +5,6 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-
     ui->setupUi(this);
     initRequests(); //иницилизация запросов
 
@@ -31,18 +30,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(dataBase, &DataBase::sig_SendStatusConnection, this, &MainWindow::receiveStatusConnectionToDB);
     connect(dataBase, &DataBase::sig_SendStatusRequest, this, &MainWindow::receiveStatusRequestToDB);
 
-
     // Таймер для автоматического подключения к базе данных
-    //connect(timer, &QTimer::timeout, this, &MainWindow::tryingToConnect);
     connect(timer, &QTimer::timeout, this, &MainWindow::tryingToConnect, Qt::DirectConnection);
 
     dataForConnect.resize(NUM_DATA_FOR_CONNECT_TO_DB);
 
     connect(m_settings, &Settings::sig_sendData, this, &MainWindow::timeConnect, Qt::DirectConnection);
-
-
-    //Соединяем сигнал, который передает ответ от БД с методом, который отображает ответ в ПИ
-
     connect(dataBase, &DataBase::sig_SendDataFromDBQueryMod, this, &MainWindow::screenDataFromDBQueryMod);
     connect(dataBase, &DataBase::sig_SendDataFromDBQueryForComboBox, this, &MainWindow::screenDataFromDBQueryComboBox);
     connect(dataBase, &DataBase::sig_SendDataFromDBQueryForGraphic, graphicWin, &GraphicWin::fetchDataRequest);
@@ -52,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
     //отключаем кнопки
     disablesPushButtom(false);
 
-   m_settings->initSettings();
+    m_settings->initSettings();
 }
 
 void MainWindow::initRequests() {
@@ -85,13 +78,8 @@ void MainWindow::initRequests() {
                                     "AND (departure_airport = 'airportCode' or arrival_airport = 'airportCode') "
                                     "GROUP BY \"Day\"";
 
-    templrequest = request; // Шаблонные запросы для редактирования
+    templrequest = request;
 }
-
-
-
-
-
 
 
 MainWindow::~MainWindow() {
@@ -109,8 +97,6 @@ void MainWindow::timeConnect(QVector<QString> receivData){
     receivData.clear();
     timer->start(5000);
 }
-
-
 
 
 void MainWindow::updateConnectionStatus(const QString &statusText) {
@@ -193,7 +179,7 @@ void MainWindow::screenDataFromDBQueryComboBox(QList<QPair<QString, QString>> ai
         qDebug() << "Airport list is empty. No items to add to comboBox.";
         return;
     }
-    ui->cb_comboBox->clear(); // Очистка текущих элементов
+    ui->cb_comboBox->clear();
     for (const auto &pair : airportList) {
         QString displayText = pair.first + " : " + pair.second;
         ui->cb_comboBox->addItem(displayText, pair.second);
@@ -206,8 +192,8 @@ void MainWindow::screenDataFromDBQueryComboBox(QList<QPair<QString, QString>> ai
 void MainWindow::on_pb_get_clicked()
 {
     disablesPushButtom(false);
-    request[requestArriving]=templrequest[requestArriving];//копируем шаблон
-    request[requestDeparture]=templrequest[requestDeparture];//копируем шаблон
+    request[requestArriving]=templrequest[requestArriving];
+    request[requestDeparture]=templrequest[requestDeparture];
 
     QString targetWord = "airportCode";
     QString newWord = ui->cb_comboBox->currentData().toString();
@@ -219,30 +205,19 @@ void MainWindow::on_pb_get_clicked()
         startDate = endDate;
     }
 
-    qDebug() << "Received numberRequest:" << startDate;
-    qDebug() << "Received numberRequest:" << endDate;
-
-
     //прилет
     if(ui->rb_arrival->isChecked()){
-        //замена airportCode на код аэропорта
-
         request[requestArriving].replace(targetWord,newWord);
 
         request[requestArriving] += " AND f.scheduled_arrival AT TIME ZONE 'Europe/Moscow' BETWEEN '" + endDate + " 00:00:00' AND '" + startDate + " 23:59:59'";
-
-        qDebug() << "Received numberRequest:" << request[requestArriving];
         requestToDb(requestArriving);
     }
 
     //вылет
     if(ui->rb_Departure->isChecked()){
-        //замена airportCode на код аэропорта
         request[requestDeparture].replace(targetWord,newWord);
 
         request[requestDeparture] += " AND f.scheduled_arrival AT TIME ZONE 'Europe/Moscow' BETWEEN '" + endDate + " 00:00:00' AND '" + startDate + " 23:59:59'";
-
-        qDebug() << "Received numberRequest:" << request[requestDeparture];
         requestToDb(requestDeparture);
 
     }
@@ -267,8 +242,6 @@ void MainWindow::receiveStatusRequestToDB(QSqlError err, QVector<QString> reques
 
 
 void MainWindow::requestToDb(int numberRequest) {
-    qDebug() << "Received numberRequest:" << numberRequest;
-
     // Добавляем запрос в очередь
     taskQueue.enqueue(numberRequest);
 

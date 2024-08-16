@@ -23,14 +23,14 @@ GraphicWin::~GraphicWin()
 void GraphicWin::graphicBuild()
 {
     //обновить графики
-    // graphClassYear->UpdateGraph(ui->cp_widget_1);
-    //   graphClassMonth->UpdateGraph(ui->cp_widget_2);
+    // graphClassYear->updateGraph(ui->cp_widget_1);
+    //   graphClassMonth->updateGraph(ui->cp_widget_2);
 }
 //очистка графиков
 void GraphicWin::graphicClear()
 {
-    graphClassYear->ClearGraph(ui->cp_widget_1);
-    graphClassMonth->ClearGraph(ui->cp_widget_2);
+    graphClassYear->clearGraph(ui->cp_widget_1);
+    graphClassMonth->clearGraph(ui->cp_widget_2);
 }
 
 void GraphicWin::addMonthsComboBox(){
@@ -48,28 +48,28 @@ void GraphicWin::setLabel(const QString &text){
     ui->lb_airport->setText(newtext);
 }
 
-void GraphicWin::ScreenDataFromDBQueryGraphic(QList<QPair<QDateTime, int>> data, int numberRequest)
+void GraphicWin::screenDataFromDBQueryGraphic(QList<QPair<QDateTime, int>> data, int numberRequest)
 {
 
 
 }
 
-void GraphicWin::FetchDataRequest(QList<QPair<QDateTime, int>> data, int numberRequest){
+void GraphicWin::fetchDataRequest(QList<QPair<QDateTime, int>> data, int numberRequest){
     switch(numberRequest){
     case requestStatisticsYear:{
         dataBars = data;
-        GraphicWin::ScreenDataGraphicBars(dataBars);
+        GraphicWin::screenDataGraphicBars(dataBars);
     }
     case requestStatisticsDay:{
         dataLine = data;
-        GraphicWin::ScreenDataGraphicLine(dataLine, 0);
+        GraphicWin::screenDataGraphicLine(dataLine, 0);
     }
     }
 
 
 }
 
-void GraphicWin::ScreenDataGraphicLine(QList<QPair<QDateTime, int>> data, int index){
+void GraphicWin::screenDataGraphicLine(QList<QPair<QDateTime, int>> data, int index){
     QList<QPair<int, int>> x_month_day;//для линейного графика
     QVector<int> y_flCounts; //для линейного графика
 
@@ -81,11 +81,10 @@ void GraphicWin::ScreenDataGraphicLine(QList<QPair<QDateTime, int>> data, int in
             y_flCounts.append(data[i].second);
         }
     }
-    graphClassMonth->UpdateGraph(ui->cp_widget_2, x_month_day, y_flCounts);
-    // graphClassMonth->UpdateGraph(ui->cp_widget_2);
+    graphClassMonth->updateGraph(ui->cp_widget_2, x_month_day, y_flCounts);
 }
 
-void GraphicWin::ScreenDataGraphicBars(QList<QPair<QDateTime, int>> data){
+void GraphicWin::screenDataGraphicBars(QList<QPair<QDateTime, int>> data){
     QVector<double> ticks;
     QVector<QString> labels;
     QVector<double> flCounts;
@@ -97,13 +96,12 @@ void GraphicWin::ScreenDataGraphicBars(QList<QPair<QDateTime, int>> data){
         labels.append(data[i].first.toString("MMM yyyy"));
         flCounts.append(data[i].second);
     }
-    graphClassYear->UpdateGraphBars(ui->cp_widget_1,ticks, labels, flCounts);
-    // graphClassYear->UpdateGraphBars(ui->cp_widget_1);
+    graphClassYear->updateGraphBars(ui->cp_widget_1,ticks, labels, flCounts);
 }
 
 void GraphicWin::on_cb_comboBox_currentIndexChanged(int index)
 {
-    GraphicWin::ScreenDataGraphicLine(dataLine, index);
+    GraphicWin::screenDataGraphicLine(dataLine, index);
 
 }
 

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>663</width>
+    <width>640</width>
     <height>552</height>
    </rect>
   </property>
@@ -42,45 +42,57 @@
          <string/>
         </property>
         <layout class="QGridLayout" name="gridLayout_3">
-         <item row="0" column="0" colspan="2">
-          <widget class="QLabel" name="label">
+         <item row="9" column="1">
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="label_4">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>17</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
-            <string>Выбор аэропорта:</string>
+            <string>по:</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="0" colspan="2">
-          <widget class="QComboBox" name="cb_comboBox"/>
+         <item row="3" column="0" colspan="2">
+          <widget class="QRadioButton" name="rb_arrival">
+           <property name="text">
+            <string>Прилет</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
-         <item row="7" column="1">
-          <widget class="QDateEdit" name="dtby_dateEdit">
+         <item row="6" column="1">
+          <widget class="QDateEdit" name="dtfrom_dateEdit">
            <property name="dateTime">
             <datetime>
-             <hour>0</hour>
-             <minute>0</minute>
-             <second>0</second>
-             <year>2017</year>
-             <month>9</month>
-             <day>14</day>
-            </datetime>
-           </property>
-           <property name="maximumDateTime">
-            <datetime>
-             <hour>0</hour>
-             <minute>0</minute>
-             <second>0</second>
-             <year>2017</year>
-             <month>9</month>
-             <day>14</day>
-            </datetime>
-           </property>
-           <property name="minimumDateTime">
-            <datetime>
-             <hour>16</hour>
-             <minute>0</minute>
+             <hour>2</hour>
+             <minute>45</minute>
              <second>0</second>
              <year>2016</year>
-             <month>9</month>
+             <month>8</month>
              <day>15</day>
             </datetime>
            </property>
@@ -94,26 +106,53 @@
            <property name="minimumDate">
             <date>
              <year>2016</year>
-             <month>9</month>
+             <month>8</month>
              <day>15</day>
             </date>
            </property>
            <property name="maximumTime">
             <time>
-             <hour>0</hour>
-             <minute>0</minute>
+             <hour>2</hour>
+             <minute>45</minute>
+             <second>0</second>
+            </time>
+           </property>
+           <property name="minimumTime">
+            <time>
+             <hour>2</hour>
+             <minute>45</minute>
              <second>0</second>
             </time>
            </property>
            <property name="calendarPopup">
             <bool>true</bool>
            </property>
+           <property name="currentSectionIndex">
+            <number>0</number>
+           </property>
            <property name="date">
             <date>
-             <year>2017</year>
-             <month>9</month>
-             <day>14</day>
+             <year>2016</year>
+             <month>8</month>
+             <day>15</day>
             </date>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="QComboBox" name="cb_comboBox"/>
+         </item>
+         <item row="5" column="0" colspan="2">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Выбор даты:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QRadioButton" name="rb_Departure">
+           <property name="text">
+            <string>Вылет</string>
            </property>
           </widget>
          </item>
@@ -136,86 +175,37 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="0">
-          <widget class="QRadioButton" name="rb_Departure">
+         <item row="0" column="0" colspan="2">
+          <widget class="QLabel" name="label">
            <property name="text">
-            <string>Вылет</string>
+            <string>Выбор аэропорта:</string>
            </property>
           </widget>
          </item>
-         <item row="5" column="0" colspan="2">
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>Выбор даты:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0" colspan="2">
-          <widget class="QRadioButton" name="rb_arrival">
-           <property name="text">
-            <string>Прилет</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="7" column="0">
-          <widget class="QLabel" name="label_4">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>17</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>по:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="1">
-          <widget class="QDateEdit" name="dtfrom_dateEdit">
+         <item row="7" column="1">
+          <widget class="QDateEdit" name="dtby_dateEdit">
            <property name="dateTime">
             <datetime>
-             <hour>10</hour>
-             <minute>55</minute>
+             <hour>2</hour>
+             <minute>45</minute>
              <second>0</second>
              <year>2016</year>
              <month>8</month>
              <day>15</day>
             </datetime>
            </property>
-           <property name="maximumDateTime">
-            <datetime>
-             <hour>0</hour>
-             <minute>0</minute>
+           <property name="time">
+            <time>
+             <hour>2</hour>
+             <minute>45</minute>
              <second>0</second>
-             <year>2017</year>
-             <month>9</month>
-             <day>13</day>
-            </datetime>
-           </property>
-           <property name="minimumDateTime">
-            <datetime>
-             <hour>10</hour>
-             <minute>55</minute>
-             <second>0</second>
-             <year>2016</year>
-             <month>8</month>
-             <day>15</day>
-            </datetime>
+            </time>
            </property>
            <property name="maximumDate">
             <date>
              <year>2017</year>
              <month>9</month>
-             <day>13</day>
+             <day>14</day>
             </date>
            </property>
            <property name="minimumDate">
@@ -227,15 +217,15 @@
            </property>
            <property name="maximumTime">
             <time>
-             <hour>0</hour>
-             <minute>0</minute>
+             <hour>2</hour>
+             <minute>45</minute>
              <second>0</second>
             </time>
            </property>
            <property name="minimumTime">
             <time>
-             <hour>10</hour>
-             <minute>55</minute>
+             <hour>2</hour>
+             <minute>45</minute>
              <second>0</second>
             </time>
            </property>
@@ -254,18 +244,12 @@
            </property>
           </widget>
          </item>
-         <item row="8" column="1">
-          <spacer name="verticalSpacer">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
+         <item row="8" column="0" colspan="2">
+          <widget class="QCheckBox" name="dif_checkBox">
+           <property name="text">
+            <string>включить диапазон</string>
            </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -328,8 +312,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>663</width>
-     <height>26</height>
+     <width>640</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
