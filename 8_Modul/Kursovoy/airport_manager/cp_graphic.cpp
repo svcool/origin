@@ -11,15 +11,15 @@ CpGraphic::CpGraphic(QCustomPlot* cPlot)
     ptrGraphBars = new QCPBars(cPlot->xAxis, cPlot->yAxis);
 
     //В отличии от QtCharts QCustomPlot поддерживает встроенные функции масштабирования мышью.
-    // cPlot->setInteraction(QCP::iRangeZoom, true);
-    //  cPlot->setInteraction(QCP::iRangeDrag, true);
+     //cPlot->setInteraction(QCP::iRangeZoom, true);
+     //cPlot->setInteraction(QCP::iRangeDrag, true);
 }
 
 
 /*!
     @brief Метод очищает данные хранящиеся в памяти графиков
 */
-void CpGraphic::ClearGraph(QCustomPlot* cPlot)
+void CpGraphic::clearGraph(QCustomPlot* cPlot)
 {
     //Очищаем данные
     ptrGraph->data().clear();
@@ -30,7 +30,7 @@ void CpGraphic::ClearGraph(QCustomPlot* cPlot)
 
 }
 
-void CpGraphic::UpdateGraphBars(QCustomPlot *cPlot, QVector<double> ticks, QVector<QString> labels, QVector<double> flCounts){
+void CpGraphic::updateGraphBars(QCustomPlot *cPlot, QVector<double> ticks, QVector<QString> labels, QVector<double> flCounts){
 
     ptrGraphBars->setWidth(0.6);
     ptrGraphBars->setData(ticks, flCounts);
@@ -51,10 +51,10 @@ void CpGraphic::UpdateGraphBars(QCustomPlot *cPlot, QVector<double> ticks, QVect
     cPlot->yAxis->setRange(0, maxY + maxY/4);
     cPlot->yAxis->setLabel("Количество вылетов");
 
-    CpGraphic::UpdateGraph(cPlot);
+    CpGraphic::updateGraph(cPlot);
 }
 
-void CpGraphic::UpdateGraph(QCustomPlot *cPlot)
+void CpGraphic::updateGraph(QCustomPlot *cPlot)
 {
     //Масштабируем оси
     //cPlot->rescaleAxes();
@@ -63,7 +63,7 @@ void CpGraphic::UpdateGraph(QCustomPlot *cPlot)
 }
 
 
-void CpGraphic::UpdateGraph(QCustomPlot *cPlot, QList<QPair<int, int>> month_day, QVector<int> flCount){
+void CpGraphic::updateGraph(QCustomPlot *cPlot, QList<QPair<int, int>> month_day, QVector<int> flCount){
 
     QVector<double> day;
     QVector<double> flcount;
@@ -88,9 +88,9 @@ void CpGraphic::UpdateGraph(QCustomPlot *cPlot, QList<QPair<int, int>> month_day
     cPlot->yAxis->setLabel("Количество вылетов");
     cPlot->yAxis->setRange(1, maxflcount + 3);
     cPlot->graph(0)->setBrush(QBrush(QColor(0, 0, 255, 20)));
-    cPlot->yAxis->ticker()->setTickCount(maxflcount);
+    cPlot->yAxis->ticker()->setTickCount(maxflcount/20);
     cPlot->xAxis->ticker()->setTickCount(31);
     cPlot->xAxis->setRange(1,  maxday); // Диапазон от 1 до 31 дня
 
-    CpGraphic::UpdateGraph(cPlot);
+    CpGraphic::updateGraph(cPlot);
 }

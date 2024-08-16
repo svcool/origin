@@ -12,10 +12,10 @@ class CpGraphic : public QObject
 
 public:
     CpGraphic(QCustomPlot* cPlot);
-    void ClearGraph(QCustomPlot* cPlot);
-    void UpdateGraph(QCustomPlot* cPlot, QList<QPair<int, int>> month_day, QVector<int> flCount);
-    void UpdateGraphBars(QCustomPlot *cPlot, QVector<double> ticks, QVector<QString> labels, QVector<double> flCounts);
-    void UpdateGraph(QCustomPlot* cPlot);
+    void clearGraph(QCustomPlot* cPlot);
+    void updateGraph(QCustomPlot* cPlot, QList<QPair<int, int>> month_day, QVector<int> flCount);
+    void updateGraphBars(QCustomPlot *cPlot, QVector<double> ticks, QVector<QString> labels, QVector<double> flCounts);
+    void updateGraph(QCustomPlot* cPlot);
 private:
 
     //Определияем указатель QCPGraph, который отвечает именно за наполнение графика.

@@ -11,6 +11,8 @@
 #include "database.h"
 #include "settings.h"
 #include "request.h"
+#include <QDateTime>
+#include <QTimeZone>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -37,41 +39,33 @@ public:
 
 public slots:
     void timeConnect(QVector<QString> receivData);
-    void ReceiveStatusRequestToDB(QSqlError err, QVector<QString> request, int numberRequest);
-    void ScreenDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, int typeRequest);
-    void ScreenDataFromDBQueryComboBox(QList<QPair<QString, QString>> airportList, int numberRequest);
-    void ReceiveStatusConnectionToDB(bool status);
+    void receiveStatusRequestToDB(QSqlError err, QVector<QString> request, int numberRequest);
+    void screenDataFromDBQueryMod(QSqlQueryModel* tableQueryMod, int typeRequest);
+    void screenDataFromDBQueryComboBox(QList<QPair<QString, QString>> airportList, int numberRequest);
+    void receiveStatusConnectionToDB(bool status);
     void requestToDb(int numberRequest);
-void on_menu_settings_triggered();
+    void on_menu_settings_triggered();
     void on_pb_get_clicked();
-
     void openGraphiclWindow();
-signals:
 
-
-    void sig_RequestToDbAirports(int numberRequest);
-    void sig_RequestToDb(int numberRequest);
 private slots:
-
-
-
+    void on_dif_checkBox_clicked(bool checked);
 
 private:
     Ui::MainWindow *ui;
-    std::unique_ptr<QMessageBox> msg;
-    std::unique_ptr<GraphicWin> graphicWin;
+    QMessageBox* msg;
+    GraphicWin* graphicWin;
     QVector<QString> dataForConnect; // Данные для подключения
-    std::unique_ptr<DataBase> dataBase;
+    DataBase* dataBase;
     QVector<QString> request; // Запросы
     QVector<QString> templrequest;//шаблонные запросы для редактирования
     QLabel* statusLabel;
-    std::unique_ptr<QTimer> timer;
+    QTimer* timer;
     Settings* m_settings;//класс для настроек
     //QSettings settings;
     QQueue<int> taskQueue;  // Очередь запросов
     bool isProcessing = false;
-
-        QFutureWatcher<void> futureWatcher;
-
+    QFutureWatcher<void> futureWatcher;
+    int offsetHours=0;
 };
 #endif // MAINWINDOW_H

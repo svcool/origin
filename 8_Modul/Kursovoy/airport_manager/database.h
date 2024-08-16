@@ -53,12 +53,12 @@ public:
     ~DataBase();
 public slots:
    // void DataForConnection(); //данные для подключения БД
-    void AddDataBase(QString driver, QString nameDB = "");
-    void DisconnectFromDataBase(QString nameDb = "");
-    void RequestToDB(QVector<QString> request, int numberRequest);
-    QSqlError GetLastError(void);
-    void ConnectToDataBase(QVector<QString> dataForConnect);
-    void ReadAnswerFromDB(QVector<QString> request, int numberRequest);
+    void addDataToBase(QString driver, QString nameDB = "");
+    void disconnectFromDataBase(QString nameDb = "");
+    void requestToDB(QVector<QString> request, int numberRequest);
+    QSqlError getLastError(void);
+    void connectToDataBase(QVector<QString> dataForConnect);
+    void readAnswerFromDB(QVector<QString> request, int numberRequest);
 
 signals:
     void sig_sendData(QVector<QString> data); //сигнал для подключения БД
@@ -72,14 +72,10 @@ private:
     QSqlDatabase* dB;
     QSqlQueryModel* tableQueryMod;
     QSqlQuery* query;
-   // QString airportName;
-   // QString airportCode;
     QList<QPair<QString, QString>> airportList;
-   // QDateTime sYear, sDay;
-    //int flightCountYear, flightCountDay;
    QList<QPair<QDateTime, int>> statYear;
    QList<QPair<QDateTime, int>> statDay;
-    //int numberRequest = 0;
+
 };
 
 #endif // DATABASE_H
