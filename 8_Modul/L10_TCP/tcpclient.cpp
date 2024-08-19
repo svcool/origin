@@ -25,7 +25,16 @@ QDataStream &operator <<(QDataStream &in, ServiceHeader &data){
     return in;
 };
 
+QDataStream &operator >>(QDataStream &out, StatServer &data){
 
+    out >> data.incBytes;
+    out >> data.sendBytes;
+    out >> data.revPck;
+    out >> data.sendPck;
+    out >> data.workTime;
+    out >> data.clients;
+    return out;
+};
 
 /*
  * Поскольку мы являемся клиентом, инициализацию сокета
@@ -34,6 +43,23 @@ QDataStream &operator <<(QDataStream &in, ServiceHeader &data){
 */
 TCPclient::TCPclient(QObject *parent) : QObject(parent)
 {
+    socket = new QTcpSocket(this);
+
+    //соединяем с методом обработки входящих данных
+    connect(socket, &QTcpSocket::readyRead, this, &TCPclient::ReadyRead);
+
+    //Прокидываем сигналы статусов подключения
+    connect(socket,&QTcpSocket::connected, this, [&]{
+    emit sig_connectStatus(STATUS_SUCCES);
+    });
+
+    //Прокидываем сигналы статусов подключения
+    connect(socket,&QTcpSocket::errorOccurred, this, [&]{
+        emit sig_connectStatus(ERR_CONNECT_TO_HOST);
+    });
+
+    //Прокидываем сигналы отключения
+    connect(socket, &QTcpSocket::disconnected, this, &TCPclient::sig_Disconnected);
 
 }
 
@@ -43,8 +69,12 @@ TCPclient::TCPclient(QObject *parent) : QObject(parent)
 */
 void TCPclient::SendRequest(ServiceHeader head)
 {
+    //Сериализуем данные в массив байт
+    QByteArray sendHdr;
+    QDataStream outStream(&sendHdr, QIODevice::WriteOnly);
 
-
+    outStream << head;
+    socket->write(sendHdr);
 }
 
 /* write
@@ -52,7 +82,13 @@ void TCPclient::SendRequest(ServiceHeader head)
 */
 void TCPclient::SendData(ServiceHeader head, QString str)
 {
+    QByteArray sendData;
+    QDataStream outStream(&sendData, QIODevice::WriteOnly);
 
+    outStream << head;
+    outStream << str;
+
+    socket->write(sendData);
 
 }
 
@@ -61,7 +97,7 @@ void TCPclient::SendData(ServiceHeader head, QString str)
  */
 void TCPclient::ConnectToHost(QHostAddress host, uint16_t port)
 {
-
+    socket->connectToHost(host, port);
 }
 /*
  * \brief Метод отключения от сервера
@@ -69,10 +105,17 @@ void TCPclient::ConnectToHost(QHostAddress host, uint16_t port)
 void TCPclient::DisconnectFromHost()
 {
 
+    socket->disconnectFromHost();
 }
 
+/*
+ * Метод обрабатывает сигнал readyRead. Поскольку данные могут придти несколькими сегментами, нам необходимо
+ * собрать их все, а потом начать обрабатывать.
+ * Для этого у нас в служебном заголовке есть длина данных. Т.е нам нужно сначала прочитать зоголовок, после
+ * этого прочитать данные
+ */
 
-void TCPclient::ReadyReed()
+void TCPclient::ReadyRead()
 {
 
     QDataStream incStream(socket);
@@ -101,7 +144,7 @@ void TCPclient::ReadyReed()
                 incStream >> servHeader;
                 //Проверяем на корректность данных. Принимаем решение по заранее известному ID
                 //пакета. Если он "битый" отбрасываем все данные в поисках нового ID.
-                if(servHeader.id != ID){
+                if(servHeader.id != ID){//можно разорвать соединение, в случае если ID не совпадает(DDOS)
                     uint16_t hdr = 0;
                     while(incStream.atEnd()){
                         incStream >> hdr;
@@ -116,7 +159,7 @@ void TCPclient::ReadyReed()
             }
         }
         //Если получены не все данные, то выходим из обработчика. Ждем новую посылку
-        if(socket->bytesAvailable() < servHeader.len){
+        if(socket->bytesAvailable() < servHeader.len){//если байтменьше длины пакета
             return;
         }
         else{
@@ -142,14 +185,43 @@ void TCPclient::ProcessingData(ServiceHeader header, QDataStream &stream)
 
     switch (header.idData){
 
-        case GET_TIME:
-        case GET_SIZE:
-        case GET_STAT:
-        case SET_DATA:
-        case CLEAR_DATA:
-        default:
-            return;
-
+    case GET_TIME:{
+        QDateTime time;
+        stream >> time;
+        emit sig_sendTime(time);
+        break;
+    }
+    case GET_SIZE:{
+        uint32_t size;
+        stream >> size;
+        emit sig_sendFreeSize(size);
+        break;
+    }
+    case GET_STAT:{
+        StatServer stat;
+        stream >> stat;
+        emit sig_sendStat(stat);
+        break;
+    }
+    case SET_DATA:{
+        if (header.status ==  ERR_NO_FREE_SPACE){
+            emit sig_Error(ERR_NO_FREE_SPACE);
+            break;
         }
+        else{
+            QString data;
+            stream >> data;
+            emit sig_SendReplyForSetData(data);
+            break;
+        }
+    }
+    case CLEAR_DATA:{
+        emit sig_Success(header.idData);
+        break;
+    }
+    default:
+        return;
+
+    }
 
 }

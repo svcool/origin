@@ -9,7 +9,7 @@
 #define TYPE_ANS 20
 
 
-#pragma pack(push, 1)
+#pragma pack(push, 1) //отключение выравнивания данных, необходимо для сетевых пакетов
 
 
 enum Messages{
@@ -49,7 +49,7 @@ struct ServiceHeader{
 struct StatServer{
 
     StatServer(){
-            memset(this, 0, sizeof(*this));
+            memset(this, 0, sizeof(*this)); // обнуляет значения
     }
 
     uint32_t incBytes;  //принято байт
