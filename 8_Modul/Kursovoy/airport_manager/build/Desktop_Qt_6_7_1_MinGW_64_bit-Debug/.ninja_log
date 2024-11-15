@@ -1,0 +1,14 @@
+# ninja log v5
+2	123	0	D:/Program Files/MyProject/origin/origin/8_Modul/Kursovoy/airport_manager/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/CMakeFiles/cmake.verify_globs	309e8ba32fa7693d
+1	2962	7533748124334603	airport_manager_autogen/timestamp	d6ab115d0df7a66e
+1	2962	7533748124334603	airport_manager_autogen/mocs_compilation.cpp	d6ab115d0df7a66e
+1	2962	7533748124334603	D:/Program Files/MyProject/origin/origin/8_Modul/Kursovoy/airport_manager/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/airport_manager_autogen/timestamp	d6ab115d0df7a66e
+1	2962	7533748124334603	D:/Program Files/MyProject/origin/origin/8_Modul/Kursovoy/airport_manager/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/airport_manager_autogen/mocs_compilation.cpp	d6ab115d0df7a66e
+2976	6872	7533748164196720	CMakeFiles/airport_manager.dir/database.cpp.obj	5237b0becd320e3d
+2980	7027	7533748165716709	CMakeFiles/airport_manager.dir/settings.cpp.obj	ed09ea5fb2b57960
+2972	12032	7533748215796760	CMakeFiles/airport_manager.dir/cp_graphic.cpp.obj	30ec971f98aba15b
+2966	12119	7533748216656541	CMakeFiles/airport_manager.dir/main.cpp.obj	b8d75fff95672941
+2963	12315	7533748218616546	CMakeFiles/airport_manager.dir/graphicwin.cpp.obj	a6fd2409d50bbc0e
+2969	13616	7533748231536516	CMakeFiles/airport_manager.dir/mainwindow.cpp.obj	b2d8c7d80b8ff7c2
+2983	13694	7533748232316811	CMakeFiles/airport_manager.dir/airport_manager_autogen/mocs_compilation.cpp.obj	a8ba77fbd87181e5
+13694	16284	7533748257513130	airport_manager.exe	d0e0dbb75711ef8e
