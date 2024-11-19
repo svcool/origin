@@ -14,4 +14,26 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="EServerHttp.cpp">
+      <Filter>Исходные файлы</Filter>
+    </Text>
+    <Text Include="EClient.cpp">
+      <Filter>Исходные файлы</Filter>
+    </Text>
+    <Text Include="BoostLocale.cpp">
+      <Filter>Исходные файлы</Filter>
+    </Text>
+    <Text Include="settings.ini">
+      <Filter>Исходные файлы</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Regular.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="XPath.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+  </ItemGroup>
 </Project>
