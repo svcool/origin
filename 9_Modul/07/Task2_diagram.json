@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "author": "Sergey",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-uno", "id": "uno", "top": 125.4, "left": -163.8, "attrs": {} },
+    {
+      "type": "wokwi-stepper-motor",
+      "id": "stepper1",
+      "top": -169.19,
+      "left": 202.03,
+      "attrs": { "size": "17" }
+    },
+    { "type": "wokwi-a4988", "id": "drv1", "top": 33.6, "left": 158.4, "attrs": {} }
+  ],
+  "connections": [
+    [ "stepper1:A-", "drv1:2B", "green", [ "v0" ] ],
+    [ "stepper1:A+", "drv1:2A", "green", [ "v57.6", "h-67.2" ] ],
+    [ "stepper1:B+", "drv1:1A", "green", [ "v67.2", "h-76.8" ] ],
+    [ "stepper1:B-", "drv1:1B", "green", [ "v0" ] ],
+    [ "drv1:DIR", "uno:2", "green", [ "h0" ] ],
+    [ "drv1:STEP", "uno:3", "green", [ "h-96" ] ],
+    [ "drv1:SLEEP", "drv1:RESET", "green", [ "h-28.8", "v-9.6" ] ]
+  ],
+  "dependencies": {}
+}

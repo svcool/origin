@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "author": "Sergey",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-uno", "id": "uno", "top": 87, "left": -0.6, "attrs": {} },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn1",
+      "top": -3.4,
+      "left": 297.6,
+      "attrs": { "color": "green", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-stepper-motor",
+      "id": "stepper1",
+      "top": -207.59,
+      "left": 77.23,
+      "attrs": { "size": "17" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn2",
+      "top": -70.6,
+      "left": 297.6,
+      "attrs": { "color": "green", "bounce": "0" }
+    }
+  ],
+  "connections": [
+    [ "btn1:2.l", "uno:2", "green", [ "h0" ] ],
+    [ "btn1:1.r", "uno:GND.2", "green", [ "v0", "h9.8", "v288", "h-201.6" ] ],
+    [ "stepper1:B-", "uno:8", "green", [ "v0" ] ],
+    [ "stepper1:B+", "uno:9", "green", [ "v0" ] ],
+    [ "stepper1:A+", "uno:10", "green", [ "v0" ] ],
+    [ "stepper1:A-", "uno:11", "green", [ "v0" ] ],
+    [ "btn2:2.l", "uno:3", "green", [ "h0" ] ],
+    [ "btn2:1.r", "uno:GND.2", "green", [ "v0", "h19.4", "v364.8", "h-220.8" ] ]
+  ],
+  "dependencies": {}
+}

@@ -1,0 +1,209 @@
+{
+  "version": 1,
+  "author": "Sergey",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 96, "left": -23.96, "attrs": {} },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn1",
+      "top": 159.8,
+      "left": -316.8,
+      "attrs": { "color": "green", "bounce": "1" }
+    },
+    {
+      "type": "wokwi-relay-module",
+      "id": "relay1",
+      "top": -83.4,
+      "left": -303.6,
+      "rotate": 270,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn2",
+      "top": 92.6,
+      "left": -316.8,
+      "attrs": { "color": "green", "bounce": "1" }
+    },
+    {
+      "type": "wokwi-pir-motion-sensor",
+      "id": "pir1",
+      "top": -111.2,
+      "left": -400.98,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led1",
+      "top": -320.4,
+      "left": -121,
+      "attrs": { "color": "red" }
+    },
+    {
+      "type": "wokwi-relay-module",
+      "id": "relay2",
+      "top": -83.4,
+      "left": -236.4,
+      "rotate": 270,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-relay-module",
+      "id": "relay3",
+      "top": -83.4,
+      "left": -169.2,
+      "rotate": 270,
+      "attrs": {}
+    },
+    { "type": "wokwi-vcc", "id": "vcc1", "top": -172.04, "left": -297.6, "attrs": {} },
+    {
+      "type": "wokwi-lcd2004",
+      "id": "lcd1",
+      "top": -310.4,
+      "left": 24.8,
+      "attrs": { "pins": "i2c" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": -235.2,
+      "left": -134.95,
+      "rotate": 90,
+      "attrs": { "value": "300" }
+    },
+    {
+      "type": "wokwi-buzzer",
+      "id": "bz1",
+      "top": -304.8,
+      "left": -209.4,
+      "attrs": { "volume": "0.1" }
+    },
+    { "type": "wokwi-gnd", "id": "gnd3", "top": -182.4, "left": -67.8, "attrs": {} },
+    { "type": "wokwi-gnd", "id": "gnd5", "top": 192, "left": -355.8, "attrs": {} },
+    {
+      "type": "wokwi-led",
+      "id": "led2",
+      "top": -320.4,
+      "left": -255.4,
+      "attrs": { "color": "yellow" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r2",
+      "top": -235.2,
+      "left": -269.35,
+      "rotate": 90,
+      "attrs": { "value": "300" }
+    },
+    {
+      "type": "wokwi-membrane-keypad",
+      "id": "keypad1",
+      "top": -126.8,
+      "left": 153.9,
+      "attrs": { "columns": "3" }
+    },
+    {
+      "type": "wokwi-analog-joystick",
+      "id": "joystick1",
+      "top": -125.4,
+      "left": 5.4,
+      "attrs": {}
+    },
+    { "type": "wokwi-ds1307", "id": "rtc1", "top": 340.2, "left": 211.3, "attrs": {} },
+    { "type": "wokwi-gnd", "id": "gnd1", "top": 393.6, "left": 143.4, "attrs": {} },
+    {
+      "type": "wokwi-text",
+      "id": "*1",
+      "top": -345.6,
+      "left": -96,
+      "attrs": { "text": "Основной свет" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "*2",
+      "top": -345.6,
+      "left": -393.6,
+      "attrs": { "text": "Ночная подсветка" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "*3",
+      "top": -345.6,
+      "left": -220.8,
+      "attrs": { "text": "Доп нагрузка" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "*4",
+      "top": -460.8,
+      "left": 76.8,
+      "attrs": { "text": "1.Джостик влево или вправо - вернуться в предыдущее меню;" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "*5",
+      "top": -432,
+      "left": 76.8,
+      "attrs": { "text": "2.Кнопка джостика войти в меню или применить введенные данные;" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "*6",
+      "top": -403.2,
+      "left": 76.8,
+      "attrs": { "text": "3.Джостик вверх и вниз выбор букв алфавита для SSID и пароля;" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "lcd1:SCL", "esp:22", "orange", [ "h-38.4", "v288.3", "h115.2", "v105.6" ] ],
+    [ "esp:21", "lcd1:SDA", "magenta", [ "h19.2", "v-124.8", "h-115.2", "v-307.4" ] ],
+    [ "led1:A", "relay3:NO", "green", [ "v0" ] ],
+    [ "relay2:COM", "vcc1:VCC", "red", [ "v-39.6", "h-145.4" ] ],
+    [ "bz1:2", "esp:23", "blue", [ "h28.4", "v297.6", "h230.4", "v57.6" ] ],
+    [ "btn1:2.l", "gnd5:GND", "black", [ "h-28.8", "v0.2" ] ],
+    [ "btn2:2.l", "gnd5:GND", "black", [ "h-28.8", "v77" ] ],
+    [ "relay1:IN", "esp:25", "green", [ "v0" ] ],
+    [ "relay2:VCC", "relay1:VCC", "red", [ "v9.6", "h-67.2" ] ],
+    [ "relay2:VCC", "relay3:VCC", "red", [ "v9.6", "h67.2" ] ],
+    [ "relay1:VCC", "vcc1:VCC", "red", [ "v9.6", "h-38.4", "v-163.2" ] ],
+    [ "relay3:COM", "vcc1:VCC", "red", [ "v0" ] ],
+    [ "relay1:COM", "vcc1:VCC", "red", [ "v-39.6", "h-1.4" ] ],
+    [ "bz1:1", "relay2:NO", "green", [ "v19.2", "h19.2" ] ],
+    [ "led1:C", "r1:1", "green", [ "v0" ] ],
+    [ "led2:A", "relay1:NO", "green", [ "v0" ] ],
+    [ "led2:C", "r2:1", "green", [ "v0" ] ],
+    [ "relay1:GND", "gnd5:GND", "black", [ "v76.8", "h-0.4" ] ],
+    [ "relay2:GND", "gnd5:GND", "black", [ "v76.8", "h-173.2" ] ],
+    [ "relay3:GND", "gnd5:GND", "black", [ "v76.8", "h-240.4" ] ],
+    [ "gnd3:GND", "r1:2", "black", [ "v0", "h-48" ] ],
+    [ "gnd3:GND", "lcd1:GND", "black", [ "v-96", "h76.8" ] ],
+    [ "r2:2", "gnd3:GND", "black", [ "h0", "v18" ] ],
+    [ "pir1:GND", "gnd5:GND", "black", [ "v0" ] ],
+    [ "joystick1:GND", "esp:GND.2", "black", [ "v0" ] ],
+    [ "pir1:OUT", "esp:VP", "green", [ "v67.2", "h326.26", "v96", "h9.45" ] ],
+    [ "rtc1:5V", "esp:5V", "red", [ "h-259.2", "v-67.6" ] ],
+    [ "rtc1:GND", "gnd1:GND", "black", [ "h-96" ] ],
+    [ "rtc1:SDA", "esp:21", "magenta", [ "h-105.6", "v-201.9" ] ],
+    [ "rtc1:SCL", "esp:22", "orange", [ "h-96", "v-240.2" ] ],
+    [ "btn1:1.r", "esp:35", "green", [ "v0" ] ],
+    [ "keypad1:R1", "esp:19", "green", [ "v9.6", "h-19.2", "v-28.8" ] ],
+    [ "esp:18", "keypad1:R2", "green", [ "h115.2", "v28.8", "h38.4" ] ],
+    [ "esp:17", "keypad1:R3", "green", [ "h105.6", "v19.2", "h57.6" ] ],
+    [ "keypad1:R4", "esp:16", "green", [ "v38.4", "h-77", "v-19.2" ] ],
+    [ "keypad1:C1", "esp:4", "green", [ "v48", "h-96.1", "v-19.2" ] ],
+    [ "esp:14", "keypad1:C2", "green", [ "h-28.65", "v96", "h-9.6" ] ],
+    [ "keypad1:C3", "esp:13", "green", [ "v105.6", "h-316.7", "v-57.6" ] ],
+    [ "joystick1:VCC", "esp:3V3", "red", [ "v38.4", "h-76.8", "v105.6" ] ],
+    [ "joystick1:VERT", "esp:26", "green", [ "v76.8", "h-105.6", "v144" ] ],
+    [ "joystick1:HORZ", "esp:27", "green", [ "v96", "h-124.8", "v19.2" ] ],
+    [ "relay3:IN", "esp:32", "green", [ "v0" ] ],
+    [ "relay2:IN", "esp:33", "green", [ "v0" ] ],
+    [ "pir1:VCC", "esp:3V3", "red", [ "v48", "h326.4", "v96" ] ],
+    [ "joystick1:SEL", "esp:34", "green", [ "v67.2", "h-115.2", "v105.6" ] ],
+    [ "btn2:1.r", "esp:VN", "green", [ "v0", "h173", "v38.4" ] ]
+  ],
+  "dependencies": {}
+}

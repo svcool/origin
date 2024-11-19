@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "author": "Sergey",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-uno", "id": "uno", "top": 202.2, "left": -19.8, "attrs": {} },
+    { "type": "wokwi-pir-motion-sensor", "id": "pir1", "top": 253.6, "left": 655.02, "attrs": {} },
+    { "type": "wokwi-led", "id": "led1", "top": -22.8, "left": 32.6, "attrs": { "color": "red" } },
+    { "type": "wokwi-lcd1602", "id": "lcd1", "top": -111.77, "left": 515.2, "attrs": {} },
+    {
+      "type": "wokwi-resistor",
+      "id": "r2",
+      "top": 61.55,
+      "left": 700.8,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 13.55,
+      "left": -48,
+      "attrs": { "value": "300" }
+    },
+    {
+      "type": "wokwi-analog-joystick",
+      "id": "joystick1",
+      "top": 210.6,
+      "left": 418.2,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    [ "lcd1:VSS", "uno:GND.1", "black", [ "v115.2", "h-451.5" ] ],
+    [ "lcd1:K", "uno:GND.2", "black", [ "v19.2", "h220.8", "v441.6", "h-762.3" ] ],
+    [ "lcd1:D7", "uno:7", "green", [ "v48", "h83.1" ] ],
+    [ "lcd1:D6", "uno:8", "green", [ "v57.6", "h76.6" ] ],
+    [ "lcd1:D5", "uno:9", "green", [ "v67.2", "h0.1" ] ],
+    [ "lcd1:D4", "uno:10", "green", [ "v76.8", "h76.8" ] ],
+    [ "lcd1:E", "uno:11", "green", [ "v86.4", "h9.6" ] ],
+    [ "lcd1:RS", "uno:12", "green", [ "v96", "h19.5" ] ],
+    [ "lcd1:RW", "uno:GND.1", "black", [ "v124.8", "h105.5" ] ],
+    [ "lcd1:A", "r2:1", "green", [ "v0" ] ],
+    [ "r2:2", "uno:5V", "red", [ "v0", "h133.2", "v384", "h-163.2" ] ],
+    [ "lcd1:VDD", "uno:5V", "red", [ "v412.8", "h182.5" ] ],
+    [ "r1:2", "led1:C", "green", [ "v0" ] ],
+    [ "led1:A", "uno:13", "green", [ "v0", "h48", "v182.4" ] ],
+    [ "r1:1", "uno:GND.1", "green", [ "v144", "h143.7" ] ],
+    [ "pir1:VCC", "uno:5V", "red", [ "v163.2", "h-551" ] ],
+    [ "pir1:GND", "uno:GND.2", "black", [ "v172.8", "h-560.96" ] ],
+    [ "pir1:OUT", "uno:2", "green", [ "h-67.34", "v-163.2", "h-416.9" ] ],
+    [ "joystick1:VCC", "uno:5V", "red", [ "v163.2", "h-307.2" ] ],
+    [ "joystick1:GND", "uno:GND.3", "black", [ "v172.8", "h-326.4" ] ],
+    [ "joystick1:VERT", "uno:A0", "green", [ "v86.4", "h-272.6" ] ],
+    [ "joystick1:HORZ", "uno:A1", "green", [ "v115.2", "h-272.7" ] ],
+    [ "joystick1:SEL", "uno:3", "green", [ "v48", "h-86.4", "v-201.6", "h-186.4" ] ]
+  ],
+  "dependencies": {}
+}

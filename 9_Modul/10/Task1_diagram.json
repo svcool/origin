@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "author": "Sergey",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 153.6, "left": -4.76, "attrs": {} },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn1",
+      "top": 159.8,
+      "left": 172.8,
+      "attrs": { "color": "green" }
+    },
+    { "type": "wokwi-lcd1602", "id": "lcd1", "top": -102.17, "left": -195.2, "attrs": {} },
+    { "type": "wokwi-resistor", "id": "r1", "top": 61.55, "left": 0, "attrs": { "value": "300" } }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "r1:1", "lcd1:A", "green", [ "v0", "h-28.8" ] ],
+    [ "r1:2", "esp:3V3", "red", [ "v48", "h-87.6", "v28.8" ] ],
+    [ "lcd1:K", "esp:GND.2", "black", [ "v9.6", "h153.6", "v144" ] ],
+    [ "lcd1:VSS", "lcd1:K", "black", [ "v19.2", "h144" ] ],
+    [ "lcd1:RW", "lcd1:K", "black", [ "v28.8", "h105.5" ] ],
+    [ "lcd1:VDD", "esp:3V3", "red", [ "v0" ] ],
+    [ "lcd1:D7", "esp:32", "green", [ "v0" ] ],
+    [ "lcd1:D6", "esp:33", "green", [ "v0" ] ],
+    [ "lcd1:D5", "esp:25", "green", [ "v0" ] ],
+    [ "lcd1:D4", "esp:26", "green", [ "v0" ] ],
+    [ "lcd1:E", "esp:27", "green", [ "v0" ] ],
+    [ "lcd1:RS", "esp:14", "green", [ "v0" ] ],
+    [ "btn1:2.l", "esp:23", "green", [ "h0" ] ],
+    [ "btn1:1.r", "esp:GND.2", "black", [ "v-28.8", "h-95.8", "v38.4" ] ]
+  ],
+  "dependencies": {}
+}

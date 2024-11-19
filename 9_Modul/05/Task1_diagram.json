@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "author": "Sergey",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-uno", "id": "uno", "top": 202.2, "left": -19.8, "attrs": {} },
+    { "type": "wokwi-lcd1602", "id": "lcd1", "top": -111.77, "left": -80, "attrs": {} },
+    {
+      "type": "wokwi-resistor",
+      "id": "r2",
+      "top": 42.35,
+      "left": 115.2,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-ntc-temperature-sensor",
+      "id": "ntc1",
+      "top": 655.4,
+      "left": -29.4,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-ntc-temperature-sensor",
+      "id": "ntc2",
+      "top": 463.4,
+      "left": -29.4,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-ntc-temperature-sensor",
+      "id": "ntc3",
+      "top": 559.4,
+      "left": -29.4,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    [ "lcd1:VSS", "uno:GND.1", "black", [ "v134.4", "h144", "v57.6" ] ],
+    [ "lcd1:K", "uno:GND.2", "black", [ "v19.2", "h220.8", "v384", "h-167.1" ] ],
+    [ "lcd1:D7", "uno:7", "green", [ "v48", "h83.1" ] ],
+    [ "lcd1:D6", "uno:8", "green", [ "v57.6", "h76.6" ] ],
+    [ "lcd1:D5", "uno:9", "green", [ "v67.2", "h0.1" ] ],
+    [ "lcd1:D4", "uno:10", "green", [ "v76.8", "h76.8" ] ],
+    [ "lcd1:E", "uno:11", "green", [ "v86.4", "h9.6" ] ],
+    [ "lcd1:RS", "uno:12", "green", [ "v96", "h19.5" ] ],
+    [ "lcd1:RW", "uno:GND.1", "black", [ "v124.8", "h105.5" ] ],
+    [ "lcd1:A", "r2:1", "green", [ "v0" ] ],
+    [ "r2:2", "uno:5V", "red", [ "v0", "h133.2", "v384", "h-163.2" ] ],
+    [ "lcd1:VDD", "uno:5V", "red", [ "v412.8", "h182.5" ] ],
+    [ "ntc1:GND", "uno:GND.3", "black", [ "h0" ] ],
+    [ "ntc1:VCC", "uno:5V", "red", [ "h0" ] ],
+    [ "ntc1:OUT", "uno:A0", "green", [ "h0" ] ],
+    [ "ntc2:GND", "uno:GND.3", "black", [ "h0" ] ],
+    [ "ntc3:GND", "uno:GND.3", "black", [ "h0" ] ],
+    [ "ntc3:OUT", "uno:A1", "green", [ "h0" ] ],
+    [ "ntc2:OUT", "uno:A2", "green", [ "h0" ] ],
+    [ "ntc2:VCC", "uno:5V", "red", [ "h0" ] ],
+    [ "ntc3:VCC", "uno:5V", "red", [ "h0" ] ]
+  ],
+  "dependencies": {}
+}
