@@ -1,0 +1,8 @@
+D:/gitrepo/origin/8_Modul/Kursovoy/build-airport_manager-Descktop_Qt_6_4_2_mingw_64-Debug/CMakeFiles/airport_manager.dir
+D:/gitrepo/origin/8_Modul/Kursovoy/build-airport_manager-Descktop_Qt_6_4_2_mingw_64-Debug/CMakeFiles/edit_cache.dir
+D:/gitrepo/origin/8_Modul/Kursovoy/build-airport_manager-Descktop_Qt_6_4_2_mingw_64-Debug/CMakeFiles/rebuild_cache.dir
+D:/gitrepo/origin/8_Modul/Kursovoy/build-airport_manager-Descktop_Qt_6_4_2_mingw_64-Debug/CMakeFiles/list_install_components.dir
+D:/gitrepo/origin/8_Modul/Kursovoy/build-airport_manager-Descktop_Qt_6_4_2_mingw_64-Debug/CMakeFiles/install.dir
+D:/gitrepo/origin/8_Modul/Kursovoy/build-airport_manager-Descktop_Qt_6_4_2_mingw_64-Debug/CMakeFiles/install/local.dir
+D:/gitrepo/origin/8_Modul/Kursovoy/build-airport_manager-Descktop_Qt_6_4_2_mingw_64-Debug/CMakeFiles/install/strip.dir
+D:/gitrepo/origin/8_Modul/Kursovoy/build-airport_manager-Descktop_Qt_6_4_2_mingw_64-Debug/CMakeFiles/airport_manager_autogen.dir

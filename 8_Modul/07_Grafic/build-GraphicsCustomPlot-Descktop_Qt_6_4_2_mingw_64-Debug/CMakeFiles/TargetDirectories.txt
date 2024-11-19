@@ -1,0 +1,4 @@
+D:/gitrepo/origin/8_Modul/07_Grafic/build-GraphicsCustomPlot-Descktop_Qt_6_4_2_mingw_64-Debug/CMakeFiles/07_GraphicsCustomPlot.dir
+D:/gitrepo/origin/8_Modul/07_Grafic/build-GraphicsCustomPlot-Descktop_Qt_6_4_2_mingw_64-Debug/CMakeFiles/edit_cache.dir
+D:/gitrepo/origin/8_Modul/07_Grafic/build-GraphicsCustomPlot-Descktop_Qt_6_4_2_mingw_64-Debug/CMakeFiles/rebuild_cache.dir
+D:/gitrepo/origin/8_Modul/07_Grafic/build-GraphicsCustomPlot-Descktop_Qt_6_4_2_mingw_64-Debug/CMakeFiles/07_GraphicsCustomPlot_autogen.dir

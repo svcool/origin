@@ -1,0 +1,3 @@
+D:\QT\Tools\CMake_64\bin\cmake.exe -E rm -f CMakeFiles\airport_manager.dir/objects.a
+D:\QT\Tools\mingw1120_64\bin\ar.exe qc CMakeFiles\airport_manager.dir/objects.a @CMakeFiles\airport_manager.dir\objects1.rsp
+d:\QT\Tools\mingw1120_64\bin\g++.exe -DQT_QML_DEBUG -g -mwindows -Wl,--whole-archive CMakeFiles\airport_manager.dir/objects.a -Wl,--no-whole-archive -o airport_manager.exe -Wl,--out-implib,libairport_manager.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\airport_manager.dir\linkLibs.rsp
