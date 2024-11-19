@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "author": "Sergey",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-uno", "id": "uno", "top": 135, "left": -19.8, "attrs": {} },
+    { "type": "wokwi-microsd-card", "id": "sd1", "top": -28.57, "left": 57.67, "attrs": {} },
+    {
+      "type": "wokwi-stepper-motor",
+      "id": "stepper1",
+      "top": -207.59,
+      "left": 125.23,
+      "attrs": { "size": "17" }
+    }
+  ],
+  "connections": [
+    [ "sd1:VCC", "uno:5V", "red", [ "h153.6", "v345.74", "h-147.8" ] ],
+    [ "sd1:GND", "uno:GND.2", "black", [ "h172.8", "v374.51", "h-157.5" ] ],
+    [ "sd1:CS", "uno:10", "green", [ "h19.2", "v76.86", "h-19.2" ] ],
+    [ "sd1:DI", "uno:11", "green", [ "h9.6", "v76.71", "h-19.2" ] ],
+    [ "sd1:SCK", "uno:13", "green", [ "h28.8", "v57.59", "h-57.6" ] ],
+    [ "sd1:DO", "uno:12", "green", [ "h38.4", "v86.51", "h-57.6" ] ],
+    [ "stepper1:A-", "uno:7", "green", [ "v124.8", "h-19.2" ] ],
+    [ "stepper1:A+", "uno:6", "green", [ "v134.4", "h-28.8" ] ],
+    [ "stepper1:B+", "uno:5", "green", [ "v144", "h-19.2", "v9.6" ] ],
+    [ "stepper1:B-", "uno:4", "green", [ "v153.6", "h-9.61" ] ]
+  ],
+  "dependencies": {}
+}

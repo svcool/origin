@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "author": "Sergey",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-uno", "id": "uno", "top": 87, "left": -29.4, "attrs": {} },
+    {
+      "type": "wokwi-dht22",
+      "id": "dht1",
+      "top": -105.3,
+      "left": -34.2,
+      "attrs": { "temperature": "67.6", "humidity": "49" }
+    },
+    {
+      "type": "wokwi-dht22",
+      "id": "dht3",
+      "top": -105.3,
+      "left": 100.2,
+      "attrs": { "humidity": "81.5" }
+    },
+    {
+      "type": "wokwi-dht22",
+      "id": "dht4",
+      "top": -105.3,
+      "left": 33,
+      "attrs": { "humidity": "94" }
+    },
+    {
+      "type": "wokwi-dht22",
+      "id": "dht5",
+      "top": -105.3,
+      "left": 167.4,
+      "attrs": { "humidity": "32", "temperature": "17.7" }
+    }
+  ],
+  "connections": [
+    [ "dht1:GND", "uno:GND.1", "black", [ "v38.4", "h9.6" ] ],
+    [ "dht1:VCC", "uno:5V", "red", [ "v67.2", "h-86.4", "v220.8", "h236.2" ] ],
+    [ "dht5:GND", "dht3:GND", "black", [ "v9.6", "h-67.2" ] ],
+    [ "dht4:GND", "dht3:GND", "black", [ "v9.6", "h57.6" ] ],
+    [ "dht4:GND", "dht1:GND", "black", [ "v9.6", "h-67.2" ] ],
+    [ "dht3:VCC", "dht5:VCC", "red", [ "v19.2", "h67.2" ] ],
+    [ "dht4:VCC", "dht3:VCC", "red", [ "v-9.6", "h67.2" ] ],
+    [ "dht1:VCC", "dht4:VCC", "red", [ "v-9.6", "h67.2" ] ],
+    [ "dht1:SDA", "uno:2", "green", [ "v67.2", "h28.9" ] ],
+    [ "dht4:SDA", "uno:3", "green", [ "v57.6", "h134.5" ] ],
+    [ "dht3:SDA", "uno:4", "green", [ "v48", "h67.3" ] ],
+    [ "dht5:SDA", "uno:5", "green", [ "v38.4", "h-19.1" ] ]
+  ],
+  "dependencies": {}
+}
