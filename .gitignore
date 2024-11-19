@@ -1,17 +1,9 @@
-﻿/*/*/*/x64/
-/*/*/.vs/
-/*/*/*/.vs/
-/*/*/out/
-/*/*/*/out/
-/*/*/*/.vs/**
-/*/*/*/.vs/out/**
-/*/*/*/.vs/**
-/*/*/.vs/**
-/*/*/*_build*
-/*/*/build*
-/.vs/origin/v17
-/*/*/CMakeLists.txt.user
-/*/*/*/CMakeLists.txt.user
+﻿**/x64/
+**/.vs/
+**/out/
+**/*_build*/
+**/build/
+**/CMakeLists.txt.user
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudio
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudio
 
