@@ -1,6 +1,8 @@
 ﻿#include <iostream>
 #include <pqxx/pqxx>
 #include <Windows.h>
+#include <pugixml.hpp> 
+
 using namespace std;
 #pragma execution_character_set("utf-8")
 
