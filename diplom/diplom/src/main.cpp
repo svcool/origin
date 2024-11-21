@@ -4,7 +4,7 @@
 using namespace std;
 #pragma execution_character_set("utf-8")
 
-int main()
+int main1()
 {
 	//setlocale(LC_ALL, "Russian");
 	SetConsoleCP(CP_UTF8);

@@ -13,7 +13,7 @@ namespace net = boost::asio;        // from <boost/asio.hpp>
 using tcp = net::ip::tcp;           // from <boost/asio/ip/tcp.hpp>
 
 // Performs an HTTP GET and prints the response
-int main(int argc, char** argv)
+int main2(int argc, char** argv)
 {
     try
     {
