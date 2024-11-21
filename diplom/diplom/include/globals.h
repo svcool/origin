@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include <Windows.h>
+#include <string>
 #include <bd.h>
-
 
 #endif // GLOBAL_VARIABLES_H
