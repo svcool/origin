@@ -2,114 +2,122 @@
 #include <boost/property_tree/ini_parser.hpp>
 #include <iostream>
 
-int main() {
-    boost::property_tree::ptree pt;
 
-    // Reading from an INI file
-    try {
-        boost::property_tree::ini_parser::read_ini("config.ini", pt);
-        std::string value = pt.get<std::string>("SectionName.KeyName");
-        std::cout << "Value: " << value << std::endl;
-    } catch (const boost::property_tree::ini_parser::ini_parser_error& e) {
-        std::cerr << "Error reading INI file: " << e.what() << std::endl;
+void check_required_keys(const boost::property_tree::ptree& pt, const std::vector<std::string>& keys) {
+    std::vector<std::string> missingKeys;
+
+    for (const auto& key : keys) {
+        if (!pt.get_optional<std::string>(key)) {
+            missingKeys.push_back(key);
+        }
     }
 
-    // Writing to an INI file
-    try {
-        pt.put("SectionName.KeyName", "NewValue");
-        boost::property_tree::ini_parser::write_ini("config.ini", pt);
-    } catch (const boost::property_tree::ini_parser::ini_parser_error& e) {
-        std::cerr << "Error writing INI file: " << e.what() << std::endl;
+    if (!missingKeys.empty()) {
+        std::string errorMessage = "Missing keys in INI file:";
+        for (const auto& key : missingKeys) {
+            errorMessage += "\n- " + key;
+        }
+        throw std::runtime_error(errorMessage); // Выбрасываем исключение
     }
-
-    return 0;
+    else {
+        std::cout << "All required keys are present." << std::endl;
+    }
 }
 
-; Это комментарий, который объясняет, что делает секция
-[General]
-; Настройки общего характера
-app_name = MyApplication
-version = 1.0.0
-author = John Doe
 
-[Database]
-host = localhost
-port = 5432
-username = user
-password = secret
-
-[Logging]
-; Уровень логирования: DEBUG, INFO, WARN, ERROR
-log_level = INFO
-log_file = app.log
-
-[Features]
-enable_feature_x = true
-enable_feature_y = false
-
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/ini_parser.hpp>
-#include <iostream>
-#include <string>
 
 int main() {
     boost::property_tree::ptree pt;
+
+    // Список необходимых ключей
+    std::vector<std::string> requiredKeys = {
+        "Database.host",
+        "Database.port",
+        "Database.dbname",
+        "Database.user",
+        "Database.password",
+        "Spider.page",
+        "Spider.recursion",
+        "Crowler.address",
+        "Crowler.port"
+    };
+
+    try {
+        check_required_keys(pt, requiredKeys);
+    }
+    catch (const std::runtime_error& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return 0;
+    }
 
     // Чтение из INI файла
     try {
-        boost::property_tree::ini_parser::read_ini("config.ini", pt);
+        std::ifstream s("settings.ini");
+        if (!s)
+        {
+            std::cerr << "error" << std::endl;
+            return 1;
+        }
 
-        // Получение значений из секции General
-        std::string app_name = pt.get<std::string>("General.app_name");
-        std::string version = pt.get<std::string>("General.version");
-        std::string author = pt.get<std::string>("General.author");
+        boost::property_tree::ini_parser::read_ini("settings.ini", pt);
+        
+        // Список необходимых ключей
+    std::vector<std::string> requiredKeys = {
+        "Database.host",
+        "Database.port",
+        "Database.dbname",
+        "Database.user",
+        "Database.password",
+        "Spider.page",
+        "Spider.recursion",
+        "Crowler.address",
+        "Crowler.port"
+    };
 
-        std::cout << "Application Name: " << app_name << std::endl;
-        std::cout << "Version: " << version << std::endl;
-        std::cout << "Author: " << author << std::endl;
+    // Проверка наличия всех необходимых ключей
+    check_required_keys(pt, requiredKeys);
 
-        // Получение значений из секции Database
-        std::string db_host = pt.get<std::string>("Database.host");
-        int db_port = pt.get<int>("Database.port");
-        std::string db_username = pt.get<std::string>("Database.username");
-        std::string db_password = pt.get<std::string>("Database.password");
+        // Значения из секции Database
+          std::string dbHost = pt.get<std::string>("Database.host");
+          int dbPort = pt.get<int>("Database.port");
+          std::string dbName = pt.get<std::string>("Database.dbname");
+          std::string dbUsername = pt.get<std::string>("Database.user");
+          std::string dbPassword = pt.get<std::string>("Database.password");
+          
+          std::cout << "Database DB Name: " << dbName << std::endl;
+          std::cout << "Database Host: " << dbHost << std::endl;
+          std::cout << "Database Port: " << dbPort << std::endl;
+          std::cout << "Database Username: " << dbUsername << std::endl;
 
-        std::cout << "Database Host: " << db_host << std::endl;
-        std::cout << "Database Port: " << db_port << std::endl;
-        std::cout << "Database Username: " << db_username << std::endl;
-        // Не выводим пароль для безопасности
-        // std::cout << "Database Password: " << db_password << std::endl;
+          //Значения из секции Spider
+          std::string page = pt.get<std::string>("Spider.page");
+          std::string recursion = pt.get<std::string>("Spider.recursion");
 
-        // Получение значений из секции Logging
-        std::string log_level = pt.get<std::string>("Logging.log_level");
-        std::string log_file = pt.get<std::string>("Logging.log_file");
+          std::cout << "Page: " << page << std::endl;
+          std::cout << "Recursion: " << recursion << std::endl;
 
-        std::cout << "Log Level: " << log_level << std::endl;
-        std::cout << "Log File: " << log_file << std::endl;
+          // Значения из секции Crowler
+          std::string addressCrowler = pt.get<std::string>("Crowler.address");
+          int portCrowler = pt.get<int>("Crowler.port");
+          
+          std::cout << "Page: " << addressCrowler << std::endl;
+          std::cout << "Recursion: " << portCrowler << std::endl;
 
-        // Получение значений из секции Features
-        bool enable_feature_x = pt.get<bool>("Features.enable_feature_x");
-        bool enable_feature_y = pt.get<bool>("Features.enable_feature_y");
-
-        std::cout << "Enable Feature X: " << (enable_feature_x ? "true" : "false") << std::endl;
-        std::cout << "Enable Feature Y: " << (enable_feature_y ? "true" : "false") << std::endl;
-
-    } catch (const boost::property_tree::ini_parser::ini_parser_error& e) {
+    }
+    catch (const boost::property_tree::ini_parser::ini_parser_error& e) {
         std::cerr << "Error reading INI file: " << e.what() << std::endl;
     }
 
     // Изменение значений и запись обратно в INI файл
     try {
-        pt.put("General.version", "1.0.1"); // Обновление версии
-        pt.put("Logging.log_level", "DEBUG"); // Изменение уровня логирования
+        pt.put("Crowler.address", "1.0.1"); // Обновление версии
 
-        boost::property_tree::ini_parser::write_ini("config.ini", pt);
+        boost::property_tree::ini_parser::write_ini("settings.ini", pt);
         std::cout << "INI file updated successfully." << std::endl;
-    } catch (const boost::property_tree::ini_parser::ini_parser_error& e) {
+    }
+    catch (const boost::property_tree::ini_parser::ini_parser_error& e) {
         std::cerr << "Error writing INI file: " << e.what() << std::endl;
     }
 
     return 0;
 }
-
-Find More

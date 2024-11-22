@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
 
-
-
 #политика CMake
 if (POLICY CMP0074)
     cmake_policy (SET CMP0074 NEW)
@@ -15,23 +13,31 @@ set(PostgreSQL_ADDITIONAL_VERSIONS "16")
 
 #переменная для проекта
 set(project "diplom")
-
-#Имя проекта
+set(INI_FILE "${CMAKE_CURRENT_SOURCE_DIR}/settings.ini")
+# Копирование INI-файла в каталог сборки
+configure_file(${INI_FILE} ${CMAKE_BINARY_DIR}/settings.ini COPYONLY)
 project(${project})
+if(EXISTS ${INI_FILE})
+    configure_file(${INI_FILE} ${CMAKE_BINARY_DIR}/settings.ini COPYONLY)
+else()
+    message(FATAL_ERROR "INI file not found: ${INI_FILE}")
+endif()
+#Имя проекта
 
 # Указываем исполняемый файл "src/main.cpp"
-add_executable(${project}  "src/bd.cpp" "include/bd.h" "include/globals.h" "include/except.h" "Header1.h" "src/httpclient.cpp" "src/httpserver.cpp")
+#add_executable(${project}  "src/bd.cpp" "include/bd.h" "include/globals.h" "include/except.h" "Header1.h" "src/httpclient.cpp" "src/httpserver.cpp")
+add_executable(${project} "src/parserini.cpp")
 
 # Путь к libpq++
-#add_subdirectory("d:\\gitrepo\\libpqxx-7.9.0\\" pqxx_build)
-add_subdirectory("d:/Program Files/MyProject/origin/libpqxx-7.9.0/" pqxx_build)
+add_subdirectory("d:\\gitrepo\\libpqxx-7.9.0\\" pqxx_build)
+#add_subdirectory("d:/Program Files/MyProject/origin/libpqxx-7.9.0/" pqxx_build)
 
 # Путь к pugixml
-#add_subdirectory("d:\\gitrepo\\pugixml-1.14\\" pugixml_build)
-add_subdirectory("d:/Program Files/MyProject/origin/pugixml-1.14/" pugixml_build)
+add_subdirectory("d:\\gitrepo\\pugixml-1.14\\" pugixml_build)
+#add_subdirectory("d:/Program Files/MyProject/origin/pugixml-1.14/" pugixml_build)
 # Путь к Boost
-#set(BOOST_ROOT "d:/gitrepo/boost_1_86_0/") # Укажите путь к вашей установке Boost
-set(BOOST_ROOT "d:/Program Files/MyProject/origin/boost_1_86_0/bin/x64") # Укажите путь к вашей установке Boost
+set(BOOST_ROOT "d:/gitrepo/boost_1_86_0/") # Укажите путь к вашей установке Boost
+#set(BOOST_ROOT "d:/Program Files/MyProject/origin/boost_1_86_0/bin/x64") # Укажите путь к вашей установке Boost
 #set(BOOST_INCLUDEDIR ${BOOST_ROOT}) # Укажите путь к заголовкам Boost
 #set(Boost_LIBRARIES ${BOOST_ROOT}) # Укажите путь к заголовкам Boost
 #add_library(boost_beast INTERFACE)
