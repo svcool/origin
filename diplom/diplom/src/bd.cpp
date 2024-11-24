@@ -40,7 +40,7 @@ void clientdb::create_db() {
         }
     }
     else {
-        throw db_error("Failed to connect to database");
+        throw DbError("Failed to connect to database");
     }
     conn.close();
 }
@@ -62,7 +62,7 @@ pqxx::connection* manage_db::connect_db() {
         std::cout << "Opened database successfully: " << conn->dbname() << std::endl;
     }
     else {
-        throw db_error("Failed to open database");
+        throw DbError("Failed to open database");
     }
 
     return conn;
@@ -175,7 +175,7 @@ void manage_db::addWordDocuments(std::string Table, int wordId, int documentId, 
 //        select(query, parametr, txn);
 //    }
 //    else {
-//        throw db_error("Incorrect name of the parameter. The parameter accepts the values: phone, name, surname, email");
+//        throw DbError("Incorrect name of the parameter. The parameter accepts the values: phone, name, surname, email");
 //    }
 //}
 ////------------------------------------------------------------------------------------------

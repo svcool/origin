@@ -1,9 +1,10 @@
+#include <globals.h>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/ini_parser.hpp>
-#include <iostream>
+#include <boost/property_tree/detail/file_parser_error.hpp>
 
 
-void check_required_keys(const boost::property_tree::ptree& pt, const std::vector<std::string>& keys) {
+void checkRequiredKeys(const boost::property_tree::ptree& pt, const std::vector<std::string>& keys) {
     std::vector<std::string> missingKeys;
 
     for (const auto& key : keys) {
@@ -14,19 +15,19 @@ void check_required_keys(const boost::property_tree::ptree& pt, const std::vecto
 
     if (!missingKeys.empty()) {
         std::string errorMessage = "Missing keys in INI file:";
+        int x = missingKeys.size();
         for (const auto& key : missingKeys) {
             errorMessage += "\n- " + key;
         }
-        throw std::runtime_error(errorMessage); // Выбрасываем исключение
+        throw ParserError(errorMessage); // Выбрасываем исключение
     }
     else {
         std::cout << "All required keys are present." << std::endl;
     }
 }
 
-
-
 int main() {
+    
     boost::property_tree::ptree pt;
 
     // Список необходимых ключей
@@ -43,41 +44,18 @@ int main() {
     };
 
     try {
-        check_required_keys(pt, requiredKeys);
-    }
-    catch (const std::runtime_error& e) {
-        std::cerr << "Error: " << e.what() << std::endl;
-        return 0;
-    }
-
-    // Чтение из INI файла
-    try {
+        // Чтение из INI файла
         std::ifstream s("settings.ini");
-        if (!s)
-        {
-            std::cerr << "error" << std::endl;
-            return 1;
+        if (!s) {
+            throw std::runtime_error("Unable to open settings.ini file.");
         }
 
         boost::property_tree::ini_parser::read_ini("settings.ini", pt);
         
-        // Список необходимых ключей
-    std::vector<std::string> requiredKeys = {
-        "Database.host",
-        "Database.port",
-        "Database.dbname",
-        "Database.user",
-        "Database.password",
-        "Spider.page",
-        "Spider.recursion",
-        "Crowler.address",
-        "Crowler.port"
-    };
+          checkRequiredKeys(pt, requiredKeys); // Проверка наличия всех необходимых ключей
+         
 
-    // Проверка наличия всех необходимых ключей
-    check_required_keys(pt, requiredKeys);
-
-        // Значения из секции Database
+          // Значения из секции Database
           std::string dbHost = pt.get<std::string>("Database.host");
           int dbPort = pt.get<int>("Database.port");
           std::string dbName = pt.get<std::string>("Database.dbname");
@@ -100,12 +78,15 @@ int main() {
           std::string addressCrowler = pt.get<std::string>("Crowler.address");
           int portCrowler = pt.get<int>("Crowler.port");
           
-          std::cout << "Page: " << addressCrowler << std::endl;
-          std::cout << "Recursion: " << portCrowler << std::endl;
+          std::cout << "Crowler Address: " << addressCrowler << std::endl;
+          std::cout << "Crowler Port: " << portCrowler << std::endl;
 
     }
     catch (const boost::property_tree::ini_parser::ini_parser_error& e) {
         std::cerr << "Error reading INI file: " << e.what() << std::endl;
+    }
+    catch (const ParserError& err) {
+        std::cout << err.what() << std::endl;
     }
 
     // Изменение значений и запись обратно в INI файл

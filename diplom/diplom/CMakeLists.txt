@@ -25,19 +25,19 @@ endif()
 #Имя проекта
 
 # Указываем исполняемый файл "src/main.cpp"
-#add_executable(${project}  "src/bd.cpp" "include/bd.h" "include/globals.h" "include/except.h" "Header1.h" "src/httpclient.cpp" "src/httpserver.cpp")
-add_executable(${project} "src/parserini.cpp")
+#add_executable(${project}  "src/httpserver.cpp" "src/parserini.cpp" "src/bd.cpp" "include/bd.h" "include/globals.h" "include/except.h" "Header1.h" "src/httpclient.cpp" "src/httpserver.cpp")
+add_executable(${project}  "src/indexator.cpp")
 
 # Путь к libpq++
-add_subdirectory("d:\\gitrepo\\libpqxx-7.9.0\\" pqxx_build)
-#add_subdirectory("d:/Program Files/MyProject/origin/libpqxx-7.9.0/" pqxx_build)
+#add_subdirectory("d:\\gitrepo\\libpqxx-7.9.0\\" pqxx_build)
+add_subdirectory("d:/Program Files/MyProject/origin/libpqxx-7.9.0/" pqxx_build)
 
 # Путь к pugixml
-add_subdirectory("d:\\gitrepo\\pugixml-1.14\\" pugixml_build)
-#add_subdirectory("d:/Program Files/MyProject/origin/pugixml-1.14/" pugixml_build)
+#add_subdirectory("d:\\gitrepo\\pugixml-1.14\\" pugixml_build)
+add_subdirectory("d:/Program Files/MyProject/origin/pugixml-1.14/" pugixml_build)
 # Путь к Boost
-set(BOOST_ROOT "d:/gitrepo/boost_1_86_0/") # Укажите путь к вашей установке Boost
-#set(BOOST_ROOT "d:/Program Files/MyProject/origin/boost_1_86_0/bin/x64") # Укажите путь к вашей установке Boost
+#set(BOOST_ROOT "d:/gitrepo/boost_1_86_0/") # Укажите путь к вашей установке Boost
+set(BOOST_ROOT "d:/Program Files/MyProject/origin/boost_1_86_0/bin/x64") # Укажите путь к вашей установке Boost
 #set(BOOST_INCLUDEDIR ${BOOST_ROOT}) # Укажите путь к заголовкам Boost
 #set(Boost_LIBRARIES ${BOOST_ROOT}) # Укажите путь к заголовкам Boost
 #add_library(boost_beast INTERFACE)
@@ -48,14 +48,14 @@ set(BOOST_ROOT "d:/gitrepo/boost_1_86_0/") # Укажите путь к ваше
 #endif()
 
 # Найдите библиотеку Boost с необходимыми компонентами
-find_package(Boost 1.86.0 REQUIRED COMPONENTS)
+find_package(Boost 1.86.0 REQUIRED COMPONENTS locale)
 #target_link_libraries(diplom Boost::date_time Boost::filesystem Boost::iostreams)
 if(Boost_FOUND)
 # подключаем заголовочные файлы всех директорий, где находятся заголовочные файлы для всех компонентов.System убирает предупреждения стороних библиотек
     #include_directories (SYSTEM ${Boost_INCLUDE_DIRS}) 
     target_include_directories(${project} PUBLIC ${Boost_INCLUDE_DIRS}) # Используйте Boost_INCLUDE_DIRS
     #target_link_libraries(${project} ${Boost_LIBRARIES}) # Связывание с библиотеками Boost
-    target_link_libraries(${PROJECT_NAME})
+    target_link_libraries(${project} ${Boost_LIBRARIES})
     message(STATUS "Found BOOST ${Boost_VERSION_STRING}")
 else()
    message(FATAL_ERROR "Boost Not Found") # Изменено на FATAL_ERROR для остановки сборки при ошибке

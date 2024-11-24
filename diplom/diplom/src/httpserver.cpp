@@ -23,6 +23,8 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <ctime>
+#include <globals.h>
 
 namespace beast = boost::beast;         // from <boost/beast.hpp>
 namespace http = beast::http;           // from <boost/beast/http.hpp>
@@ -127,46 +129,81 @@ private:
         write_response();
     }
 
-    // Construct a response message based on the program state.
-    void
-    create_response()
-    {
-        if(request_.target() == "/count")
-        {
-            response_.set(http::field::content_type, "text/html");
+    // Функция для выполнения поиска
+    std::vector<SearchResult> perform_search(const std::string& query) {
+        std::vector<SearchResult> results;
+
+        // Здесь должна быть логика поиска по базе данных
+        // Например, добавим несколько примеров результатов
+        results.push_back({ "https://netology.ru/profile/program/cpp-14/schedule/all", 5 }); // 5 упоминаний
+        results.push_back({ "https://www.cyberforum.ru/boost-cpp/thread2383592.html", 3 }); // 3 упоминания
+        results.push_back({ "https://www.boost.org/doc/libs/1_73_0/boost/property_tree/ptree.hpp", 7 }); // 7 упоминаний
+        results.push_back({ "http://forum.oszone.net/thread-251593.html", 7 }); // 7 упоминаний
+        // Сортируем результаты по частоте упоминаний в порядке убывания
+        std::sort(results.begin(), results.end(), [](const SearchResult& a, const SearchResult& b) {
+            return a.frequency > b.frequency;
+            });
+
+        return results;
+    }
+
+    void create_response() {
+        // Устанавливаем заголовок CORS
+        response_.set(http::field::access_control_allow_origin, "*");
+
+        if (request_.target().starts_with("/search")) {
+            std::string query = request_.target().substr(7); // Извлечение параметра query
+
+            // Выполнение поиска
+            std::vector<SearchResult> results = perform_search(query);
+
+            // Формируем ответ в формате JSON
+            response_.set(http::field::content_type, "application/json");
+            beast::ostream(response_.body()) << "[";
+            for (size_t i = 0; i < results.size(); ++i) {
+                beast::ostream(response_.body()) << "{\"url\": \"" << results[i].url << "\", \"frequency\": " << results[i].frequency << "}";
+                if (i < results.size() - 1) {
+                    beast::ostream(response_.body()) << ",";
+                }
+            }
+            beast::ostream(response_.body()) << "]";
+        }
+        else if (request_.target() == "/count") {
+            response_.set(http::field::content_type, "text/html; charset=utf-8");
             beast::ostream(response_.body())
                 << "<html>\n"
-                <<  "<head><title>Request count</title></head>\n"
-                <<  "<body>\n"
-                <<  "<h1>Request count</h1>\n"
-                <<  "<p>There have been "
-                <<  my_program_state::request_count()
-                <<  " requests so far.</p>\n"
-                <<  "</body>\n"
-                <<  "</html>\n";
+                << "<head><title>Количество запросовfgdfgdfsgs</title></head>\n"
+                << "<body>\n"
+                << "<h1>Количество запросов</h1>\n"
+                << "<p>Всего было " << my_program_state::request_count() << " запросов.</p>\n"
+                << "</body>\n"
+                << "</html>\n";
         }
-        else if(request_.target() == "/time")
-        {
-            response_.set(http::field::content_type, "text/html");
+        else if (request_.target() == "/time") {
+            response_.set(http::field::content_type, "text/html; charset=utf-8");
+            std::time_t seconds = my_program_state::now();
+            std::tm* ptm = std::localtime(&seconds);
+            char timeinfo[30];
+            std::strftime(timeinfo, sizeof(timeinfo), "%Y-%m-%d %H:%M:%S", ptm);
+
             beast::ostream(response_.body())
-                <<  "<html>\n"
-                <<  "<head><title>Current time</title></head>\n"
-                <<  "<body>\n"
-                <<  "<h1>Current time</h1>\n"
-                <<  "<p>The current time is "
-                <<  my_program_state::now()
-                <<  " seconds since the epoch.</p>\n"
-                <<  "</body>\n"
-                <<  "</html>\n";
+                << "<html>\n"
+                << "<head><title>lkjl  Текущее</title></head>\n"
+                << "<body>\n"
+                << "<h1>Текущее время</h1>\n"
+                << "<p>Текущее время: " << timeinfo
+                << "</p>\n"
+                << "</body>\n"
+                << "</html>\n";
         }
-        else
-        {
+        else {
             response_.result(http::status::not_found);
             response_.set(http::field::content_type, "text/plain");
-            beast::ostream(response_.body()) << "File not found\r\n";
+            beast::ostream(response_.body()) << "Файл не найден\r\n";
         }
     }
 
+ 
     // Asynchronously transmit the response message.
     void
     write_response()
@@ -219,31 +256,58 @@ http_server(tcp::acceptor& acceptor, tcp::socket& socket)
 int
 main(int argc, char* argv[])
 {
-    //curl http://localhost:80/time //���������� ��������
-    //curl http ://localhost:8080/count // �����
+
+    std::vector<SearchResult> results;
+
+    SearchResult result;
+    result.url = "https://gpt-chatbot.ru/poisk-v-internete-onlajn-s-pomoshhju-iskusstvennogo-intellekta";
+    result.frequency = 5;
+    results.push_back(result);
+    result.url = "https://netology.ru/profile/program/fcpp-14/lessons/444790/lesson_items/2402661";
+    result.frequency = 3;
+    results.push_back(result);
+    result.url = "https://stackoverflow.com/questions/3897839/how-to-link-c-program-with-boost-using-cmake";
+    result.frequency = 8;
+    results.push_back(result);
+
+    SetConsoleCP(CP_UTF8);
+    SetConsoleOutputCP(CP_UTF8);
+    //curl http://localhost:80/time //количество запросов
+    //curl http ://localhost:8080/count // время
     try
     {
-        // Check command line arguments.
-        if(argc != 3)
-        {
-            std::cerr << "Usage: " << argv[0] << " <address> <port>\n";
-            std::cerr << "  For IPv4, try:\n";
-            std::cerr << "    receiver 0.0.0.0 80\n";
-            std::cerr << "  For IPv6, try:\n";
-            std::cerr << "    receiver 0::0 80\n";
-            return EXIT_FAILURE;
-        }
 
-        auto const address = net::ip::make_address(argv[1]);
-        unsigned short port = static_cast<unsigned short>(std::atoi(argv[2]));
+        
+        // Параметры сервера: адрес и порт
+        auto const address = net::ip::make_address("0.0.0.0"); // Принимаем на всех интерфейсах
+        unsigned short port = 8080; // Порт 80
+        net::io_context ioc{ 1 };
 
-        net::io_context ioc{1};
+        tcp::acceptor acceptor{ ioc, {address, port} };
+        tcp::socket socket{ ioc };
 
-        tcp::acceptor acceptor{ioc, {address, port}};
-        tcp::socket socket{ioc};
-        http_server(acceptor, socket);
+        // Запуск HTTP сервера в отдельном потоке
+        std::thread server_thread([&]() {
+            http_server(acceptor, socket);
+            ioc.run();
+            });
 
-        ioc.run();
+        // Задержка перед открытием браузера
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+
+        // Открываем браузер с нужной страницей
+        std::string url = "http://localhost:8080/time";
+        //std::string command = "xdg-open " + url; // Для Linux
+        std::string command = "start " + url; // Для Windows
+        // std::string command = "open " + url; // Для MacOS
+
+        system(command.c_str());
+
+        // Ожидаем завершения потока сервера
+
+        server_thread.join();
+
+
     }
     catch(std::exception const& e)
     {

@@ -12,8 +12,9 @@ namespace http = beast::http;       // from <boost/beast/http.hpp>
 namespace net = boost::asio;        // from <boost/asio.hpp>
 using tcp = net::ip::tcp;           // from <boost/asio/ip/tcp.hpp>
 
+//************chcp 65001**************diplom otzovik.com 80 /reviews/otus-onlayn-obrazovanie/gallery/
 // Performs an HTTP GET and prints the response
-int main2(int argc, char** argv)
+int main(int argc, char** argv)
 {
     try
     {
@@ -84,3 +85,54 @@ int main2(int argc, char** argv)
     }
     return EXIT_SUCCESS;
 }
+
+//#include <boost/beast/core.hpp>
+//#include <boost/beast/http.hpp>
+//#include <boost/asio/connect.hpp>
+//#include <boost/asio/ip/tcp.hpp>
+//#include <iostream>
+//
+//namespace beast = boost::beast;
+//namespace http = beast::http;
+//namespace net = boost::asio;
+//using tcp = net::ip::tcp;
+//
+//int main() {
+//    try {
+//        // Создаем I/O контекст
+//        net::io_context ioc;
+//
+//        // Resolver для получения IP-адреса
+//        tcp::resolver resolver(ioc);
+//        auto const results = resolver.resolve("example.com", "80");
+//
+//        // Создаем сокет и соединяем его
+//        beast::tcp_stream stream(ioc);
+//        net::connect(stream.socket(), results.begin(), results.end());
+//
+//        // Создаем HTTP-запрос
+//        http::request<http::string_body> req{ http::verb::get, "/", 11 };
+//        req.set(http::field::host, "example.com");
+//        req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
+//
+//        // Отправляем запрос
+//        http::write(stream, req);
+//
+//        // Получаем ответ
+//        beast::flat_buffer buffer;
+//        http::response<http::string_body> res;
+//        http::read(stream, buffer, res);
+//
+//        // Печатаем HTML-контент
+//        std::cout << res.body() << std::endl;
+//
+//        // Закрываем сокет
+//        beast::error_code ec;
+//        stream.socket().shutdown(tcp::socket::shutdown_both, ec);
+//    }
+//    catch (const std::exception& e) {
+//        std::cerr << "Ошибка: " << e.what() << std::endl;
+//    }
+//
+//    return 0;
+//}

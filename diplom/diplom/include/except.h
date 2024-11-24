@@ -4,13 +4,21 @@
 #include <exception>
 #include <string>
 
-class db_error : public std::exception {
+class DbError : public std::exception {
     std::string message;
 public:
-    db_error(const std::string& message) : message{ message } {}
+    DbError(const std::string& message) : message{ message } {}
     const char* what() const noexcept override {
         return message.c_str();
     }
 };
+
+class ParserError : public std::runtime_error {
+public:
+    explicit ParserError(const std::string& message)
+        : std::runtime_error("Parser error: " + message) {}
+};
+
+
 
 #endif // EXCEPT_H
