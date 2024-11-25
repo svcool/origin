@@ -19,6 +19,10 @@ public:
         : std::runtime_error("Parser error: " + message) {}
 };
 
-
+class HttpClientError : public std::runtime_error {
+public:
+    explicit HttpClientError(const std::string& message)
+        : std::runtime_error("HttpClientError: " + message) {}
+};
 
 #endif // EXCEPT_H

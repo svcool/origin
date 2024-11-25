@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Запросы к серверу</title>
+    <script>
+       function fetchTime() {
+            fetch('http://localhost:8080/time') // Убедитесь, что этот URL правильный
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Сеть не отвечает: ' + response.status);
+                    }
+                    return response.text(); // Если сервер возвращает HTML
+                })
+                .then(data => {
+                    console.log(data);
+                    document.getElementById('timeDisplay').innerHTML = data; // Обновляем содержимое
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    document.getElementById('timeDisplay').innerHTML = 'Ошибка получения времени: ' + error.message;
+                });
+        }
+		function fetchCount() {
+            fetch('http://localhost:8080/count') // Убедитесь, что этот URL правильный
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Сеть не отвечает: ' + response.status);
+                    }
+                    return response.text(); // Если сервер возвращает HTML
+                })
+                .then(data => {
+                    console.log(data);
+                    document.getElementById('timeDisplay').innerHTML = data; // Обновляем содержимое
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    document.getElementById('timeDisplay').innerHTML = 'Ошибка получения времени: ' + error.message;
+                });
+        }
+    </script>
+</head>
+<body>
+    <h1>Запросы к серверу</h1>
+    <button onclick="fetchCount()">Показать количество запросов</button>
+    <div id="counterDisplay"></div>
+    <button onclick="fetchTime()">Показать текущее время</button>
+    <div id="timeDisplay"></div>
+</body>
+</html>

@@ -5,6 +5,7 @@
 #include <Windows.h>
 #include <string>
 #include <bd.h>
+#include <except.h>
 
 // —труктура дл€ хранени€ ссылки и частоты
 struct SearchResult {

@@ -26,18 +26,18 @@ endif()
 
 # Указываем исполняемый файл "src/main.cpp"
 #add_executable(${project}  "src/httpserver.cpp" "src/parserini.cpp" "src/bd.cpp" "include/bd.h" "include/globals.h" "include/except.h" "Header1.h" "src/httpclient.cpp" "src/httpserver.cpp")
-add_executable(${project}  "src/XPath.cpp")
+add_executable(${project}  "src/httpclient.cpp")
 
 # Путь к libpq++
-add_subdirectory("d:\\gitrepo\\libpqxx-7.9.0\\" pqxx_build)
-#add_subdirectory("d:/Program Files/MyProject/origin/libpqxx-7.9.0/" pqxx_build)
+#add_subdirectory("d:\\gitrepo\\libpqxx-7.9.0\\" pqxx_build)
+add_subdirectory("../../../libpqxx-7.9.0/" pqxx_build)
 
 # Путь к pugixml
-add_subdirectory("d:\\gitrepo\\pugixml-1.14\\" pugixml_build)
-#add_subdirectory("d:/Program Files/MyProject/origin/pugixml-1.14/" pugixml_build)
+#add_subdirectory("d:\\gitrepo\\pugixml-1.14\\" pugixml_build)
+add_subdirectory("../../../pugixml-1.14/" pugixml_build)
 # Путь к Boost
-set(BOOST_ROOT "d:/gitrepo/boost_1_86_0/boost") # Укажите путь к вашей установке Boost
-#set(BOOST_ROOT "d:/Program Files/MyProject/origin/boost_1_86_0/bin/x64") # Укажите путь к вашей установке Boost
+#set(BOOST_ROOT "d:/gitrepo/boost_1_86_0/boost") # Укажите путь к вашей установке Boost
+set(BOOST_ROOT "../../../boost_1_86_0/") # Укажите путь к вашей установке Boost
 #set(BOOST_INCLUDEDIR ${BOOST_ROOT}) # Укажите путь к заголовкам Boost
 #set(Boost_LIBRARIES ${BOOST_ROOT}) # Укажите путь к заголовкам Boost
 #add_library(boost_beast INTERFACE)

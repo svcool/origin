@@ -6,24 +6,25 @@
 #include <algorithm>
 #include <cctype>
 #include <sstream>
-#include <cstdlib> // Для system()
-#include <globals.h>
+#include <map>
+#include <windows.h> // Для SetConsoleCP и SetConsoleOutputCP
+
 using namespace std;
 
 string clean_and_process_text(const string& html) {
     // Заменяем &nbsp; на пробел, игнорируя регистр
     string no_nbsp = regex_replace(html, regex(R"(&[^;\s]*;)", regex::icase), " ");
 
-    // Удаление скриптов
+    // Удаление скриптов и стилей
     string no_scripts = regex_replace(no_nbsp, regex(R"(<(script|style|code|noscript|a|button)[^>]*>[\s\S]*?</\1>|<input[^>]*\/?>)", regex::icase), " ");
 
     // Удаление HTML-тегов
     string no_html = regex_replace(no_scripts, regex(R"(<[^>]*>)"), " ");
 
     // Удаление знаков препинания и лишних пробелов
+    string cleaned_text = regex_replace(no_html, regex(R"([.,!?;:'\"(){}[\]<>]|\n|\t)"), " ");
+    cleaned_text = regex_replace(cleaned_text, regex(R"([\s]+)"), " ");
 
-    string cleaned_text = regex_replace(no_html, regex(R"([.,!?;:'\"(){}[\]<>]|\n|\t)"), " "); // Удаление знаков препинания
-    cleaned_text = regex_replace(cleaned_text, regex(R"([\s]+)"), " "); // Замена нескольких пробелов на один
     // Преобразование текста в нижний регистр
     transform(cleaned_text.begin(), cleaned_text.end(), cleaned_text.begin(),
         [](unsigned char c) { return std::tolower(c); });
@@ -52,10 +53,13 @@ string clean_and_process_text(const string& html) {
 }
 
 int main() {
-   // setlocale(LC_ALL, "Russian");
+    // setlocale(LC_ALL, "Russian");
    // system("chcp 1251");
+
+    // Установка кодировки консоли на UTF-8
     SetConsoleCP(CP_UTF8);
     SetConsoleOutputCP(CP_UTF8);
+
     // Открытие HTML файла
     ifstream file("xgconsole.xml");
     if (!file.is_open()) {
@@ -79,6 +83,24 @@ int main() {
     // Вывод результата
     cout << "Очищенный текст:" << endl;
     cout << cleaned_text << endl;
+
+    // Создаем карту для хранения слов и их частот
+    map<string, int> word_freq;
+
+    // Разбиваем текст на слова
+    istringstream iss(cleaned_text);
+    string word;
+    while (iss >> word) {
+        // Увеличиваем частоту слова в карте
+        ++word_freq[word];
+    }
+
+    // Выводим результаты
+    cout << "Частота слов:" << endl;
+    for (const auto& pair : word_freq) {
+        cout << pair.first << ": " << pair.second << endl;
+    }
+
 
     return 0;
 }
