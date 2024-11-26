@@ -1,4 +1,109 @@
 #include <iostream>
+#include <thread>
+#include <functional>
+#include <chrono>
+#include <atomic>
+#include <queue>
+#include <vector>
+#include <mutex>
+#include <condition_variable>
+
+class Safe_queue {
+public:
+    void push(std::function<void()> task) {
+        std::lock_guard<std::mutex> lock(mutex_);
+        queue_.push(task);
+        condition_.notify_one();
+    }
+
+    std::function<void()> pop() {
+        std::unique_lock<std::mutex> lock(mutex_);
+        condition_.wait(lock, [this] { return !queue_.empty(); });
+        auto task = queue_.front();
+        queue_.pop();
+        return task;
+    }
+
+private:
+    std::queue<std::function<void()>> queue_;
+    std::mutex mutex_;
+    std::condition_variable condition_;
+};
+
+class Thread_pool {
+public:
+    Thread_pool(Safe_queue& sq) : stop_(false) {
+        for (unsigned i = 0; i < std::thread::hardware_concurrency(); ++i) {
+            workers_.emplace_back([this, &sq] {
+                while (true) {
+                    auto task = sq.pop();
+                    if (stop_ && !task) return;
+                    task();
+                }
+                });
+        }
+    }
+
+    ~Thread_pool() {
+        stop_ = true;
+        for (auto& worker : workers_) {
+            worker.join();
+        }
+    }
+
+    void submit(std::function<void()> task) {
+        queue_.push(task);
+    }
+
+private:
+    std::vector<std::thread> workers_;
+    Safe_queue& queue_;
+    std::atomic<bool> stop_;
+};
+
+void task1() {
+    std::cout << "Выполнение задачи 1" << std::endl;
+}
+
+void task2() {
+    std::cout << "Выполнение задачи 2" << std::endl;
+}
+
+void waitForKeypressAndDestroyPool(Thread_pool& pool) {
+    std::cin.get(); // Ожидание нажатия клавиши
+}
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    system("chcp 1251");
+
+    std::function<void()> func1 = task1;
+    std::function<void()> func2 = task2;
+
+    unsigned countThread = std::thread::hardware_concurrency();
+    std::cout << "Количество ядер: " << countThread << std::endl; // количество потоков
+
+    Safe_queue sq;
+    Thread_pool th(sq);
+
+    // поток для завершения программы
+    std::thread keypressThread(waitForKeypressAndDestroyPool, std::ref(th));
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    for (int i = 0; i < 5; ++i) {
+        // Кладем две функции в пул потоков
+        th.submit(func1);
+        th.submit(func2);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+
+    // Присоединяем поток ожидания нажатия клавиши к основному потоку
+    keypressThread.join();
+}
+
+
+
+#include <iostream>
 #include <string>
 #include <vector>
 #include <queue>
