@@ -9,6 +9,7 @@
 #include <ctime>
 #include <chrono>
 #include <fstream>
+#include <regex>
 
 //#include <cstdio> // для временных файлов
 #include <filesystem>

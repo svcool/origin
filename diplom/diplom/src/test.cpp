@@ -1,7 +1,5 @@
-﻿#include <httpclient.cpp>
-#include <parserhtml.h>
-#include <tempfile.cpp>
-#include <parserhtml.cpp>
+﻿#include <httpclient.h>
+#include <tempfile.h>
 
 int main() {
     // Установка кодировки консоли на UTF-8
@@ -23,12 +21,8 @@ int main() {
         TmpFile tempFile("./tmp");
         tempFile.writeToFile(parserHtml);
         std::cout << "Имя временного файла: " << tempFile.getUniqueName() << std::endl;
-        tempFile.readFromFile
+        //tempFile.readFromFile;
 
-
-        // Выполняем GET запрос и получаем имя временного файла
-        std::string temp_file = http_get(host, port, target, version);
-        std::cout << "Имя временного файла: " << temp_file << std::endl;
     }
     catch (const HttpClientError& e) {
         std::cerr << "HTTP ошибка: " << e.what() << std::endl;

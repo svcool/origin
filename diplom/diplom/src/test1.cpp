@@ -171,7 +171,7 @@ http::response<http::dynamic_body> http_get(const std::string& host, const std::
     return move(res);
 }
 
-int main() {
+int main55() {
     // Установка кодировки консоли на UTF-8
     setlocale(LC_ALL, "Russian");
     //system("chcp 1251");
