@@ -1,4 +1,4 @@
-п»ї#include <iostream>
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <regex>
@@ -7,96 +7,96 @@
 #include <cctype>
 #include <sstream>
 #include <map>
-#include <windows.h> // Р”Р»СЏ SetConsoleCP Рё SetConsoleOutputCP
+#include <windows.h> // Для SetConsoleCP и SetConsoleOutputCP
 
 using namespace std;
 
 string clean_and_process_text(const string& html) {
-    // Р—Р°РјРµРЅСЏРµРј &nbsp; РЅР° РїСЂРѕР±РµР», РёРіРЅРѕСЂРёСЂСѓСЏ СЂРµРіРёСЃС‚СЂ
+    // Заменяем &nbsp; на пробел, игнорируя регистр
     string no_nbsp = regex_replace(html, regex(R"(&[^;\s]*;)", regex::icase), " ");
 
-    // РЈРґР°Р»РµРЅРёРµ СЃРєСЂРёРїС‚РѕРІ Рё СЃС‚РёР»РµР№
+    // Удаление скриптов и стилей
     string no_scripts = regex_replace(no_nbsp, regex(R"(<(script|style|code|noscript|a|button)[^>]*>[\s\S]*?</\1>|<input[^>]*\/?>)", regex::icase), " ");
 
-    // РЈРґР°Р»РµРЅРёРµ HTML-С‚РµРіРѕРІ
+    // Удаление HTML-тегов
     string no_html = regex_replace(no_scripts, regex(R"(<[^>]*>)"), " ");
 
-    // РЈРґР°Р»РµРЅРёРµ Р·РЅР°РєРѕРІ РїСЂРµРїРёРЅР°РЅРёСЏ Рё Р»РёС€РЅРёС… РїСЂРѕР±РµР»РѕРІ
+    // Удаление знаков препинания и лишних пробелов
     string cleaned_text = regex_replace(no_html, regex(R"([.,!?;:'\"(){}[\]<>]|\n|\t)"), " ");
     cleaned_text = regex_replace(cleaned_text, regex(R"([\s]+)"), " ");
 
-    // РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ С‚РµРєСЃС‚Р° РІ РЅРёР¶РЅРёР№ СЂРµРіРёСЃС‚СЂ
+    // Преобразование текста в нижний регистр
     transform(cleaned_text.begin(), cleaned_text.end(), cleaned_text.begin(),
         [](unsigned char c) { return std::tolower(c); });
 
-    // РЈРґР°Р»РµРЅРёРµ Р»РёС€РЅРёС… РїСЂРѕР±РµР»РѕРІ РІ РЅР°С‡Р°Р»Рµ Рё РєРѕРЅС†Рµ СЃС‚СЂРѕРєРё
+    // Удаление лишних пробелов в начале и конце строки
     cleaned_text.erase(cleaned_text.begin(), find_if(cleaned_text.begin(), cleaned_text.end(), [](unsigned char c) { return !isspace(c); }));
     cleaned_text.erase(find_if(cleaned_text.rbegin(), cleaned_text.rend(), [](unsigned char c) { return !isspace(c); }).base(), cleaned_text.end());
 
-    // Р¤РёР»СЊС‚СЂР°С†РёСЏ СЃР»РѕРІ РїРѕ РґР»РёРЅРµ
+    // Фильтрация слов по длине
     istringstream iss(cleaned_text);
     string word;
     string filtered_text;
 
     while (iss >> word) {
         if (word.length() >= 3 && word.length() <= 32) {
-            filtered_text += word + " "; // Р”РѕР±Р°РІР»СЏРµРј РїСЂРѕР±РµР» РїРѕСЃР»Рµ СЃР»РѕРІР°
+            filtered_text += word + " "; // Добавляем пробел после слова
         }
     }
 
-    // РЈРґР°Р»СЏРµРј Р»РёС€РЅРёР№ РїСЂРѕР±РµР» РІ РєРѕРЅС†Рµ
+    // Удаляем лишний пробел в конце
     if (!filtered_text.empty()) {
-        filtered_text.pop_back(); // РЈРґР°Р»СЏРµРј РїРѕСЃР»РµРґРЅРёР№ РїСЂРѕР±РµР»
+        filtered_text.pop_back(); // Удаляем последний пробел
     }
 
     return filtered_text;
 }
 
-int main() {
+int main3777() {
     // setlocale(LC_ALL, "Russian");
    // system("chcp 1251");
 
-    // РЈСЃС‚Р°РЅРѕРІРєР° РєРѕРґРёСЂРѕРІРєРё РєРѕРЅСЃРѕР»Рё РЅР° UTF-8
+    // Установка кодировки консоли на UTF-8
     SetConsoleCP(CP_UTF8);
     SetConsoleOutputCP(CP_UTF8);
 
-    // РћС‚РєСЂС‹С‚РёРµ HTML С„Р°Р№Р»Р°
+    // Открытие HTML файла
     ifstream file("xgconsole.xml");
     if (!file.is_open()) {
-        cerr << "РћС€РёР±РєР° РїСЂРё РѕС‚РєСЂС‹С‚РёРё С„Р°Р№Р»Р°!" << endl;
+        cerr << "Ошибка при открытии файла!" << endl;
         return 1;
     }
 
-    // Р§С‚РµРЅРёРµ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ С„Р°Р№Р»Р°
+    // Чтение содержимого файла
     string html((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
     file.close();
 
-    // РћС‡РёСЃС‚РєР° Рё РѕР±СЂР°Р±РѕС‚РєР° С‚РµРєСЃС‚Р°
+    // Очистка и обработка текста
     string cleaned_text = clean_and_process_text(html);
 
-    // РџСЂРѕРІРµСЂРєР° РЅР° РїСѓСЃС‚РѕС‚Сѓ РѕС‡РёС‰РµРЅРЅРѕРіРѕ С‚РµРєСЃС‚Р°
+    // Проверка на пустоту очищенного текста
     if (cleaned_text.empty()) {
-        cerr << "РћС‡РёС‰РµРЅРЅС‹Р№ С‚РµРєСЃС‚ РїСѓСЃС‚!" << endl;
-        return 1; // РР»Рё РѕР±СЂР°Р±РѕС‚Р°Р№С‚Рµ РѕС€РёР±РєСѓ РґСЂСѓРіРёРј СЃРїРѕСЃРѕР±РѕРј
+        cerr << "Очищенный текст пуст!" << endl;
+        return 1; // Или обработайте ошибку другим способом
     }
 
-    // Р’С‹РІРѕРґ СЂРµР·СѓР»СЊС‚Р°С‚Р°
-    cout << "РћС‡РёС‰РµРЅРЅС‹Р№ С‚РµРєСЃС‚:" << endl;
+    // Вывод результата
+    cout << "Очищенный текст:" << endl;
     cout << cleaned_text << endl;
 
-    // РЎРѕР·РґР°РµРј РєР°СЂС‚Сѓ РґР»СЏ С…СЂР°РЅРµРЅРёСЏ СЃР»РѕРІ Рё РёС… С‡Р°СЃС‚РѕС‚
+    // Создаем карту для хранения слов и их частот
     map<string, int> word_freq;
 
-    // Р Р°Р·Р±РёРІР°РµРј С‚РµРєСЃС‚ РЅР° СЃР»РѕРІР°
+    // Разбиваем текст на слова
     istringstream iss(cleaned_text);
     string word;
     while (iss >> word) {
-        // РЈРІРµР»РёС‡РёРІР°РµРј С‡Р°СЃС‚РѕС‚Сѓ СЃР»РѕРІР° РІ РєР°СЂС‚Рµ
+        // Увеличиваем частоту слова в карте
         ++word_freq[word];
     }
 
-    // Р’С‹РІРѕРґРёРј СЂРµР·СѓР»СЊС‚Р°С‚С‹
-    cout << "Р§Р°СЃС‚РѕС‚Р° СЃР»РѕРІ:" << endl;
+    // Выводим результаты
+    cout << "Частота слов:" << endl;
     for (const auto& pair : word_freq) {
         cout << pair.first << ": " << pair.second << endl;
     }

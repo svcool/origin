@@ -26,7 +26,7 @@ void checkRequiredKeys(const boost::property_tree::ptree& pt, const std::vector<
     }
 }
 
-int main() {
+int main3() {
     
     boost::property_tree::ptree pt;
 

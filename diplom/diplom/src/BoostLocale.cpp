@@ -6,7 +6,7 @@
 #include <boost/locale.hpp>
 #include <ctime>
 #include <iostream>
-int main()
+int main312333()
 {
     using namespace boost::locale;
     generator gen;

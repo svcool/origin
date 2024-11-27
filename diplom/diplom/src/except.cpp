@@ -162,7 +162,7 @@ void worker() {
     }
 }
 
-int main() {
+int main31232() {
     // ƒобавл€ем начальные ссылки в очередь
     url_queue.push("http://example.com");
     url_queue.push("http://example.org");

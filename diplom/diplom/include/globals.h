@@ -6,10 +6,17 @@
 #include <string>
 #include <bd.h>
 #include <except.h>
+#include <ctime>
+#include <chrono>
+#include <fstream>
+
+//#include <cstdio> // для временных файлов
+#include <filesystem>
 
 // Структура для хранения ссылки и частоты
 struct SearchResult {
     std::string url;
+    std::string title;
     int frequency;
 };
 

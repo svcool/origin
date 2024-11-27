@@ -51,7 +51,7 @@
 #include <cstdlib> // Для system()
 using namespace std;
 
-int main1() {
+int main133() {
      setlocale(LC_ALL, "Russian");
     //system("chcp 1251");
     SetConsoleCP(CP_UTF8);

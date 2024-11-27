@@ -254,7 +254,7 @@ http_server(tcp::acceptor& acceptor, tcp::socket& socket)
 }
 
 int
-main(int argc, char* argv[])
+main4324(int argc, char* argv[])
 {
 
     std::vector<SearchResult> results;
