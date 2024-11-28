@@ -11,18 +11,20 @@ void Safe_queue::push(std::string html) {
 std::string Safe_queue::pop() {
     std::unique_lock<std::mutex> lock(queue_mutex);
     {
-        condit.wait(lock, [this] { return !task_queue.empty() || stop; });
+        condit.wait_for(lock, std::chrono::seconds(20), [this] { return !task_queue.empty() || stop; });
     }
     if (stop && task_queue.empty()) {
         return nullptr;
     }
 
-    if (task_queue.empty()) {
-        throw std::runtime_error("Queue is empty");
+    if (!task_queue.empty()) {
+        auto item = std::move(task_queue.front());
+        task_queue.pop();
+        return item;
     }
-    auto item = std::move(task_queue.front());
-    task_queue.pop();
-    return item;
+    else {
+        Stop();
+    }
 }
 
 std::string Safe_queue::front() {

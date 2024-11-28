@@ -8,6 +8,7 @@
 #include <functional>
 #include <atomic>
 #include <stdexcept>
+#include <chrono>
 
 class Safe_queue {
     std::queue<std::string> task_queue;

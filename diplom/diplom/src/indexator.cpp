@@ -52,7 +52,7 @@ std::map<std::string, int> countWordFrequency(const std::string& text) {
         ++word_freq[word];
     }
 
-    return word_freq; // Возвращаем карту с частотами слов
+    return move(word_freq); // Возвращаем карту с частотами слов
 }
 
 //********************************************************************************************************************
@@ -71,13 +71,13 @@ std::vector<std::string> extractLinks(const std::string& html, const std::string
 
         // Проверка, является ли ссылка относительной
         if (link[0] == '/') {
-            link = domain + link; // Преобразуем в полный формат
+            link = "http://" + domain + link; // Преобразуем в полный формат
         }
 
         links.push_back(link); // Сохраняем ссылку
         searchStart = match.suffix().first; // Продолжаем поиск
     }
 
-    return links; // Возвращаем вектор найденных ссылок
+    return move(links); // Возвращаем вектор найденных ссылок
 }
 //********************************************************************************************************************
