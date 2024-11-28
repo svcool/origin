@@ -1,7 +1,7 @@
 ﻿#include "HttpClient.h"
 
 // Function to perform an HTTP GET request
-http::response<http::dynamic_body> http_get(const std::string& host, const std::string& port, const std::string& target, int version) {
+std::string http_get(const std::string& host, const std::string& port, const std::string& target, int version) {
     // Create I/O context
     net::io_context ioc;
     tcp::resolver resolver(ioc);
@@ -10,6 +10,7 @@ http::response<http::dynamic_body> http_get(const std::string& host, const std::
     // Remove protocol prefix from host
     std::string url = std::regex_replace(host, std::regex(R"(^https?://)"), "");
     // Resolve the address
+std::cout << url << std::endl;
     auto const results = resolver.resolve(url, port);
 
     // Attempt to connect
@@ -43,5 +44,9 @@ http::response<http::dynamic_body> http_get(const std::string& host, const std::
         throw HttpClientError("Ошибка: " + std::to_string(res.result_int()) + " " + std::string(res.reason().data(), res.reason().size()));
     }
 
-    return std::move(res);
+    stream.socket().shutdown(tcp::socket::shutdown_both, ec);
+
+    std::string response_body = boost::beast::buffers_to_string(res.body().data());//преобразуем в string
+
+    return response_body;
 }

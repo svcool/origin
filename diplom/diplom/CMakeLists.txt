@@ -10,10 +10,11 @@ endif()
 include_directories(include)
 # Указываем версию PQ
 set(PostgreSQL_ADDITIONAL_VERSIONS "16") 
-set(CMAKE_CXX_STANDARD 17)
 #переменная для проекта
 set(project "diplom")
 set(INI_FILE "${CMAKE_CURRENT_SOURCE_DIR}/settings.ini")
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Копирование INI-файла в каталог сборки
 configure_file(${INI_FILE} ${CMAKE_BINARY_DIR}/settings.ini COPYONLY)
 project(${project})
@@ -25,8 +26,10 @@ endif()
 #Имя проекта
 
 # Указываем исполняемый файл "src/main.cpp"
-#add_executable(${project}  "src/httpserver.cpp" "src/parserini.cpp" "src/bd.cpp" "include/bd.h" "include/globals.h" "include/except.h" "Header1.h" "src/httpclient.cpp" "src/httpserver.cpp")
-add_executable(${project} "src/test.cpp" "src/tempfile.cpp" "src/httpclient.cpp" "include/tempfile.h" "include/except.h")
+#add_executable(${project}  "src/httpserver.cpp" "src/parserini.cpp" "src/bd.cpp" "include/bd.h" "include/globals.h" "include/except.h" "Header1.h" "src/httpclient.cpp" #"src/httpserver.cpp")
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+add_executable(${project}  "src/test.cpp"  "src/tempfile.cpp"  "src/httpclient.cpp"  "src/indexator.cpp"  "src/safequeue.cpp")
 
 # Путь к libpq++
 #add_subdirectory("d:\\gitrepo\\libpqxx-7.9.0\\" pqxx_build)
@@ -42,7 +45,8 @@ set(BOOST_ROOT "../../../boost_1_86_0/") # Укажите путь к вашей
 #set(Boost_LIBRARIES ${BOOST_ROOT}) # Укажите путь к заголовкам Boost
 #add_library(boost_beast INTERFACE)
 #add_library(Boost::beast ALIAS boost_beast)
-target_compile_features(${project} PRIVATE cxx_std_17) # Включите C++17
+
+#target_compile_features(${project} PRIVATE cxx_std_17) # Включите C++17
 #if(MINGW)
 #    link_libraries(ws2_32 wsock32)
 #endif()
@@ -56,7 +60,7 @@ if(Boost_FOUND)
     #include_directories (SYSTEM ${Boost_INCLUDE_DIRS}) 
     target_include_directories(${project} PUBLIC ${Boost_INCLUDE_DIRS}) # Используйте Boost_INCLUDE_DIRS
     #target_link_libraries(${project} ${Boost_LIBRARIES}) # Связывание с библиотеками Boost
-    target_link_libraries(${project} ${Boost_LIBRARIES} pqxx pugixml)
+    target_link_libraries(${project} ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} pqxx pugixml)
     message(STATUS "Found BOOST ${Boost_VERSION_STRING}")
 else()
    message(FATAL_ERROR "Boost Not Found") # Изменено на FATAL_ERROR для остановки сборки при ошибке

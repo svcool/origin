@@ -1,4 +1,4 @@
-#ifndef TMPFILE_H
+п»ї#ifndef TMPFILE_H
 #define TMPFILE_H
 
 #include <boost/beast/core.hpp>
@@ -6,10 +6,10 @@
 #include <boost/beast/version.hpp>
 #include <boost/asio/connect.hpp>
 #include <boost/asio/ip/tcp.hpp>
-#include <globals.h>
+
 #include <random>
 #include <filesystem>
-
+#include <globals.h>
 namespace beast = boost::beast;     // from <boost/beast.hpp>
 namespace http = beast::http;       // from <boost/beast/http.hpp>
 namespace net = boost::asio;        // from <boost/asio.hpp>
@@ -21,35 +21,35 @@ class TmpFile {
     std::ofstream m_tempFile;
 
 public:
-    // Конструктор с уникальным именем файла
+    // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ СѓРЅРёРєР°Р»СЊРЅС‹Рј РёРјРµРЅРµРј С„Р°Р№Р»Р°
     TmpFile(const std::string& tempDir, const std::string& uniqueName);
 
-    // Конструктор для генерации уникального имени файла
+    // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РґР»СЏ РіРµРЅРµСЂР°С†РёРё СѓРЅРёРєР°Р»СЊРЅРѕРіРѕ РёРјРµРЅРё С„Р°Р№Р»Р°
     TmpFile(const std::string& tempDir);
 
-    // Деструктор
+    // Р”РµСЃС‚СЂСѓРєС‚РѕСЂ
     ~TmpFile();
 
-    // Генерация уникального имени файла
+    // Р“РµРЅРµСЂР°С†РёСЏ СѓРЅРёРєР°Р»СЊРЅРѕРіРѕ РёРјРµРЅРё С„Р°Р№Р»Р°
     void generateUniqueTmpFile();
 
-    // Создание директории и временного файла
+    // РЎРѕР·РґР°РЅРёРµ РґРёСЂРµРєС‚РѕСЂРёРё Рё РІСЂРµРјРµРЅРЅРѕРіРѕ С„Р°Р№Р»Р°
     void createTempFile();
 
     void writeToFile(const boost::beast::http::response<boost::beast::http::dynamic_body>& response);
 
-    // Путь к файлу
+    // РџСѓС‚СЊ Рє С„Р°Р№Р»Сѓ
     std::string getUniqueName() const;
 
-    // Запись данных в файл
+    // Р—Р°РїРёСЃСЊ РґР°РЅРЅС‹С… РІ С„Р°Р№Р»
     void writeToFile(const std::string& data);
 
     void closeFile();
 
-    // Чтение содержимого временного файла
+    // Р§С‚РµРЅРёРµ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ РІСЂРµРјРµРЅРЅРѕРіРѕ С„Р°Р№Р»Р°
     void readFromFile() const;
 
-    // Удаление файла
+    // РЈРґР°Р»РµРЅРёРµ С„Р°Р№Р»Р°
     void deleteFile();
 };
 

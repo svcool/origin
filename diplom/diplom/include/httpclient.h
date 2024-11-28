@@ -1,11 +1,10 @@
-#ifndef HTTPCLIENT_H
+﻿#ifndef HTTPCLIENT_H
 #define HTTPCLIENT_H
 
-#include <boost/beast/core.hpp>
-#include <boost/beast/http.hpp>
-#include <boost/beast/version.hpp>
-#include <boost/asio/connect.hpp>
-#include <boost/asio/ip/tcp.hpp>
+#include <boost/asio.hpp>
+#include <boost/beast.hpp>
+#include <cstdlib>
+#include <iostream>
 #include <globals.h>
 
 
@@ -15,6 +14,6 @@ namespace net = boost::asio;        // from <boost/asio.hpp>
 using tcp = net::ip::tcp;           // from <boost/asio/ip/tcp.hpp
 
 // Function to perform an HTTP GET request
-http::response<http::dynamic_body> http_get(const std::string& host, const std::string& port, const std::string& target, int version);
+std::string http_get(const std::string& host, const std::string& port, const std::string& target, int version);
 
 #endif // HTTPCLIENT_H

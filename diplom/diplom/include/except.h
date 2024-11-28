@@ -25,4 +25,10 @@ public:
         : std::runtime_error("HttpClientError: " + message) {}
 };
 
+class Error : public std::runtime_error {
+public:
+    explicit Error(const std::string& message)
+        : std::runtime_error("HttpClientError: " + message) {}
+};
+
 #endif // EXCEPT_H
