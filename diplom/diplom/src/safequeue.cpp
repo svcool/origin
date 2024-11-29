@@ -1,36 +1,37 @@
 #include "SafeQueue.h"
 
-void Safe_queue::push(std::string html) {
+void Safe_queue::push(UrlDeep html) {
     {
         std::unique_lock<std::mutex> lock(queue_mutex);
         task_queue.push(html);
     }
-    condit.notify_all();
+    condit.notify_one();
 }
-
-std::string Safe_queue::pop() {
+//удаление с извлечением 
+UrlDeep Safe_queue::popFront() {
+    UrlDeep item;
     std::unique_lock<std::mutex> lock(queue_mutex);
-    {
-        condit.wait_for(lock, std::chrono::seconds(20), [this] { return !task_queue.empty() || stop; });
-    }
+    condit.wait(lock, [this] { return !task_queue.empty() || stop; });
+
     if (stop && task_queue.empty()) {
-        return nullptr;
+        throw std::runtime_error("Очередь пуста, поступил флаг освобождения потоков");
     }
 
     if (!task_queue.empty()) {
-        auto item = std::move(task_queue.front());
+        item = std::move(task_queue.front());
         task_queue.pop();
-        return item;
-    }
+     }
     else {
         Stop();
+        throw std::runtime_error("Освобождаем потоки");
     }
+    return item;
 }
 
-std::string Safe_queue::front() {
+UrlDeep Safe_queue::front() {
     std::lock_guard<std::mutex> lock(queue_mutex);
     if (task_queue.empty()) {
-        return nullptr; // Или выбросьте исключение, если очередь пуста
+        throw std::runtime_error("Очередь пуста"); 
     }
     return task_queue.front();
 }
@@ -44,7 +45,7 @@ size_t Safe_queue::Size() const {
     std::lock_guard<std::mutex> lock(queue_mutex);
     return task_queue.size();
 }
-
+//освобождает все потоки по флагу
 void Safe_queue::Stop() {
     stop = true;
     condit.notify_all();

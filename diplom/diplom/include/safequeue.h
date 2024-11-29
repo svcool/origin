@@ -10,16 +10,22 @@
 #include <stdexcept>
 #include <chrono>
 
+struct UrlDeep {
+    std::string url;
+    int deep;
+};
+
+
 class Safe_queue {
-    std::queue<std::string> task_queue;
+    std::queue<UrlDeep> task_queue;
     std::atomic<bool> stop = false;
     mutable std::mutex queue_mutex;
     std::condition_variable condit;
 
 public:
-    void push(std::string);
-    std::string pop();
-    std::string front();
+    void push(UrlDeep);
+    UrlDeep popFront();
+    UrlDeep front();
     bool empty();
     size_t Size() const;
     void Stop();

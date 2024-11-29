@@ -101,11 +101,17 @@ void manage_db::createTable(std::string Word, std::string Document, std::string 
 //------------------------------------------------------------------------------------------
 void manage_db::addDataTable(std::string Table, std::string value) {
     pqxx::work txn(*conn);
-    std::string query = "INSERT INTO "
-        + Table + " VALUES(DEFAULT, '" + value + "');";
-    txn.exec(query);
-    txn.commit();
-    std::cout << "Added a value: " + value + " in Table: " + Table << std::endl;
+    std::string query = "INSERT INTO " + Table + " VALUES(DEFAULT, '" + txn.esc(value) + "');";
+
+    try {
+        txn.exec(query);
+        txn.commit();
+        std::cout << "Добавлено значение: " + value + " в таблицу: " + Table << std::endl;
+    }
+    catch (const std::exception& e) {
+        DatabaseExceptionHandler handler(txn);
+        handler.handle(e); // Обрабатываем исключение
+    }
 }
 //------------------------------------------------------------------------------------------
 void manage_db::addWordDocuments(std::string Table, int wordId, int documentId, int frequence) {
@@ -117,78 +123,29 @@ void manage_db::addWordDocuments(std::string Table, int wordId, int documentId, 
     std::cout << "Added a frequence: " + std::to_string(frequence) + " in Table: " + Table << std::endl;
 }
 ////------------------------------------------------------------------------------------------
-//void manage_db::change_client(std::string name, std::string surname, std::string newname, std::string newsurname, std::string newemail, std::string newphone) {
-//    pqxx::work txn1(*conn);
-//    std::string query1 = "UPDATE phone "
-//        "SET phone = '" + txn1.esc(newphone) + "' "
-//        "WHERE clientid = (SELECT id FROM client WHERE name = '" + txn1.esc(name) + "' AND surname = '" + txn1.esc(surname) + "')";
-//    txn1.exec(query1);
-//    txn1.commit();
-//    pqxx::work txn2(*conn);
-//    std::string query2 = "UPDATE client "
-//        "SET name = '" + txn2.esc(newname) + "', surname = '" + txn2.esc(newsurname) + "', email = '" + txn2.esc(newemail) + "'"
-//        "WHERE name = '" + txn2.esc(name) + "' AND surname = '" + txn2.esc(surname) + "'";
-//    txn2.exec(query2);
-//    txn2.commit();
-//    std::cout << "Client data successfully updated!" << std::endl;
-//}
-////------------------------------------------------------------------------------------------
-//void manage_db::delete_phone(std::string name, std::string surname, std::string phone) {
-//    pqxx::work txn(*conn);
-//    std::string query = "DELETE FROM phone "
-//        "WHERE clientid = (SELECT id FROM client WHERE "
-//        "name = '" + txn.esc(name) +
-//        "' AND surname = '" + txn.esc(surname) +
-//        "') AND phone = '" + txn.esc(phone) + "'";
-//    txn.exec(query);
-//    txn.commit();
-//    std::cout << "Topping phone " << phone << " from a client of " << name << ", " << surname << std::endl;
-//}
-////------------------------------------------------------------------------------------------
-//void manage_db::delete_client(std::string name, std::string surname) {
-//    pqxx::work txn(*conn);
-//    std::string query = "DELETE FROM phone "
-//        "WHERE clientid = (SELECT id FROM client WHERE name = '" + txn.esc(name) + "' AND surname = '" + txn.esc(surname) + "');"
-//        " DELETE FROM client "
-//        "WHERE name = '" + txn.esc(name) + "' AND surname = '" + txn.esc(surname) + "'";
-//    txn.exec(query);
-//    txn.commit();
-//    std::cout << "The client(" << name << " " << surname << ") is deleted!" << std::endl;
-//}
-////------------------------------------------------------------------------------------------
-//void manage_db::out_client(std::string parametr, std::string data) {
-//    pqxx::work txn{ *conn };
-//    if (parametr == "phone") {
-//        std::string query = "SELECT c.name, c.surname FROM client c JOIN phone p ON c.id = p.clientid WHERE p.phone = '" + txn.esc(data) + "'";
-//        select(query, parametr, txn);
-//    }
-//    else if (parametr == "name") {
-//        std::string query = "SELECT name, surname FROM client WHERE name = '" + txn.esc(data) + "'";
-//        select(query, parametr, txn);
-//    }
-//    else if (parametr == "surname") {
-//        std::string query = "SELECT name, surname FROM client WHERE surname = '" + txn.esc(data) + "'";
-//        select(query, parametr, txn);
-//    }
-//    else if (parametr == "email") {
-//        std::string query = "SELECT name, surname FROM client WHERE email = '" + txn.esc(data) + "'";
-//        select(query, parametr, txn);
-//    }
-//    else {
-//        throw DbError("Incorrect name of the parameter. The parameter accepts the values: phone, name, surname, email");
-//    }
-//}
-////------------------------------------------------------------------------------------------
-//void manage_db::select(std::string query, std::string parametr, pqxx::work& txn) {
-//    int check{};
-//    auto collection = txn.query<std::string, std::string>(query);
-//
-//    for (auto elem : collection) {
-//        std::cout << "По параметру " << parametr << " найден клиент: " << std::get<0>(elem) << " " << std::get<1>(elem) << ".\n";
-//        check++;
-//    }
-//    if (check == 0) std::cout << "По параметру " << parametr << " клиент не найден." << ".\n";
-//}
+// Функция для выполнения запроса и получения результата
+    int manage_db::select(const std::string& tableName, const std::string& document, const std::string& column) {
+        pqxx::work txn{ *conn };
+        int id = -1; // Идентификатор по умолчанию
+
+        try {
+            // Формируем запрос с использованием безопасного экранирования
+            std::string query = "SELECT "+ tableName + "_id" + " FROM " + tableName + " WHERE " + column + " = '" + txn.esc(document) + "'; ";
+            pqxx::result collection = txn.exec(query); // Выполняем запрос
+
+            // Проверяем, есть ли результаты
+            if (!collection.empty()) {
+                id = collection[0][0].as<int>(); // Получаем ID из первого результата
+                std::cout << "По параметру " << document << " найден ID: " << id << ".\n";
+            } else {
+                std::cout << "Запись не найдена для параметра: " << document << ".\n";
+            }
+        } catch (const std::exception& e) {
+            std::cerr << "Ошибка при выполнении запроса: " << e.what() << std::endl;
+        }
+
+        return id; // Возвращаем найденный ID или -1, если не найден
+    }
 ////------------------------------------------------------------------------------------------
 manage_db::~manage_db() {
     conn->close();

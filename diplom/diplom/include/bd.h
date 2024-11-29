@@ -27,6 +27,7 @@ public:
     void createTable(std::string Word, std::string Document, std::string DocumentWord);
     void addDataTable(std::string Table, std::string value);
     void addWordDocuments(std::string Table, int wordId, int documentId, int frequence);
+    int select(const std::string& tableName, const std::string& document, const std::string& column);
     //void change_client(std::string name, std::string surname, std::string newname, std::string newsurname, std::string newemail, std::string newphone);
     //void delete_phone(std::string name, std::string surname, std::string phone);
     //void delete_client(std::string name, std::string surname);
