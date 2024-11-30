@@ -6,7 +6,7 @@
     <title>Страница поиска</title>
     <style>
         body {
-             font-family: Arial, sans-serif;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -14,27 +14,36 @@
             align-items: center; /* Центрируем элементы по горизонтали */
         }
         #searchContainer {
-           display: flex; /* Используем flexbox для выравнивания элементов */
+            display: flex; /* Используем flexbox для выравнивания элементов */
             justify-content: center; /* Центрируем элементы по горизонтали */
-            margin-bottom: 20px; /* Отступ снизу для разделения с результатами */
+            margin-bottom: 3px; /* Уменьшен отступ снизу для разделения с кнопками */
         }
         #logo {
-             width: 150px; /* Увеличенная ширина логотипа */
+            width: 150px; /* Увеличенная ширина логотипа */
             height: auto; /* Автоматическая высота для сохранения пропорций */
-            margin-bottom: 10px; /* Отступ между логотипом и полем ввода */
+            margin-bottom: 3px; /* Отступ между логотипом и полем ввода */
+			margin-bottom: 3px; /* Отступ между логотипом и полем ввода */
+			margin-left: 5px; 
+			margin-right: 5px;
+			align-items: center; 
         }
         #searchInput {
             padding: 10px;
-            width: 300px;
-            margin-right: 10px;
+            width: 500px;
+            margin-right: 2px;
         }
         button {
             padding: 10px 15px;
         }
+        .small-button {
+            padding: 3px 10px; /* Размеры маленьких кнопок */
+            font-size: 12px; /* Размер шрифта для маленьких кнопок */
+            margin-right: 2px; /* Отступ между маленькими кнопками */
+        }
         #results {
             margin-top: 20px;
             width: 100%; /* Занимает полную ширину контейнера */
-            max-width: 600px; /* Максимальная ширина для результатов */
+            max-width: 750px; /* Максимальная ширина для результатов */
         }
         ul {
             list-style-type: none;
@@ -50,6 +59,12 @@
             font-style: italic;
             color: gray;
         }
+        .button-container {
+            display: flex; /* Используем flexbox для выравнивания кнопок */
+            justify-content: flex-start; /* Выровнять кнопки по левому краю */
+            margin-top: 5px; /* Уменьшен отступ между контейнером поиска и кнопками */
+            width: 430px; /* Ширина такая же, как у поля поиска */
+        }
     </style>
 </head>
 <body>
@@ -58,7 +73,10 @@
         <input type="text" id="searchInput" placeholder="Введите запрос">
         <button onclick="performSearch()">Поиск</button>
     </div>
-    
+    <div class="button-container"> <!-- Обернули кнопки в контейнер с классом button-container -->
+        <button class="small-button" onclick="handleSmallButton1()">Получить время</button>
+        <button class="small-button" onclick="handleSmallButton2()">Количество запросов</button>
+    </div>
     <div id="results"></div> <!-- Элемент для отображения результатов поиска -->
 
     <script>
@@ -100,11 +118,21 @@
             const ul = document.createElement('ul');
             results.forEach(result => {
                 const li = document.createElement('li');
-               li.innerHTML = `<a href="${result.url}" target="_blank">${result.url}</a> (Упоминаний: ${result.frequency})`;
+                li.innerHTML = `<a href="${result.url}" target="_blank">${result.url}</a> (Упоминаний: ${result.frequency})`;
                 ul.appendChild(li);
             });
             resultsDiv.appendChild(ul);
         }
+
+        function handleSmallButton1() {
+            alert("Вы нажали на кнопку 1!");
+        }
+
+        function handleSmallButton2() {
+            alert("Вы нажали на кнопку 2!");
+        }
     </script>
 </body>
 </html>
+
+Find More

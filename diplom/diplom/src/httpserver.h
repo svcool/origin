@@ -18,17 +18,20 @@
 #include <boost/beast/version.hpp>
 #include <boost/asio.hpp>
 #include <chrono>
+#include <set>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 #include <memory>
 #include <string>
 #include <ctime>
+#include <regex>
 
 #include <Windows.h>
 #include <except.h>
 #include <ctime>
 #include <chrono>
+
 
 #include <bd.h>
 
@@ -62,9 +65,10 @@ namespace my_program_state
 class http_connection : public std::enable_shared_from_this<http_connection>
 {
 public:
-    http_connection(tcp::socket socket)
-        : socket_(std::move(socket))
+    http_connection(tcp::socket socket, manage_db& dbq)
+        : socket_(std::move(socket)), dbq(dbq)
     {
+       // this->dbq = dbq;
     }
 
     // Initiate the asynchronous operations associated with the connection.
@@ -78,8 +82,8 @@ public:
 private:
     // The socket for the currently connected client.
     tcp::socket socket_;
-
-    // The buffer for performing reads.
+    manage_db& dbq;
+       // The buffer for performing reads.
     beast::flat_buffer buffer_{ 8192 };
 
     // The request message.
@@ -141,21 +145,50 @@ private:
         write_response();
     }
 
-    // Функция для выполнения поиска
-    std::vector<SearchResult> perform_search(const std::string& query) {
-        std::vector<SearchResult> results;
+    std::set<std::string> skippingWords(const std::string& query) {
+        // Удаление знаков препинания и лишних пробелов
+        std::string cleaned_text = std::regex_replace(query, std::regex(R"([.,!?;:'\"(){}[\]<>-]|[\n\t])"), " ");
+        cleaned_text = std::regex_replace(query, std::regex(R"([\s]+)"), " ");
 
-        // Здесь должна быть логика поиска по базе данных
-        // Например, добавим несколько примеров результатов
-        results.push_back({ "https://netology.ru/profile/program/cpp-14/schedule/all", 5 }); // 5 упоминаний
-        results.push_back({ "https://www.cyberforum.ru/boost-cpp/thread2383592.html", 3 }); // 3 упоминания
-        results.push_back({ "https://www.boost.org/doc/libs/1_73_0/boost/property_tree/ptree.hpp", 7 }); // 7 упоминаний
-        results.push_back({ "http://forum.oszone.net/thread-251593.html", 7 }); // 7 упоминаний
-        // Сортируем результаты по частоте упоминаний в порядке убывания
-        std::sort(results.begin(), results.end(), [](const SearchResult& a, const SearchResult& b) {
+        // Преобразование текста в нижний регистр
+        std::transform(cleaned_text.begin(), cleaned_text.end(), cleaned_text.begin(),
+            [](unsigned char c) { return std::tolower(c); });
+
+        std::set<std::string> uniqueWords;
+        std::istringstream iss(cleaned_text); // Используем istringstream для разбивки текста на слова
+        std::string word;
+
+        while (iss >> word) {
+            if (!word.empty()) {
+                uniqueWords.insert(word); // Добавляем уникальное слово в вектор
+            }
+        }
+        return uniqueWords;
+    }
+
+    std::vector<SelectResult> resultSearchFrequence(std::set<std::string>& cleanQuery) {
+        std::vector<SelectResult> results;
+        std::unordered_map<std::string, int> frequencyMap;//map c уникальым ключем
+
+        for (const auto& clq : cleanQuery) {
+            auto currentResults = dbq.selectUrlWord(clq);
+            for (const auto& result : currentResults) {
+                frequencyMap[result.url] += result.frequency; // Суммируем частоты для одинаковых URL
+            }
+        }
+        // Создаем вектор SelectResult из мапы
+        for (const auto& pair : frequencyMap) {
+            results.emplace_back(pair.first, pair.second);
+        }
+
+        // Сортировка результатов по частоте от большего к меньшему
+        std::sort(results.begin(), results.end(), [](const SelectResult& a, const SelectResult& b) {
             return a.frequency > b.frequency;
             });
 
+        for (const auto& rsl : results) {
+            std::cout << rsl.url << "--" << rsl.url << std::endl;
+        }
         return results;
     }
 
@@ -164,17 +197,20 @@ private:
         response_.set(http::field::access_control_allow_origin, "*");
 
         if (request_.target().starts_with("/search")) {
-            std::string query = request_.target().substr(7); // Извлечение параметра query
-
-            // Выполнение поиска
-            std::vector<SearchResult> results = perform_search(query);
-
+            std::string query = request_.target().substr(14); // Извлечение параметра query
+            query = std::regex_replace(query, std::regex(R"(%20)"), " ");
+            std::set<std::string> cleanQuery = skippingWords(query); // подготовка запроса из предложения
+            std::vector<SelectResult> results = resultSearchFrequence(cleanQuery);// Подготовка данных для вывода поиска
+            
+            
             // Формируем ответ в формате JSON
             response_.set(http::field::content_type, "application/json");
             beast::ostream(response_.body()) << "[";
             for (size_t i = 0; i < results.size(); ++i) {
-                beast::ostream(response_.body()) << "{\"url\": \"" << results[i].url << "\", \"frequency\": " << results[i].frequency << "}";
-                if (i < results.size() - 1) {
+                const auto& row = results[i];
+                beast::ostream(response_.body()) << "{\"url\": \"" << row.url << "\", \"frequency\": " << row.frequency << "}";
+                               
+                if (i < results.size() - 1) {// Добавляем запятую, если это не последний элемент
                     beast::ostream(response_.body()) << ",";
                 }
             }
@@ -254,13 +290,13 @@ private:
 
 // "Loop" forever accepting new connections.
 void
-http_server(tcp::acceptor& acceptor, tcp::socket& socket)
+http_server(tcp::acceptor& acceptor, tcp::socket& socket, manage_db& dbq)
 {
     acceptor.async_accept(socket,
         [&](beast::error_code ec)
         {
             if (!ec)
-                std::make_shared<http_connection>(std::move(socket))->start();
-            http_server(acceptor, socket);
+                std::make_shared<http_connection>(std::move(socket), dbq)->start();
+            http_server(acceptor, socket, dbq);
         });
 }

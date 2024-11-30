@@ -1,4 +1,4 @@
-﻿//#include "httpserver.cpp"
+﻿#include "httpserver.h"
 #include <safequeue.h>
 #include <indexator.h>
 #include <httpclient.h>
@@ -10,7 +10,7 @@
 #include <windows.h> // Для SetConsoleCP и SetConsoleOutputCP
 
 
-#pragma execution_character_set("utf-8")
+#pragma execution_character_set("utf-8")уо
 // Глобальные мьютексы для защиты функций
 std::mutex http_mutex;
 std::mutex clean_mutex;
@@ -23,6 +23,7 @@ std::pair<std::string, std::string> parseUrl(const std::string& url) {
     std::string target;
     std::string cleanUrl = std::regex_replace(url, std::regex(R"(^https?://)"), "");  // Удаляем протокол (http:// или https://)
     size_t pos = cleanUrl.find("/");// Находим позицию первого символа '/' после базового URL
+    
     if (pos == std::string::npos) { // Если '/' не найден, значит, весь URL - это хост
         host = cleanUrl;
         target = "/";
@@ -39,15 +40,15 @@ void worker(Safe_queue& sq, int maxDeep, manage_db& db) {
     std::cout << "Worker started. ID" << this_id << std::endl;
 
     while (true) {
-        UrlDeep urlDeep;
-        urlDeep = sq.popFront(); //безопасная очередь
+        UrlDeep queueUrlDeep;// структура из url и глубины deep
+        queueUrlDeep = sq.popFront(); //безопасная очередь
         
-            if (urlDeep.url.empty() || urlDeep.deep > maxDeep) {
+            if (queueUrlDeep.url.empty() || queueUrlDeep.deep > maxDeep) {
                 std::cout << "Worker exiting due to empty URL." << std::endl;
                 break;
             }
             try {
-            auto [host, target] = parseUrl(urlDeep.url);            // Вызов функции для парсинга URL
+            auto [host, target] = parseUrl(queueUrlDeep.url);            // Вызов функции для парсинга URL
             std::string parserHtml;// Блокируем доступ к http_get
             {
                 std::lock_guard<std::mutex> lock(http_mutex);
@@ -83,12 +84,17 @@ void worker(Safe_queue& sq, int maxDeep, manage_db& db) {
                 std::cout << "Worker countWordFrequency. ID" << this_id << std::endl;
                 word_freq = countWordFrequency(cleaned_text);
            
-           db.addDataTable("Document", "title", urlDeep.url); // Добавляем документ
+                if(queueUrlDeep.url.substr(0, 7) != "http://") {
+                    queueUrlDeep.url = "http://" + queueUrlDeep.url; // Добавляем "http://" в начало, если его нет
+                }
+
+
+           db.addDataTable("Document", "title", queueUrlDeep.url); // Добавляем документ
             for (const auto& [word, frequency] : word_freq) {
                db.addDataTable("Word", "name", word);
                
                //  Получаем ID документа и ID слова (это нужно реализовать)
-                int documentId = db.select("Document", "title", urlDeep.url); // Выполняем выборку
+                int documentId = db.select("Document", "title", queueUrlDeep.url); // Выполняем выборку
                 int wordId = db.select("Word", "name", word); // Выполняем выборку
                 if (documentId == -1 || wordId ==-1) continue; 
                 db.addWordDocuments("Document_Word", documentId, wordId, frequency);// Добавляем частоту слов
@@ -97,7 +103,7 @@ void worker(Safe_queue& sq, int maxDeep, manage_db& db) {
       }
 
              for (const auto& link : links) {
-                auto linkDeep = urlDeep.deep + 1;
+                auto linkDeep = queueUrlDeep.deep + 1;
                 sq.push({ link, linkDeep }); // Увеличиваем глубину на 1
             }
             }
@@ -124,11 +130,6 @@ int main() {
        //создаем таблицы клиентов и телефонов
        db.createTable("word", "document", "document_word");
 
-       // db.addDataTable("Word", "ghbdtn багет");
-        //db.addDataTable("Document", "слово");
-
-
-
 
        std::string url = "https://example.com";
        auto [host, target] = parseUrl(url);
@@ -141,17 +142,59 @@ int main() {
 
        int num_threads = std::thread::hardware_concurrency();
        std::cout << "Количество ядер: " << num_threads << std::endl;
+       
+       //std::vector<SelectResult> results = db.selectUrlWord("without");
+
+      /* for (const auto& row : results) {
+           std::cout << row.url << "--" << row.frequency << std::endl;
+       }*/
+
+       // Параметры сервера: адрес и порт
+       auto const address = net::ip::make_address("0.0.0.0"); // Принимаем на всех интерфейсах
+       unsigned short port = 8080; // Порт 80
+       net::io_context ioc{ 1 };
+
+       tcp::acceptor acceptor{ ioc, {address, port} };
+       tcp::socket socket{ ioc };
+// Запуск HTTP сервера в отдельном потоке
+       std::thread server_thread([&]() {
+           http_server(acceptor, socket, db);
+           ioc.run();
+           });
+
+    // Задержка перед открытием браузера
+       std::this_thread::sleep_for(std::chrono::seconds(1));
+
+       // Открываем браузер с нужной страницей
+      std::string urlServer = "http://localhost:8080/time";
+       //std::string command = "xdg-open " + url; // Для Linux
+      std::string command = "start " + urlServer; // Для Windows
+       // std::string command = "open " + url; // Для MacOS
+
+       system(command.c_str());
 
        std::vector<std::thread> threads;
        for (int i = 0; i < num_threads-2; ++i) {
            threads.emplace_back(worker, std::ref(sq), maxDeep, std::ref(db));
        }
+
        for (auto& t : threads) {// Ждем завершения всех потоков
            if (t.joinable()) {
                t.join();
            }
        }
-       std::cout << "All workers completed." << std::endl;
+       std::cout << "All workers \"Spaider\" completed." << std::endl;
+
+       
+
+       
+
+   
+
+       // Ожидаем завершения потока сервера
+
+       server_thread.join();
+
 
        //// Параметры сервера: адрес и порт
        //auto const address = net::ip::make_address("0.0.0.0"); // Принимаем на всех интерфейсах

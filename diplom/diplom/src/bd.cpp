@@ -143,12 +143,12 @@ int manage_db::select(const std::string& tableName, const std::string& column, c
 std::vector<SelectResult> manage_db::selectUrlWord(const std::string& word) {
     pqxx::work txn{*conn};
     const std::string query = R"(
-        SELECT d.title, dw.frequency
-        FROM document_word dw
-        JOIN document d ON dw.document_id = d.id
-        JOIN word w ON dw.word_id = w.id
-        WHERE w.word = $1
-        ORDER BY dw.frequency DESC;
+        SELECT d.title, w.name, dw.frequency
+FROM document_word dw
+JOIN document d ON dw.document_id = d.document_id 
+JOIN word w ON dw.word_id = w.word_id 
+WHERE w.name = $1
+ORDER BY dw.frequency DESC;
         )";
 
     pqxx::result collection = txn.exec_params(query, word);
@@ -156,7 +156,11 @@ std::vector<SelectResult> manage_db::selectUrlWord(const std::string& word) {
 std::vector<SelectResult> urlFrequency;// Карта для хранения частоты слов
 
 for (const auto& row : collection) {
-    urlFrequency.push_back({ row[0].as<std::string>(), row[1].as<int>() });
+    urlFrequency.push_back({ row[0].as<std::string>(), row[2].as<int>() });
+}
+
+for (const auto& row : urlFrequency) {
+    std::cout << row.url << "--" << row.frequency << std::endl;
 }
 
 txn.commit();

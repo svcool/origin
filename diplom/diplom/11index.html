@@ -15,24 +15,33 @@
         }
         #searchContainer {
             display: flex; /* Используем flexbox для выравнивания элементов */
-            justify-content: center; /* Центрируем элементы по горизонтали */
+            flex-direction: column; /* Изменяем направление на колонку */
+            align-items: center; /* Центрируем содержимое по горизонтали */
             margin-bottom: 20px; /* Отступ снизу для разделения с результатами */
+        }
+        #logoSearchContainer {
+            display: flex; /* Используем flexbox для выравнивания логотипа и кнопки поиска */
+            align-items: center; /* Центрируем элементы по вертикали */
+            margin-bottom: 10px; /* Отступ между логотипом и полем ввода */
         }
         #logo {
             width: 150px; /* Увеличенная ширина логотипа */
             height: auto; /* Автоматическая высота для сохранения пропорций */
-            margin-bottom: 10px; /* Отступ между логотипом и полем ввода */
+            margin-right: 10px; /* Отступ между логотипом и кнопкой поиска */
         }
         #searchInput {
             padding: 10px;
-            width: 400px; /* Измените ширину поля ввода по вашему желанию */
-            height: 40px; /* Измените высоту поля ввода по вашему желанию */
-            margin-right: 10px;
-            font-size: 16px; /* Увеличьте размер шрифта для лучшей читаемости */
+            width: 400px; /* Увеличенная ширина поля ввода */
+            margin-bottom: 10px; /* Отступ между полем ввода и кнопками */
+            font-size: 16px; /* Увеличенный размер шрифта для лучшей читаемости */
         }
         button {
-            padding: 10px 15px;
-            margin: 0 5px; /* Отступы между кнопками */
+            padding: 10px 15px; /* Размеры кнопок */
+            font-size: 16px; /* Увеличенный размер шрифта для кнопки */
+        }
+        .small-button {
+            padding: 5px 10px; /* Размеры маленьких кнопок */
+            font-size: 14px; /* Размер шрифта для маленьких кнопок */
         }
         #results {
             margin-top: 20px;
@@ -53,50 +62,24 @@
             font-style: italic;
             color: gray;
         }
-        /* Новый стиль для кнопок под формой поиска */
-        #buttonContainer {
-            display: flex; /* Используем flexbox для выравнивания кнопок */
-            justify-content: center; /* Центрируем кнопки по горизонтали */
-            margin-top: 10px; /* Отступ сверху для разделения с формой поиска */
-        }
     </style>
+</head>
+<body>
+    <div id="searchContainer">
+        <div id="logoSearchContainer">
+            <img id="logo" src="gooyagl_logo.png" alt="GOOYAGL"> <!-- Замените на путь к вашему изображению -->
+            <button onclick="performSearch()">Поиск</button>
+        </div>
+        <input type="text" id="searchInput" placeholder="Введите запрос">
+        <div>
+            <button class="small-button" onclick="handleSmallButton1()">Кнопка 1</button>
+            <button class="small-button" onclick="handleSmallButton2()">Кнопка 2</button>
+        </div>
+    </div>
+    
+    <div id="results"></div> <!-- Элемент для отображения результатов поиска -->
+
     <script>
-        function fetchTime() {
-            fetch('http://localhost:8080/time') // Убедитесь, что этот URL правильный
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Сеть не отвечает: ' + response.status);
-                    }
-                    return response.text(); // Если сервер возвращает HTML
-                })
-                .then(data => {
-                    console.log(data);
-                    document.getElementById('timeDisplay').innerHTML = data; // Обновляем содержимое
-                })
-                .catch(error => {
-                    console.error('Ошибка:', error);
-                    document.getElementById('timeDisplay').innerHTML = 'Ошибка получения времени: ' + error.message;
-                });
-        }
-
-        function fetchCount() {
-            fetch('http://localhost:8080/count') // Убедитесь, что этот URL правильный
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Сеть не отвечает: ' + response.status);
-                    }
-                    return response.text(); // Если сервер возвращает HTML
-                })
-                .then(data => {
-                    console.log(data);
-                    document.getElementById('counterDisplay').innerHTML = data; // Обновляем содержимое
-                })
-                .catch(error => {
-                    console.error('Ошибка:', error);
-                    document.getElementById('counterDisplay').innerHTML = 'Ошибка получения количества запросов: ' + error.message;
-                });
-        }
-
         function performSearch() {
             const query = document.getElementById('searchInput').value;
             const resultsDiv = document.getElementById('results');
@@ -140,25 +123,15 @@
             });
             resultsDiv.appendChild(ul);
         }
+
+        function handleSmallButton1() {
+            alert("Вы нажали на кнопку 1!");
+        }
+
+        function handleSmallButton2() {
+            alert("Вы нажали на кнопку 2!");
+        }
     </script>
-</head>
-<body>
-    <div id="searchContainer">
-        <img id="logo" src="gooyagl_logo.png" alt="GOOYAGL"> <!-- Замените на путь к вашему изображению -->
-        <input type="text" id="searchInput" placeholder="Введите запрос">
-        <button onclick="performSearch()">Поиск</button>
-    </div>
-    
-    <div id="results"></div> <!-- Элемент для отображения результатов поиска -->
-
-    <!-- Контейнер для кнопок -->
-    <div id="buttonContainer">
-        <div id="counterDisplay"></div>
-        <button onclick="fetchCount()">Показать количество запросов</button>
-        <button onclick="fetchTime()">Показать текущее время</button>
-        <div id="timeDisplay"></div>
-    </div>
-
 </body>
 </html>
 
