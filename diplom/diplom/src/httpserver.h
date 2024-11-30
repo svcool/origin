@@ -222,7 +222,7 @@ private:
                 << "<html>\n"
                 << "<head><title>Количество запросовfgdfgdfsgs</title></head>\n"
                 << "<body>\n"
-                << "<h1>Количество запросов</h1>\n"
+                << "<h1>Количество запросов:</h1>\n"
                 << "<p>Всего было " << my_program_state::request_count() << " запросов.</p>\n"
                 << "</body>\n"
                 << "</html>\n";
@@ -238,8 +238,8 @@ private:
                 << "<html>\n"
                 << "<head><title>lkjl  Текущее</title></head>\n"
                 << "<body>\n"
-                << "<h1>Текущее время</h1>\n"
-                << "<p>Текущее время: " << timeinfo
+                << "<h1>Текущее время:</h1>\n"
+                << "<p>" << timeinfo
                 << "</p>\n"
                 << "</body>\n"
                 << "</html>\n";

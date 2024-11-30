@@ -11,21 +11,20 @@
             padding: 20px;
             display: flex;
             flex-direction: column;
-            align-items: center; /* Центрируем элементы по горизонтали */
+            align-items: center;
         }
         #searchContainer {
-            display: flex; /* Используем flexbox для выравнивания элементов */
-            justify-content: center; /* Центрируем элементы по горизонтали */
-            margin-bottom: 3px; /* Уменьшен отступ снизу для разделения с кнопками */
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3px;
         }
         #logo {
-            width: 150px; /* Увеличенная ширина логотипа */
-            height: auto; /* Автоматическая высота для сохранения пропорций */
-            margin-bottom: 3px; /* Отступ между логотипом и полем ввода */
-			margin-bottom: 3px; /* Отступ между логотипом и полем ввода */
-			margin-left: 5px; 
-			margin-right: 5px;
-			align-items: center; 
+            width: 150px;
+            height: auto;
+            margin-bottom: 3px;
+            margin-left: 5px; 
+            margin-right: 5px;
+            align-items: center; 
         }
         #searchInput {
             padding: 10px;
@@ -36,14 +35,14 @@
             padding: 10px 15px;
         }
         .small-button {
-            padding: 3px 10px; /* Размеры маленьких кнопок */
-            font-size: 12px; /* Размер шрифта для маленьких кнопок */
-            margin-right: 2px; /* Отступ между маленькими кнопками */
+            padding: 3px 10px;
+            font-size: 12px;
+            margin-right: 2px;
         }
         #results {
             margin-top: 20px;
-            width: 100%; /* Занимает полную ширину контейнера */
-            max-width: 750px; /* Максимальная ширина для результатов */
+            width: 100%;
+            max-width: 750px;
         }
         ul {
             list-style-type: none;
@@ -60,55 +59,65 @@
             color: gray;
         }
         .button-container {
-            display: flex; /* Используем flexbox для выравнивания кнопок */
-            justify-content: flex-start; /* Выровнять кнопки по левому краю */
-            margin-top: 5px; /* Уменьшен отступ между контейнером поиска и кнопками */
-            width: 430px; /* Ширина такая же, как у поля поиска */
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 5px;
+            width: 430px;
+        }
+        #timeDisplay {
+            margin-top: 20px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div id="searchContainer">
-        <img id="logo" src="gooyagl_logo.png" alt="GOOYAGL"> <!-- Замените на путь к вашему изображению -->
-        <input type="text" id="searchInput" placeholder="Введите запрос">
+        <img id="logo" src="gooyagl_logo.png" alt="GOOYAGL">
+        <input type="text" id="searchInput" placeholder="Введите запрос" onkeydown="checkEnter(event)">
         <button onclick="performSearch()">Поиск</button>
     </div>
-    <div class="button-container"> <!-- Обернули кнопки в контейнер с классом button-container -->
-        <button class="small-button" onclick="handleSmallButton1()">Получить время</button>
-        <button class="small-button" onclick="handleSmallButton2()">Количество запросов</button>
+    <div class="button-container">
+        <button class="small-button" onclick="fetchTime()">Получить время</button>
+        <button class="small-button" onclick="fetchCount()">Количество запросов</button>
     </div>
-    <div id="results"></div> <!-- Элемент для отображения результатов поиска -->
+    <div id="results"></div>
+    <div id="timeDisplay"></div>
 
     <script>
         function performSearch() {
             const query = document.getElementById('searchInput').value;
             const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = '<p class="loading">Загрузка...</p>'; // Индикатор загрузки
+            const timeDisplay = document.getElementById('timeDisplay');
+
+            // Очищаем вывод времени и результатов перед новым запросом
+            resultsDiv.innerHTML = '';
+            timeDisplay.innerHTML = '';
 
             if (query) {
+                resultsDiv.innerHTML = '<p class="loading">Загрузка...</p>';
+
                 fetch(`http://localhost:8080/search?query=${encodeURIComponent(query)}`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Сеть не в порядке: ' + response.statusText);
                         }
-                        return response.json(); // Предполагаем, что сервер возвращает JSON
+                        return response.json();
                     })
                     .then(data => {
-                        displayResults(data); // Вызываем функцию для отображения результатов
+                        displayResults(data);
                     })
                     .catch(error => {
                         console.error('Ошибка:', error);
                         resultsDiv.innerHTML = '<p>Произошла ошибка при выполнении запроса.</p>';
                     });
             } else {
-                resultsDiv.innerHTML = ''; // Очищаем индикатор загрузки
                 alert('Пожалуйста, введите текст для поиска.');
             }
         }
 
         function displayResults(results) {
             const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = ''; // Очищаем предыдущие результаты
+            resultsDiv.innerHTML = '';
 
             if (results.length === 0) {
                 resultsDiv.innerHTML = '<p>Результаты не найдены.</p>';
@@ -124,15 +133,59 @@
             resultsDiv.appendChild(ul);
         }
 
-        function handleSmallButton1() {
-            alert("Вы нажали на кнопку 1!");
+        function checkEnter(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
         }
 
-        function handleSmallButton2() {
-            alert("Вы нажали на кнопку 2!");
+        function fetchTime() {
+            const timeDisplay = document.getElementById('timeDisplay');
+            const resultsDiv = document.getElementById('results');
+            // Очищаем вывод времени и результатов перед новым запросом
+            timeDisplay.innerHTML = '';
+            resultsDiv.innerHTML = '';
+
+            fetch('http://localhost:8080/time')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Сеть не отвечает: ' + response.status);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    console.log(data);
+                    timeDisplay.innerHTML = `${data}`;
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    timeDisplay.innerHTML = 'Ошибка получения времени: ' + error.message;
+                });
+        }
+
+        function fetchCount() {
+            const timeDisplay = document.getElementById('timeDisplay');
+            const resultsDiv = document.getElementById('results');
+            // Очищаем вывод времени и результатов перед новым запросом
+            timeDisplay.innerHTML = '';
+            resultsDiv.innerHTML = '';
+
+            fetch('http://localhost:8080/count')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Сеть не отвечает: ' + response.status);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    console.log(data);
+                    timeDisplay.innerHTML = `${data}`;
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    timeDisplay.innerHTML = 'Ошибка получения количества запросов: ' + error.message;
+                });
         }
     </script>
 </body>
 </html>
-
-Find More
