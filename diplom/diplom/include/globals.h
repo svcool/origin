@@ -15,10 +15,9 @@
 #include <filesystem>
 
 // —труктура дл€ хранени€ ссылки и частоты
-struct SearchResult {
-    std::string url;
-    std::string title;
-    int frequency;
-};
+//struct SearchResult {
+//    std::string url;
+//    int frequency;
+//};
 
 #endif // GLOBAL_VARIABLES_H

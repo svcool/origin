@@ -1,4 +1,5 @@
-﻿#include <safequeue.h>
+﻿//#include "httpserver.cpp"
+#include <safequeue.h>
 #include <indexator.h>
 #include <httpclient.h>
 #include <tempfile.h>
@@ -7,6 +8,7 @@
 #include <mutex>
 #include <bd.h>
 #include <windows.h> // Для SetConsoleCP и SetConsoleOutputCP
+
 
 #pragma execution_character_set("utf-8")
 // Глобальные мьютексы для защиты функций
@@ -81,13 +83,14 @@ void worker(Safe_queue& sq, int maxDeep, manage_db& db) {
                 std::cout << "Worker countWordFrequency. ID" << this_id << std::endl;
                 word_freq = countWordFrequency(cleaned_text);
            
-           db.addDataTable("Document", urlDeep.url); // Добавляем документ
+           db.addDataTable("Document", "title", urlDeep.url); // Добавляем документ
             for (const auto& [word, frequency] : word_freq) {
-               db.addDataTable("Word", word);
+               db.addDataTable("Word", "name", word);
                
                //  Получаем ID документа и ID слова (это нужно реализовать)
-                int documentId = db.select("Document", urlDeep.url, "title"); // Выполняем выборку
-                int wordId = db.select("Word", word, "name"); // Выполняем выборку
+                int documentId = db.select("Document", "title", urlDeep.url); // Выполняем выборку
+                int wordId = db.select("Word", "name", word); // Выполняем выборку
+                if (documentId == -1 || wordId ==-1) continue; 
                 db.addWordDocuments("Document_Word", documentId, wordId, frequency);// Добавляем частоту слов
             }
 
@@ -113,35 +116,36 @@ int main() {
    //SetConsoleCP(CP_UTF8);
    // SetConsoleOutputCP(CP_UTF8);
 
-    try {
-    
-        //создаем базу данных
-        clientdb r("dbwords");
-        manage_db db("dbwords");
-        //создаем таблицы клиентов и телефонов
-        db.createTable("word", "document", "document_word");
+   try {
+
+       //создаем базу данных
+       clientdb r("dbwords");
+       manage_db db("dbwords");
+       //создаем таблицы клиентов и телефонов
+       db.createTable("word", "document", "document_word");
 
        // db.addDataTable("Word", "ghbdtn багет");
         //db.addDataTable("Document", "слово");
-        
-        
-        
-        std::string url = "https://example.com";
-        auto [host, target] = parseUrl(url);
-        std::cout << "Host: " << host << std::endl;
-        std::cout << "Target: " << target << std::endl;
 
-        Safe_queue sq;
-        int maxDeep = 3; // Задайте желаемую глубину рекурсии
-        sq.push({ host + target, 1 }); // Начальная глубина 1
 
-        int num_threads = std::thread::hardware_concurrency();
-        std::cout << "Количество ядер: " << num_threads << std::endl;
 
-        std::vector<std::thread> threads;
-        for (int i = 0; i < num_threads; ++i) {
-            threads.emplace_back(worker, std::ref(sq), maxDeep, std::ref(db));
-        }
+
+       std::string url = "https://example.com";
+       auto [host, target] = parseUrl(url);
+       std::cout << "Host: " << host << std::endl;
+       std::cout << "Target: " << target << std::endl;
+
+       Safe_queue sq;
+       int maxDeep = 3; // Задайте желаемую глубину рекурсии
+       sq.push({ host + target, 1 }); // Начальная глубина 1
+
+       int num_threads = std::thread::hardware_concurrency();
+       std::cout << "Количество ядер: " << num_threads << std::endl;
+
+       std::vector<std::thread> threads;
+       for (int i = 0; i < num_threads-2; ++i) {
+           threads.emplace_back(worker, std::ref(sq), maxDeep, std::ref(db));
+       }
        for (auto& t : threads) {// Ждем завершения всех потоков
            if (t.joinable()) {
                t.join();
@@ -149,61 +153,87 @@ int main() {
        }
        std::cout << "All workers completed." << std::endl;
 
-        
-      //  // Выполняем GET запрос и получаем имя временного файла
-      //  std::string parserHtml = http_get(host, port, target, version);
-      //  TmpFile tempFile("./tmp");
-      //  tempFile.writeToFile(parserHtml);
-      //  std::cout << "Имя временного файла: " << tempFile.getUniqueName() << std::endl;
-      // // tempFile.closeFile();
-      //// tempFile.readFromFile();
-      //     // Открытие HTML файла
-      //  //std::ifstream file(tempFile.getUniqueName());
-      //  //if (!file.is_open()) {
-      //  //    throw HttpClientError("Ошибка при открытии файла!");
-      //  //}
+       //// Параметры сервера: адрес и порт
+       //auto const address = net::ip::make_address("0.0.0.0"); // Принимаем на всех интерфейсах
+       //unsigned short port = 8080; // Порт 80
+       //net::io_context ioc{ 1 };
 
-      //  // //Чтение содержимого файла
-      //  //std::string html(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
-      //  //file.close();
+       //tcp::acceptor acceptor{ ioc, {address, port} };
+       //tcp::socket socket{ ioc };
 
-      //  // Очистка и обработка текста]
+       //// Запуск HTTP сервера в отдельном потоке
+       //std::thread server_thread([&]() {
+       //    http_server(acceptor, socket, db);
+       //    ioc.run();
+       //    });
 
-      //     std::string cleaned_text = clean_and_process_text(parserHtml);
+       //// Задержка перед открытием браузера
+       //std::this_thread::sleep_for(std::chrono::seconds(1));
 
-      //  // Проверка на пустоту очищенного текста
-      //  if (cleaned_text.empty()) {
-      //      throw HttpClientError("Очищенный текст пуст!");
-      //  }
+       //// Открываем браузер с нужной страницей
+       //std::string urlserver = "http://localhost:8080/time";
+       ////std::string command = "xdg-open " + url; // Для Linux
+       //std::string command = "start " + urlserver; // Для Windows
+       //// std::string command = "open " + url; // Для MacOS
 
-      //  // Вывод результата
-      //  std::cout << "Очищенный текст:" << std::endl;
-      //  std::cout << cleaned_text << std::endl;
+       //system(command.c_str());
 
-      //  std::map<std::string, int> word_freq = countWordFrequency(cleaned_text);
+       //// Ожидаем завершения потока сервера
 
-      //  // Выводим результаты
-      //  std::cout << "Частота слов:" << std::endl;
-      //  for (const auto& pair : word_freq) {
-      //      std::cout << pair.first << ": " << pair.second << std::endl;
-      //  }
+       //server_thread.join();
 
-      //  // Извлечение ссылок
-      //  std::vector<std::string> links = extractLinks(parserHtml, host);
 
-      //  // Вывод найденных ссылок
-      //  std::cout << "Ссылки: " << std::endl;
-      //  for (const auto& link : links) {
-      //      std::cout << link << std::endl;
-      //  }
 
-      //     
-    }
-    catch (const HttpClientError& e) {
-        std::cerr << "HTTP ошибка: " << e.what() << std::endl;
-        return EXIT_FAILURE;
-    }
-    catch (const std::exception& e) {
+       //  // Выполняем GET запрос и получаем имя временного файла
+       //  std::string parserHtml = http_get(host, port, target, version);
+       //  TmpFile tempFile("./tmp");
+       //  tempFile.writeToFile(parserHtml);
+       //  std::cout << "Имя временного файла: " << tempFile.getUniqueName() << std::endl;
+       // // tempFile.closeFile();
+       //// tempFile.readFromFile();
+       //     // Открытие HTML файла
+       //  //std::ifstream file(tempFile.getUniqueName());
+       //  //if (!file.is_open()) {
+       //  //    throw HttpClientError("Ошибка при открытии файла!");
+       //  //}
+
+       //  // //Чтение содержимого файла
+       //  //std::string html(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
+       //  //file.close();
+
+       //  // Очистка и обработка текста]
+
+       //     std::string cleaned_text = clean_and_process_text(parserHtml);
+
+       //  // Проверка на пустоту очищенного текста
+       //  if (cleaned_text.empty()) {
+       //      throw HttpClientError("Очищенный текст пуст!");
+       //  }
+
+       //  // Вывод результата
+       //  std::cout << "Очищенный текст:" << std::endl;
+       //  std::cout << cleaned_text << std::endl;
+
+       //  std::map<std::string, int> word_freq = countWordFrequency(cleaned_text);
+
+       //  // Выводим результаты
+       //  std::cout << "Частота слов:" << std::endl;
+       //  for (const auto& pair : word_freq) {
+       //      std::cout << pair.first << ": " << pair.second << std::endl;
+       //  }
+
+       //  // Извлечение ссылок
+       //  std::vector<std::string> links = extractLinks(parserHtml, host);
+
+       //  // Вывод найденных ссылок
+       //  std::cout << "Ссылки: " << std::endl;
+       //  for (const auto& link : links) {
+       //      std::cout << link << std::endl;
+       //  }
+
+       //     
+   }
+     catch (const std::exception& e) {
         std::cerr << "Ошибка:" << e.what() << std::endl;
         return EXIT_FAILURE;
     }

@@ -16,6 +16,11 @@ public:
     void create_db();
 };
 
+struct SelectResult {
+    std::string url;
+    int frequency;
+};
+
 //*******************************************************************************************
 class manage_db {
     pqxx::connection* conn;
@@ -25,9 +30,10 @@ public:
     manage_db(std::string db);
     pqxx::connection* connect_db();
     void createTable(std::string Word, std::string Document, std::string DocumentWord);
-    void addDataTable(std::string Table, std::string value);
+    void addDataTable(std::string Table, const std::string& column, std::string value);
     void addWordDocuments(std::string Table, int wordId, int documentId, int frequence);
-    int select(const std::string& tableName, const std::string& document, const std::string& column);
+    int select(const std::string& tableName, const std::string& column, const std::string& document);
+    std::vector<SelectResult> selectUrlWord(const std::string& word);
     //void change_client(std::string name, std::string surname, std::string newname, std::string newsurname, std::string newemail, std::string newphone);
     //void delete_phone(std::string name, std::string surname, std::string phone);
     //void delete_client(std::string name, std::string surname);

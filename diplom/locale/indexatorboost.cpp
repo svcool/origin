@@ -1,20 +1,21 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <fstream>
 #include <string>
 #include <regex>
 #include <boost/locale.hpp>
+#include <windows.h>
 
 using namespace std;
 
 string clean_html(const string& html) {
-    // Удаление HTML-тегов
+    // РЈРґР°Р»РµРЅРёРµ HTML-С‚РµРіРѕРІ
     return regex_replace(html, regex(R"(<[^>]*>)"), "");
 }
 
 string remove_punctuation_and_whitespace(const string& text) {
-    // Удаление знаков препинания и лишних пробелов
-    string cleaned_text = regex_replace(text, regex(R"([\s]+)"), " "); // Замена нескольких пробелов на один
-    cleaned_text = regex_replace(cleaned_text, regex(R"([.,!?;:'\"(){}[\]<>]|\n|\t)"), ""); // Удаление знаков препинания
+    // РЈРґР°Р»РµРЅРёРµ Р·РЅР°РєРѕРІ РїСЂРµРїРёРЅР°РЅРёСЏ Рё Р»РёС€РЅРёС… РїСЂРѕР±РµР»РѕРІ
+    string cleaned_text = regex_replace(text, regex(R"([\s]+)"), " "); // Р—Р°РјРµРЅР° РЅРµСЃРєРѕР»СЊРєРёС… РїСЂРѕР±РµР»РѕРІ РЅР° РѕРґРёРЅ
+    cleaned_text = regex_replace(cleaned_text, regex(R"([.,!?;:'\"(){}[\]<>]|\n|\t)"), ""); // РЈРґР°Р»РµРЅРёРµ Р·РЅР°РєРѕРІ РїСЂРµРїРёРЅР°РЅРёСЏ
     return cleaned_text;
 }
 
@@ -22,49 +23,38 @@ string to_lowercase(const string& text) {
     return boost::locale::to_lower(text);
 }
 
-int main6() {
-    // Инициализация локали Boost
-    setlocale(LC_ALL, "Russian");
-    system("chcp 1251");
+int main() {
+    // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ Р»РѕРєР°Р»Рё Boost
+    //setlocale(LC_ALL, "Russian");
+    system("chcp 65001");
+    //SetConsoleCP(CP_UTF8);
+    //SetConsoleOutputCP(CP_UTF8);
     boost::locale::generator gen;
-    std::locale loc = gen("en_US.UTF-8"); // Замените на вашу локаль
+    std::locale loc = gen("ru_RU.UTF-8"); // Р—Р°РјРµРЅРёС‚Рµ РЅР° РІР°С€Сѓ Р»РѕРєР°Р»СЊ
     std::locale::global(loc);
 
-    // Открытие HTML файла
-    ifstream file("xgconsole.xml");
+    ifstream file("xgconsole.xml"); // РћС‚РєСЂС‹С‚РёРµ HTML С„Р°Р№Р»Р°
     if (!file.is_open()) {
-        cerr << "Ошибка при открытии файла!" << endl;
+        cerr << "РћС€РёР±РєР° РїСЂРё РѕС‚РєСЂС‹С‚РёРё С„Р°Р№Р»Р°!" << endl;
         return 1;
     }
-
-    // Чтение содержимого файла
-    string html((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
+    string html((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());    // Р§С‚РµРЅРёРµ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ С„Р°Р№Р»Р°
     file.close();
-
-    // Очистка HTML
-    string no_html = clean_html(html);
-
-    // Удаление знаков препинания и пробелов
-    string cleaned_text = remove_punctuation_and_whitespace(no_html);
-
-    // Проверка на пустоту очищенного текста
+    string no_html = clean_html(html); // РћС‡РёСЃС‚РєР° HTML
+    string cleaned_text = remove_punctuation_and_whitespace(no_html);// РЈРґР°Р»РµРЅРёРµ Р·РЅР°РєРѕРІ РїСЂРµРїРёРЅР°РЅРёСЏ Рё РїСЂРѕР±РµР»РѕРІ
     if (cleaned_text.empty()) {
-        cerr << "Очищенный текст пуст!" << endl;
-        return 1; // Или обработайте ошибку другим способом
+        cerr << "РћС‡РёС‰РµРЅРЅС‹Р№ С‚РµРєСЃС‚ РїСѓСЃС‚!" << endl;
+        return 1; // РР»Рё РѕР±СЂР°Р±РѕС‚Р°Р№С‚Рµ РѕС€РёР±РєСѓ РґСЂСѓРіРёРј СЃРїРѕСЃРѕР±РѕРј
     }
-
-    // Преобразование текста в нижний регистр
     string final_text;
     try {
         final_text = to_lowercase(cleaned_text);
     }
     catch (const std::exception& e) {
-        cerr << "Ошибка при преобразовании текста в нижний регистр: " << e.what() << endl;
+        cerr << "РћС€РёР±РєР° РїСЂРё РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРё С‚РµРєСЃС‚Р° РІ РЅРёР¶РЅРёР№ СЂРµРіРёСЃС‚СЂ: " << e.what() << endl;
         return 1;
     }
-
-    // Вывод результата
-    cout << "Очищенный текст:" << endl;
+    cout << "РћС‡РёС‰РµРЅРЅС‹Р№ С‚РµРєСЃС‚:" << endl;
     cout << final_text << endl;
 
     return 0;

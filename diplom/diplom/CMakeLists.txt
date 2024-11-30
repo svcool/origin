@@ -29,7 +29,7 @@ endif()
 #add_executable(${project}  "src/httpserver.cpp" "src/parserini.cpp" "src/bd.cpp" "include/bd.h" "include/globals.h" "include/except.h" "Header1.h" "src/httpclient.cpp" #"src/httpserver.cpp")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-add_executable(${project}  "src/test.cpp"  "src/tempfile.cpp"  "src/httpclient.cpp"  "src/indexator.cpp"  "src/safequeue.cpp" "src/client.cpp"  "src/bd.cpp")
+add_executable(${project}  "src/test.cpp"  "src/tempfile.cpp"  "src/httpclient.cpp"  "src/indexator.cpp"  "src/safequeue.cpp" "src/client.cpp"  "src/bd.cpp" "src/httpserver.cpp")
 #add_executable(${project}  "src/client.cpp")
 # Путь к libpq++
 #add_subdirectory("d:\\gitrepo\\libpqxx-7.9.0\\" pqxx_build)

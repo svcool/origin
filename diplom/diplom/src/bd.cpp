@@ -99,53 +99,71 @@ void manage_db::createTable(std::string Word, std::string Document, std::string 
     std::cout << "Table " + Document + ", " + Word + ", " + DocumentWord + " created successfully!" << std::endl;
 }
 //------------------------------------------------------------------------------------------
-void manage_db::addDataTable(std::string Table, std::string value) {
+void manage_db::addDataTable(std::string Table, const std::string& column, std::string value) {
     pqxx::work txn(*conn);
-    std::string query = "INSERT INTO " + Table + " VALUES(DEFAULT, '" + txn.esc(value) + "');";
+    std::string query = "INSERT INTO " + txn.esc(Table) + " VALUES(DEFAULT, $1) ON CONFLICT (" + txn.esc(column) + ") DO NOTHING;";
 
-    try {
-        txn.exec(query);
-        txn.commit();
-        std::cout << "Добавлено значение: " + value + " в таблицу: " + Table << std::endl;
-    }
-    catch (const std::exception& e) {
-        DatabaseExceptionHandler handler(txn);
-        handler.handle(e); // Обрабатываем исключение
-    }
+    txn.exec_params(query, value); 
+    txn.commit();
+    std::cout << "Добавлено значение: " + value + " в таблицу: " + Table << std::endl;
 }
 //------------------------------------------------------------------------------------------
 void manage_db::addWordDocuments(std::string Table, int wordId, int documentId, int frequence) {
     pqxx::work txn(*conn);
-    std::string query = "INSERT INTO "
-        + Table + " VALUES(" + std::to_string(wordId) + ", " + std::to_string(documentId) + ", " +  std::to_string(frequence) + "); ";
-    txn.exec(query);
+    std::string query = "INSERT INTO " + txn.esc(Table) + " VALUES($1, $2, $3) ON CONFLICT (document_id, word_id) DO UPDATE SET frequency = EXCLUDED.frequency;";
+
+    txn.exec_params(query, wordId, documentId, frequence); 
     txn.commit();
-    std::cout << "Added a frequence: " + std::to_string(frequence) + " in Table: " + Table << std::endl;
+    std::cout << "Добавлено значение: " + std::to_string(wordId) + ", " + std::to_string(documentId) + ", " + std::to_string(frequence) + " in Table: " + Table << std::endl;
 }
 ////------------------------------------------------------------------------------------------
 // Функция для выполнения запроса и получения результата
-    int manage_db::select(const std::string& tableName, const std::string& document, const std::string& column) {
-        pqxx::work txn{ *conn };
-        int id = -1; // Идентификатор по умолчанию
+int manage_db::select(const std::string& tableName, const std::string& column, const std::string& value) {
+    pqxx::work txn{ *conn };
+    int id = -1;
 
-        try {
-            // Формируем запрос с использованием безопасного экранирования
-            std::string query = "SELECT "+ tableName + "_id" + " FROM " + tableName + " WHERE " + column + " = '" + txn.esc(document) + "'; ";
-            pqxx::result collection = txn.exec(query); // Выполняем запрос
+    try {
+        std::string query = "SELECT " + txn.esc(tableName) + "_id FROM " + txn.esc(tableName) + " WHERE " + txn.esc(column) + " = $1;";
+        pqxx::result collection = txn.exec_params(query, value); // Выполняем запрос с параметром
 
-            // Проверяем, есть ли результаты
-            if (!collection.empty()) {
-                id = collection[0][0].as<int>(); // Получаем ID из первого результата
-                std::cout << "По параметру " << document << " найден ID: " << id << ".\n";
-            } else {
-                std::cout << "Запись не найдена для параметра: " << document << ".\n";
-            }
-        } catch (const std::exception& e) {
-            std::cerr << "Ошибка при выполнении запроса: " << e.what() << std::endl;
+        if (!collection.empty()) {
+            id = collection[0][0].as<int>(); // Получаем ID из первого результата
+            std::cout << "По параметру " << value << " найден ID: " << id << ".\n";
         }
-
-        return id; // Возвращаем найденный ID или -1, если не найден
+        else {
+            std::cout << "Запись не найдена для параметра: " << value << ".\n";
+        }
     }
+    catch (const std::exception& e) {
+        std::cerr << "Ошибка при выполнении запроса: " << e.what() << std::endl;
+    }
+    return id;
+}
+//------------------------------------------------------------------------------------------
+std::vector<SelectResult> manage_db::selectUrlWord(const std::string& word) {
+    pqxx::work txn{*conn};
+    const std::string query = R"(
+        SELECT d.title, dw.frequency
+        FROM document_word dw
+        JOIN document d ON dw.document_id = d.id
+        JOIN word w ON dw.word_id = w.id
+        WHERE w.word = $1
+        ORDER BY dw.frequency DESC;
+        )";
+
+    pqxx::result collection = txn.exec_params(query, word);
+
+std::vector<SelectResult> urlFrequency;// Карта для хранения частоты слов
+
+for (const auto& row : collection) {
+    urlFrequency.push_back({ row[0].as<std::string>(), row[1].as<int>() });
+}
+
+txn.commit();
+
+return urlFrequency; // Возвращаем вектор с результатами
+}
+
 ////------------------------------------------------------------------------------------------
 manage_db::~manage_db() {
     conn->close();

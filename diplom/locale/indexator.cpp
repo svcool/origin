@@ -10,24 +10,16 @@
 using namespace std;
 
 string clean_and_process_text(const string& html) {
-    // Заменяем &nbsp; на пробел, игнорируя регистр
-    string no_nbsp = regex_replace(html, regex(R"(&[^;\s]*;)", regex::icase), " ");
-
-    // Удаление скриптов
-    string no_scripts = regex_replace(no_nbsp, regex(R"(<(script|style|code|noscript|a|button)[^>]*>[\s\S]*?</\1>|<input[^>]*\/?>)", regex::icase), " ");
-
-    // Удаление HTML-тегов
-    string no_html = regex_replace(no_scripts, regex(R"(<[^>]*>)"), " ");
-
-    // Удаление знаков препинания и лишних пробелов
+    string no_nbsp = regex_replace(html, regex(R"(&[^;\s]*;)", regex::icase), " ");  // Заменяем &nbsp; на пробел, игнорируя регистр
     
+    string no_scripts = regex_replace(no_nbsp, regex(R"(<(script|style|code|noscript|a|button)[^>]*>[\s\S]*?</\1>|<input[^>]*\/?>)", regex::icase), " ");// Удаление скриптов
+    string no_html = regex_replace(no_scripts, regex(R"(<[^>]*>)"), " "); 
+    // Удаление HTML-тегов  
     string cleaned_text = regex_replace(no_html, regex(R"([.,!?;:'\"(){}[\]<>]|\n|\t)"), " "); // Удаление знаков препинания
     cleaned_text = regex_replace(cleaned_text, regex(R"([\s]+)"), " "); // Замена нескольких пробелов на один
     // Преобразование текста в нижний регистр
     transform(cleaned_text.begin(), cleaned_text.end(), cleaned_text.begin(),
         [](unsigned char c) { return std::tolower(c); });
-
-    // Удаление лишних пробелов в начале и конце строки
     cleaned_text.erase(cleaned_text.begin(), find_if(cleaned_text.begin(), cleaned_text.end(), [](unsigned char c) { return !isspace(c); }));
     cleaned_text.erase(find_if(cleaned_text.rbegin(), cleaned_text.rend(), [](unsigned char c) { return !isspace(c); }).base(), cleaned_text.end());
 
@@ -41,20 +33,18 @@ string clean_and_process_text(const string& html) {
             filtered_text += word + " "; // Добавляем пробел после слова
         }
     }
-
-    // Удаляем лишний пробел в конце
     if (!filtered_text.empty()) {
         filtered_text.pop_back(); // Удаляем последний пробел
     }
-
     return filtered_text;
 }
 
-int main() {
+int main33() {
     setlocale(LC_ALL, "Russian");
-    system("chcp 65001");
+    //system("chcp 65001");
+    SetConsoleCP(CP_UTF8);
+    SetConsoleOutputCP(CP_UTF8);
 
-    // Открытие HTML файла
     ifstream file("xgconsole.xml");
     if (!file.is_open()) {
         cerr << "Ошибка при открытии файла!" << endl;

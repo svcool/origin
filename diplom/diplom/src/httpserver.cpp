@@ -24,24 +24,36 @@
 #include <memory>
 #include <string>
 #include <ctime>
-#include <globals.h>
+
+#include <Windows.h>
+#include <except.h>
+#include <ctime>
+#include <chrono>
+
+#include <bd.h>
+
+struct SearchResult {
+    std::string url;
+    int frequency;
+};
 
 namespace beast = boost::beast;         // from <boost/beast.hpp>
 namespace http = beast::http;           // from <boost/beast/http.hpp>
 namespace net = boost::asio;            // from <boost/asio.hpp>
 using tcp = boost::asio::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
 
+
 namespace my_program_state
 {
     std::size_t
-    request_count()
+        request_count()
     {
         static std::size_t count = 0;
         return ++count;
     }
 
     std::time_t
-    now()
+        now()
     {
         return std::time(0);
     }
@@ -57,7 +69,7 @@ public:
 
     // Initiate the asynchronous operations associated with the connection.
     void
-    start()
+        start()
     {
         read_request();
         check_deadline();
@@ -68,7 +80,7 @@ private:
     tcp::socket socket_;
 
     // The buffer for performing reads.
-    beast::flat_buffer buffer_{8192};
+    beast::flat_buffer buffer_{ 8192 };
 
     // The request message.
     http::request<http::dynamic_body> request_;
@@ -78,11 +90,11 @@ private:
 
     // The timer for putting a deadline on connection processing.
     net::steady_timer deadline_{
-        socket_.get_executor(), std::chrono::seconds(60)};
+        socket_.get_executor(), std::chrono::seconds(60) };
 
     // Asynchronously receive a complete request message.
     void
-    read_request()
+        read_request()
     {
         auto self = shared_from_this();
 
@@ -94,19 +106,19 @@ private:
                 std::size_t bytes_transferred)
             {
                 boost::ignore_unused(bytes_transferred);
-                if(!ec)
+                if (!ec)
                     self->process_request();
             });
     }
 
     // Determine what needs to be done with the request message.
     void
-    process_request()
+        process_request()
     {
         response_.version(request_.version());
         response_.keep_alive(false);
 
-        switch(request_.method())
+        switch (request_.method())
         {
         case http::verb::get:
             response_.result(http::status::ok);
@@ -203,10 +215,10 @@ private:
         }
     }
 
- 
+
     // Asynchronously transmit the response message.
     void
-    write_response()
+        write_response()
     {
         auto self = shared_from_this();
 
@@ -224,14 +236,14 @@ private:
 
     // Check whether we have spent enough time on this connection.
     void
-    check_deadline()
+        check_deadline()
     {
         auto self = shared_from_this();
 
         deadline_.async_wait(
             [self](beast::error_code ec)
             {
-                if(!ec)
+                if (!ec)
                 {
                     // Close socket to cancel any outstanding operation.
                     self->socket_.close(ec);
@@ -244,74 +256,11 @@ private:
 void
 http_server(tcp::acceptor& acceptor, tcp::socket& socket)
 {
-  acceptor.async_accept(socket,
-      [&](beast::error_code ec)
-      {
-          if(!ec)
-              std::make_shared<http_connection>(std::move(socket))->start();
-          http_server(acceptor, socket);
-      });
-}
-
-int
-main4324(int argc, char* argv[])
-{
-
-    std::vector<SearchResult> results;
-
-    SearchResult result;
-    result.url = "https://gpt-chatbot.ru/poisk-v-internete-onlajn-s-pomoshhju-iskusstvennogo-intellekta";
-    result.frequency = 5;
-    results.push_back(result);
-    result.url = "https://netology.ru/profile/program/fcpp-14/lessons/444790/lesson_items/2402661";
-    result.frequency = 3;
-    results.push_back(result);
-    result.url = "https://stackoverflow.com/questions/3897839/how-to-link-c-program-with-boost-using-cmake";
-    result.frequency = 8;
-    results.push_back(result);
-
-    SetConsoleCP(CP_UTF8);
-    SetConsoleOutputCP(CP_UTF8);
-    //curl http://localhost:80/time //количество запросов
-    //curl http ://localhost:8080/count // время
-    try
-    {
-
-        
-        // Параметры сервера: адрес и порт
-        auto const address = net::ip::make_address("0.0.0.0"); // Принимаем на всех интерфейсах
-        unsigned short port = 8080; // Порт 80
-        net::io_context ioc{ 1 };
-
-        tcp::acceptor acceptor{ ioc, {address, port} };
-        tcp::socket socket{ ioc };
-
-        // Запуск HTTP сервера в отдельном потоке
-        std::thread server_thread([&]() {
+    acceptor.async_accept(socket,
+        [&](beast::error_code ec)
+        {
+            if (!ec)
+                std::make_shared<http_connection>(std::move(socket))->start();
             http_server(acceptor, socket);
-            ioc.run();
-            });
-
-        // Задержка перед открытием браузера
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-
-        // Открываем браузер с нужной страницей
-        std::string url = "http://localhost:8080/time";
-        //std::string command = "xdg-open " + url; // Для Linux
-        std::string command = "start " + url; // Для Windows
-        // std::string command = "open " + url; // Для MacOS
-
-        system(command.c_str());
-
-        // Ожидаем завершения потока сервера
-
-        server_thread.join();
-
-
-    }
-    catch(std::exception const& e)
-    {
-        std::cerr << "Error: " << e.what() << std::endl;
-        return EXIT_FAILURE;
-    }
+        });
 }
