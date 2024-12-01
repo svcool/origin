@@ -1,0 +1,449 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						5
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						28
+					]
+				},
+				{
+					"build" : "pqxx_build",
+					"childIndexes" : 
+					[
+						2,
+						3,
+						4
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-pqxx_build-Debug-ab092f12167d7b193a5d.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "D:/Program Files/MyProject/origin/libpqxx-7.9.0"
+				},
+				{
+					"build" : "pqxx_build/src",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-pqxx_build.src-Debug-695e78ee374c79fc2266.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "D:/Program Files/MyProject/origin/libpqxx-7.9.0/src",
+					"targetIndexes" : 
+					[
+						29
+					]
+				},
+				{
+					"build" : "pqxx_build/include",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-pqxx_build.include-Debug-78f12c57f918cc0e71b1.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "D:/Program Files/MyProject/origin/libpqxx-7.9.0/include"
+				},
+				{
+					"build" : "pqxx_build/test",
+					"jsonFile" : "directory-pqxx_build.test-Debug-3238b6cbea270cf8baf2.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "D:/Program Files/MyProject/origin/libpqxx-7.9.0/test",
+					"targetIndexes" : 
+					[
+						31
+					]
+				},
+				{
+					"build" : "pugixml_build",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-pugixml_build-Debug-0d1446e8da5e8f5352d1.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 2,
+					"source" : "D:/Program Files/MyProject/origin/pugixml-1.14",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						20,
+						21,
+						22,
+						23,
+						24,
+						25,
+						26,
+						27,
+						30
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "diplom",
+					"targetIndexes" : 
+					[
+						28
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4
+					],
+					"name" : "libpqxx",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						29,
+						31
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						5
+					],
+					"name" : "pugixml",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						20,
+						21,
+						22,
+						23,
+						24,
+						25,
+						26,
+						27,
+						30
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 5,
+					"id" : "Continuous::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-Continuous-Debug-2ae4f6c2271b9cc22c96.json",
+					"name" : "Continuous",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "ContinuousBuild::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-ContinuousBuild-Debug-c11208b39590edc5b6e9.json",
+					"name" : "ContinuousBuild",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "ContinuousConfigure::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-ContinuousConfigure-Debug-46813a5907fb1e92eb41.json",
+					"name" : "ContinuousConfigure",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "ContinuousCoverage::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-ContinuousCoverage-Debug-8c6c2dfad790f12e6af1.json",
+					"name" : "ContinuousCoverage",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "ContinuousMemCheck::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-ContinuousMemCheck-Debug-1afd83714ae822043abb.json",
+					"name" : "ContinuousMemCheck",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "ContinuousStart::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-ContinuousStart-Debug-f0540d538c541ed15cb7.json",
+					"name" : "ContinuousStart",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "ContinuousSubmit::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-ContinuousSubmit-Debug-9c47b75bdf90c1b651a9.json",
+					"name" : "ContinuousSubmit",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "ContinuousTest::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-ContinuousTest-Debug-d17c721bb38228da3ea5.json",
+					"name" : "ContinuousTest",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "ContinuousUpdate::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-ContinuousUpdate-Debug-c0a0bcf961a9f99994f5.json",
+					"name" : "ContinuousUpdate",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "Experimental::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-Experimental-Debug-799100e827a22c7d3f53.json",
+					"name" : "Experimental",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "ExperimentalBuild::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-ExperimentalBuild-Debug-02082df259f5a708c326.json",
+					"name" : "ExperimentalBuild",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "ExperimentalConfigure::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-ExperimentalConfigure-Debug-6eff4d7db710c501f9cb.json",
+					"name" : "ExperimentalConfigure",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "ExperimentalCoverage::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-ExperimentalCoverage-Debug-0b5d4b120f9a2aabaddb.json",
+					"name" : "ExperimentalCoverage",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "ExperimentalMemCheck::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-ExperimentalMemCheck-Debug-59dc59d6a7a006eaf623.json",
+					"name" : "ExperimentalMemCheck",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "ExperimentalStart::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-ExperimentalStart-Debug-e9dd185a69bd90d8eec4.json",
+					"name" : "ExperimentalStart",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "ExperimentalSubmit::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-ExperimentalSubmit-Debug-0697f6f778013f4d60a9.json",
+					"name" : "ExperimentalSubmit",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "ExperimentalTest::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-ExperimentalTest-Debug-5d646faf49f2270e4294.json",
+					"name" : "ExperimentalTest",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "ExperimentalUpdate::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-ExperimentalUpdate-Debug-567cfbcb04994eb758e7.json",
+					"name" : "ExperimentalUpdate",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "Nightly::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-Nightly-Debug-a972db1b06ca807d8923.json",
+					"name" : "Nightly",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "NightlyBuild::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-NightlyBuild-Debug-960d78c89223a6a4165b.json",
+					"name" : "NightlyBuild",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "NightlyConfigure::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-NightlyConfigure-Debug-4e0fb1781ad0cb05e424.json",
+					"name" : "NightlyConfigure",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "NightlyCoverage::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-NightlyCoverage-Debug-bca6b187549df3ff405a.json",
+					"name" : "NightlyCoverage",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "NightlyMemCheck::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-NightlyMemCheck-Debug-9337e7274578d4e2c6f3.json",
+					"name" : "NightlyMemCheck",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "NightlyMemoryCheck::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-NightlyMemoryCheck-Debug-c370dc98aea9142dc6ed.json",
+					"name" : "NightlyMemoryCheck",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "NightlyStart::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-NightlyStart-Debug-1a8b660ea601d05127da.json",
+					"name" : "NightlyStart",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "NightlySubmit::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-NightlySubmit-Debug-e37c0709096b6019204f.json",
+					"name" : "NightlySubmit",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "NightlyTest::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-NightlyTest-Debug-ede23fad08468b9defa9.json",
+					"name" : "NightlyTest",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "NightlyUpdate::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-NightlyUpdate-Debug-e704393f2e6c4220be2a.json",
+					"name" : "NightlyUpdate",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "diplom::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-diplom-Debug-7b2228eae55578ffd258.json",
+					"name" : "diplom",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "pqxx::@41995ff465ab2b3f4ba6",
+					"jsonFile" : "target-pqxx-Debug-ad44e29373b0cbfa3289.json",
+					"name" : "pqxx",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "pugixml-static::@fcde82636cc6bc055a10",
+					"jsonFile" : "target-pugixml-static-Debug-40ba86a06e55d28eabf3.json",
+					"name" : "pugixml-static",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "runner::@38404571a31e7795480d",
+					"jsonFile" : "target-runner-Debug-e3d3f393af457c8f246a.json",
+					"name" : "runner",
+					"projectIndex" : 1
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/Program Files/MyProject/origin/origin/diplom/diplom/out/build/x64-Debug",
+		"source" : "D:/Program Files/MyProject/origin/origin/diplom/diplom"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

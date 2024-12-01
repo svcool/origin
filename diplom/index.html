@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница поиска</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #searchContainer {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3px;
+        }
+        #logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 3px;
+            margin-left: 5px; 
+            margin-right: 5px;
+            align-items: center; 
+        }
+        #searchInput {
+            padding: 10px;
+            width: 500px;
+            margin-right: 2px;
+        }
+        button {
+            padding: 10px 15px;
+        }
+        .small-button {
+            padding: 3px 10px;
+            font-size: 12px;
+            margin-right: 2px;
+        }
+        #results {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 750px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #f0f0f0;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .loading {
+            font-style: italic;
+            color: gray;
+        }
+        .button-container {
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 5px;
+            width: 430px;
+        }
+        #timeDisplay {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="searchContainer">
+        <img id="logo" src="gooyagl_logo.png" alt="GOOYAGL">
+        <input type="text" id="searchInput" placeholder="Введите запрос" onkeydown="checkEnter(event)">
+        <button onclick="performSearch()">Поиск</button>
+    </div>
+    <div class="button-container">
+        <button class="small-button" onclick="fetchTime()">Получить время</button>
+        <button class="small-button" onclick="fetchCount()">Количество запросов</button>
+    </div>
+    <div id="results"></div>
+    <div id="timeDisplay"></div>
+
+    <script>
+        function performSearch() {
+            const query = document.getElementById('searchInput').value;
+            const resultsDiv = document.getElementById('results');
+            const timeDisplay = document.getElementById('timeDisplay');
+
+            // Очищаем вывод времени и результатов перед новым запросом
+            resultsDiv.innerHTML = '';
+            timeDisplay.innerHTML = '';
+
+            if (query) {
+                resultsDiv.innerHTML = '<p class="loading">Загрузка...</p>';
+
+                fetch(`http://localhost:8080/search?query=${encodeURIComponent(query)}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Сеть не в порядке: ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        displayResults(data);
+                    })
+                    .catch(error => {
+                        console.error('Ошибка:', error);
+                        resultsDiv.innerHTML = '<p>Произошла ошибка при выполнении запроса.</p>';
+                    });
+            } else {
+                alert('Пожалуйста, введите текст для поиска.');
+            }
+        }
+
+        function displayResults(results) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+
+            if (results.length === 0) {
+                resultsDiv.innerHTML = '<p>Результаты не найдены.</p>';
+                return;
+            }
+
+            const ul = document.createElement('ul');
+            results.forEach(result => {
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="${result.url}" target="_blank">${result.url}</a> (Упоминаний: ${result.frequency})`;
+                ul.appendChild(li);
+            });
+            resultsDiv.appendChild(ul);
+        }
+
+        function checkEnter(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        }
+
+        function fetchTime() {
+            const timeDisplay = document.getElementById('timeDisplay');
+            const resultsDiv = document.getElementById('results');
+            // Очищаем вывод времени и результатов перед новым запросом
+            timeDisplay.innerHTML = '';
+            resultsDiv.innerHTML = '';
+
+            fetch('http://localhost:8080/time')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Сеть не отвечает: ' + response.status);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    console.log(data);
+                    timeDisplay.innerHTML = `${data}`;
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    timeDisplay.innerHTML = 'Ошибка получения времени: ' + error.message;
+                });
+        }
+
+        function fetchCount() {
+            const timeDisplay = document.getElementById('timeDisplay');
+            const resultsDiv = document.getElementById('results');
+            // Очищаем вывод времени и результатов перед новым запросом
+            timeDisplay.innerHTML = '';
+            resultsDiv.innerHTML = '';
+
+            fetch('http://localhost:8080/count')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Сеть не отвечает: ' + response.status);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    console.log(data);
+                    timeDisplay.innerHTML = `${data}`;
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    timeDisplay.innerHTML = 'Ошибка получения количества запросов: ' + error.message;
+                });
+        }
+    </script>
+</body>
+</html>

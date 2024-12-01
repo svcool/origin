@@ -1,0 +1,123 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install"
+		],
+		"files" : 
+		[
+			"D:/Program Files/MyProject/origin/pugixml-1.14/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 213,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 220,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 227,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 232,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 235,
+				"parent" : 0
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 1,
+			"component" : "Development",
+			"destination" : "lib",
+			"paths" : 
+			[
+				"pugixml_build/pugixml.lib"
+			],
+			"targetId" : "pugixml-static::@fcde82636cc6bc055a10",
+			"targetIndex" : 30,
+			"type" : "target"
+		},
+		{
+			"backtrace" : 2,
+			"component" : "Development",
+			"destination" : "lib/cmake/pugixml",
+			"exportName" : "pugixml-targets",
+			"exportTargets" : 
+			[
+				{
+					"id" : "pugixml::@fcde82636cc6bc055a10",
+					"index" : 0
+				},
+				{
+					"id" : "pugixml-static::@fcde82636cc6bc055a10",
+					"index" : 30
+				}
+			],
+			"paths" : 
+			[
+				"pugixml_build/CMakeFiles/Export/be764272e56105fc8ff11fec8314e604/pugixml-targets.cmake"
+			],
+			"type" : "export"
+		},
+		{
+			"backtrace" : 3,
+			"component" : "Development",
+			"destination" : "lib/cmake/pugixml",
+			"paths" : 
+			[
+				"out/build/x64-Debug/pugixml_build/pugixml-config-version.cmake",
+				"out/build/x64-Debug/pugixml_build/pugixml-config.cmake"
+			],
+			"type" : "file"
+		},
+		{
+			"backtrace" : 4,
+			"component" : "Development",
+			"destination" : "lib/pkgconfig",
+			"paths" : 
+			[
+				"out/build/x64-Debug/pugixml_build/pugixml.pc"
+			],
+			"type" : "file"
+		},
+		{
+			"backtrace" : 5,
+			"component" : "Development",
+			"destination" : "include",
+			"paths" : 
+			[
+				"D:/Program Files/MyProject/origin/pugixml-1.14/src/pugiconfig.hpp",
+				"D:/Program Files/MyProject/origin/pugixml-1.14/src/pugixml.hpp"
+			],
+			"type" : "file"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "pugixml_build",
+		"source" : "D:/Program Files/MyProject/origin/pugixml-1.14"
+	}
+}
