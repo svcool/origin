@@ -10,7 +10,7 @@
 #include <parserini.h>
 #include <windows.h> // Для SetConsoleCP и SetConsoleOutputCP
 
-#pragma execution_character_set("utf-8")
+//#pragma execution_character_set("utf-8")
 
 // Глобальные мьютексы для защиты функций
 std::mutex http_mutex;
@@ -104,8 +104,8 @@ int main() {
 	// Установка кодировки консоли на UTF-8
 	//setlocale(LC_ALL, "Russian");
 	system("chcp 65001");
-	SetConsoleCP(CP_UTF8);
-	SetConsoleOutputCP(CP_UTF8);
+	//SetConsoleCP(CP_UTF8);
+	//SetConsoleOutputCP(CP_UTF8);
 
 	try {
 
@@ -183,7 +183,7 @@ int main() {
 		//Открытие поисковика
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 		std::string relativePath = "index.html"; // файл находится в корне проекта
-		std::string urlServer = "http://localhost:8080/" + relativePath;//для Windows
+		std::string urlServer = "http://localhost:" + portCrowler + relativePath;//для Windows
 		std::string command = "start " + relativePath; // Для Windows
 		system(command.c_str());
 

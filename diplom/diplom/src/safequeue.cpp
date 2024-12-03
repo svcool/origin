@@ -1,4 +1,4 @@
-#include "SafeQueue.h"
+п»ї#include "SafeQueue.h"
 
 void Safe_queue::push(UrlDeep html) {
 	{
@@ -7,14 +7,14 @@ void Safe_queue::push(UrlDeep html) {
 	}
 	condit.notify_one();
 }
-//удаление с извлечением 
+//СѓРґР°Р»РµРЅРёРµ СЃ РёР·РІР»РµС‡РµРЅРёРµРј 
 UrlDeep Safe_queue::popFront() {
 	UrlDeep item;
 	std::unique_lock<std::mutex> lock(queue_mutex);
 	condit.wait(lock, [this] { return !task_queue.empty() || stop; });
 
 	if (stop && task_queue.empty()) {
-		throw std::runtime_error("Очередь пуста, поступил флаг освобождения потоков");
+		throw std::runtime_error("РћС‡РµСЂРµРґСЊ РїСѓСЃС‚Р°, РїРѕСЃС‚СѓРїРёР» С„Р»Р°Рі РѕСЃРІРѕР±РѕР¶РґРµРЅРёСЏ РїРѕС‚РѕРєРѕРІ");
 	}
 
 	if (!task_queue.empty()) {
@@ -23,7 +23,7 @@ UrlDeep Safe_queue::popFront() {
 	}
 	else {
 		Stop();
-		throw std::runtime_error("Освобождаем потоки");
+		throw std::runtime_error("РћСЃРІРѕР±РѕР¶РґР°РµРј РїРѕС‚РѕРєРё");
 	}
 	return item;
 }
@@ -31,7 +31,7 @@ UrlDeep Safe_queue::popFront() {
 UrlDeep Safe_queue::front() {
 	std::lock_guard<std::mutex> lock(queue_mutex);
 	if (task_queue.empty()) {
-		throw std::runtime_error("Очередь пуста");
+		throw std::runtime_error("РћС‡РµСЂРµРґСЊ РїСѓСЃС‚Р°");
 	}
 	return task_queue.front();
 }
@@ -45,7 +45,7 @@ size_t Safe_queue::Size() const {
 	std::lock_guard<std::mutex> lock(queue_mutex);
 	return task_queue.size();
 }
-//освобождает все потоки по флагу
+//РѕСЃРІРѕР±РѕР¶РґР°РµС‚ РІСЃРµ РїРѕС‚РѕРєРё РїРѕ С„Р»Р°РіСѓ
 void Safe_queue::Stop() {
 	stop = true;
 	condit.notify_all();

@@ -100,8 +100,19 @@ std::vector<SelectResult> http_connection::resultSearchFrequence(std::set<std::s
 //*****************************************************************************************
 void http_connection::create_response() {
     response_.set(http::field::access_control_allow_origin, "*");
-
-    if (request_.target().starts_with("/search")) {
+    if (request_.target() == "/") {
+        response_.set(http::field::content_type, "text/html; charset=utf-8");
+        std::ifstream index_file("index.html");
+        if (index_file) {
+            beast::ostream(response_.body()) << index_file.rdbuf();
+        }
+        else {
+            response_.result(http::status::not_found);
+            response_.set(http::field::content_type, "text/plain");
+            beast::ostream(response_.body()) << "Файл не найден\r\n";
+        }
+    }
+    else if (request_.target().starts_with("/search")) {
         std::string query = request_.target().substr(14); // Извлечение параметра query
         query = std::regex_replace(query, std::regex(R"(%20)"), " ");
         std::set<std::string> cleanQuery = skippingWords(query); // подготовка запроса из предложения

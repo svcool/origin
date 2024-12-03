@@ -1,4 +1,4 @@
-#include "bd.h"
+п»ї#include "bd.h"
 
 //*******************************************************************************************
 //------------------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ void clientdb::create_db() {
         "user=" + dbConfig.username + " "
         "password=" + dbConfig.password);
 
-    std::cout << "База подключена" << std::endl;
+    std::cout << "Р‘Р°Р·Р° РїРѕРґРєР»СЋС‡РµРЅР°" << std::endl;
 
     if (conn.is_open()) {
         std::string dbName = db;
@@ -106,7 +106,7 @@ void manage_db::addDataTable(std::string Table, const std::string& column, std::
 
     txn.exec_params(query, value); 
     txn.commit();
-    std::cout << "Добавлено значение: " + value + " в таблицу: " + Table << std::endl;
+    std::cout << "Р”РѕР±Р°РІР»РµРЅРѕ Р·РЅР°С‡РµРЅРёРµ: " + value + " РІ С‚Р°Р±Р»РёС†Сѓ: " + Table << std::endl;
 }
 //------------------------------------------------------------------------------------------
 void manage_db::addWordDocuments(std::string Table, int wordId, int documentId, int frequence) {
@@ -115,28 +115,28 @@ void manage_db::addWordDocuments(std::string Table, int wordId, int documentId, 
 
     txn.exec_params(query, wordId, documentId, frequence); 
     txn.commit();
-    std::cout << "Добавлено значение: " + std::to_string(wordId) + ", " + std::to_string(documentId) + ", " + std::to_string(frequence) + " in Table: " + Table << std::endl;
+    std::cout << "Р”РѕР±Р°РІР»РµРЅРѕ Р·РЅР°С‡РµРЅРёРµ: " + std::to_string(wordId) + ", " + std::to_string(documentId) + ", " + std::to_string(frequence) + " in Table: " + Table << std::endl;
 }
 ////------------------------------------------------------------------------------------------
-// Функция для выполнения запроса и получения результата
+// Р¤СѓРЅРєС†РёСЏ РґР»СЏ РІС‹РїРѕР»РЅРµРЅРёСЏ Р·Р°РїСЂРѕСЃР° Рё РїРѕР»СѓС‡РµРЅРёСЏ СЂРµР·СѓР»СЊС‚Р°С‚Р°
 int manage_db::select(const std::string& tableName, const std::string& column, const std::string& value) {
     pqxx::work txn{ *conn };
     int id = -1;
 
     try {
         std::string query = "SELECT " + txn.esc(tableName) + "_id FROM " + txn.esc(tableName) + " WHERE " + txn.esc(column) + " = $1;";
-        pqxx::result collection = txn.exec_params(query, value); // Выполняем запрос с параметром
+        pqxx::result collection = txn.exec_params(query, value); // Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ СЃ РїР°СЂР°РјРµС‚СЂРѕРј
 
         if (!collection.empty()) {
-            id = collection[0][0].as<int>(); // Получаем ID из первого результата
-            std::cout << "По параметру " << value << " найден ID: " << id << ".\n";
+            id = collection[0][0].as<int>(); // РџРѕР»СѓС‡Р°РµРј ID РёР· РїРµСЂРІРѕРіРѕ СЂРµР·СѓР»СЊС‚Р°С‚Р°
+            std::cout << "РџРѕ РїР°СЂР°РјРµС‚СЂСѓ " << value << " РЅР°Р№РґРµРЅ ID: " << id << ".\n";
         }
         else {
-            std::cout << "Запись не найдена для параметра: " << value << ".\n";
+            std::cout << "Р—Р°РїРёСЃСЊ РЅРµ РЅР°Р№РґРµРЅР° РґР»СЏ РїР°СЂР°РјРµС‚СЂР°: " << value << ".\n";
         }
     }
     catch (const std::exception& e) {
-        std::cerr << "Ошибка при выполнении запроса: " << e.what() << std::endl;
+        std::cerr << "РћС€РёР±РєР° РїСЂРё РІС‹РїРѕР»РЅРµРЅРёРё Р·Р°РїСЂРѕСЃР°: " << e.what() << std::endl;
     }
     return id;
 }
@@ -154,7 +154,7 @@ std::vector<SelectResult> manage_db::selectUrlWord(const std::string& word) {
 
     pqxx::result collection = txn.exec_params(query, word);
 
-std::vector<SelectResult> urlFrequency;// Карта для хранения частоты слов
+std::vector<SelectResult> urlFrequency;// РљР°СЂС‚Р° РґР»СЏ С…СЂР°РЅРµРЅРёСЏ С‡Р°СЃС‚РѕС‚С‹ СЃР»РѕРІ
 
 for (const auto& row : collection) {
     urlFrequency.push_back({ row[0].as<std::string>(), row[2].as<int>() });
@@ -166,7 +166,7 @@ for (const auto& row : collection) {
 
 txn.commit();
 
-return urlFrequency; // Возвращаем вектор с результатами
+return urlFrequency; // Р’РѕР·РІСЂР°С‰Р°РµРј РІРµРєС‚РѕСЂ СЃ СЂРµР·СѓР»СЊС‚Р°С‚Р°РјРё
 }
 
 ////------------------------------------------------------------------------------------------

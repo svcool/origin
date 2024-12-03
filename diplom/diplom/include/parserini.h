@@ -1,4 +1,4 @@
-#ifndef SETTINGS_H
+п»ї#ifndef SETTINGS_H
 #define SETTINGS_H
 
 #include <boost/property_tree/ptree.hpp>
@@ -10,10 +10,10 @@
 #include <string>
 #include <vector>
 
-void checkRequiredKeys(const boost::property_tree::ptree& pt, const std::vector<std::string>& keys);// Проверяет наличие обязательных ключей в ptree
+void checkRequiredKeys(const boost::property_tree::ptree& pt, const std::vector<std::string>& keys);// РџСЂРѕРІРµСЂСЏРµС‚ РЅР°Р»РёС‡РёРµ РѕР±СЏР·Р°С‚РµР»СЊРЅС‹С… РєР»СЋС‡РµР№ РІ ptree
 
-void readSettings(const std::string& filename, boost::property_tree::ptree& pt);// Читает настройки из INI файла
+void readSettings(const std::string& filename, boost::property_tree::ptree& pt);// Р§РёС‚Р°РµС‚ РЅР°СЃС‚СЂРѕР№РєРё РёР· INI С„Р°Р№Р»Р°
 
-void writeSettings(const std::string& filename, boost::property_tree::ptree& pt);// Записывает настройки в INI файл
+void writeSettings(const std::string& filename, boost::property_tree::ptree& pt);// Р—Р°РїРёСЃС‹РІР°РµС‚ РЅР°СЃС‚СЂРѕР№РєРё РІ INI С„Р°Р№Р»
 
 #endif // SETTINGS_H

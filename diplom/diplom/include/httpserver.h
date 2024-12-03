@@ -1,4 +1,4 @@
-#ifndef HTTP_CONNECTION_HPP
+﻿#ifndef HTTP_CONNECTION_HPP
 #define HTTP_CONNECTION_HPP
 
 #include <boost/beast/core.hpp>
@@ -18,6 +18,7 @@
 #include <bd.h>
 #include <except.h>
 #include <ctime>
+#include <fstream>
 
 struct SearchResult {
 	std::string url;

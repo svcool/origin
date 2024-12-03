@@ -1,4 +1,4 @@
-#ifndef EXCEPT_H
+ï»¿#ifndef EXCEPT_H
 #define EXCEPT_H
 
 #include <exception>
@@ -40,16 +40,16 @@ public:
 	void handle(const std::exception& e) {
 		if (const auto* sqlError = dynamic_cast<const pqxx::sql_error*>(&e)) {
 			if (std::string(sqlError->what()).find("duplicate key value violates unique constraint") != std::string::npos) {
-				std::cerr << "Îøèáêà: çíà÷åíèå óæå ñóùåñòâóåò â òàáëèöå." << std::endl;
+				std::cerr << "ÐžÑˆÐ¸Ð±ÐºÐ°: Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ ÑƒÐ¶Ðµ ÑÑƒÑ‰ÐµÑÑ‚Ð²ÑƒÐµÑ‚ Ð² Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ðµ." << std::endl;
 			}
 			else {
-				std::cerr << "Îøèáêà ïðè äîáàâëåíèè çíà÷åíèÿ: " << sqlError->what() << std::endl;
+				std::cerr << "ÐžÑˆÐ¸Ð±ÐºÐ° Ð¿Ñ€Ð¸ Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ð¸ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ: " << sqlError->what() << std::endl;
 			}
 		}
 		else {
-			std::cerr << "Îáùàÿ îøèáêà: " << e.what() << std::endl;
+			std::cerr << "ÐžÐ±Ñ‰Ð°Ñ Ð¾ÑˆÐ¸Ð±ÐºÐ°: " << e.what() << std::endl;
 		}
-		txn.abort(); // Îòìåíÿåì òðàíçàêöèþ
+		txn.abort(); // ÐžÑ‚Ð¼ÐµÐ½ÑÐµÐ¼ Ñ‚Ñ€Ð°Ð½Ð·Ð°ÐºÑ†Ð¸ÑŽ
 	}
 
 private:
