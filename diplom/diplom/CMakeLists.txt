@@ -5,6 +5,7 @@ if (POLICY CMP0074)
     cmake_policy (SET CMP0074 NEW)
 endif()
 
+add_definitions(-D_WIN32_WINNT=0x0601 -DWINVER=0x0601)
 #add_subdirectory(src)
 include_directories(include)
 # Указываем версию PQ
@@ -43,19 +44,28 @@ configure_file(${INI_FILE} ${CMAKE_BINARY_DIR}/settings.ini COPYONLY)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 add_executable(${project}  "src/main.cpp" "src/tempfile.cpp" "src/httpclient.cpp" "src/indexator.cpp" "src/safequeue.cpp"  "src/bd.cpp" "src/httpserver.cpp" "src/parserini.cpp")
+#add_executable(${project}  "src/httpclient.cpp")
 add_subdirectory("../../../libpqxx-7.9.0/" pqxx_build)
 add_subdirectory("../../../pugixml-1.14/" pugixml_build)
 # Путь к Boost
 set(BOOST_ROOT "../../../boost_1_86_0/") # Укажите путь к вашей установке Boost
+set(OPENSSL_ROOT_DIR "../../../OpenSSL")
 
 find_package(Boost 1.86.0 REQUIRED COMPONENTS)
+find_package(OpenSSL REQUIRED)
+if (NOT Boost_FOUND)
+    message(FATAL_ERROR "Boost not found!")
+endif()
+
+
+
 
 if(Boost_FOUND)
 # подключаем заголовочные файлы всех директорий, где находятся заголовочные файлы для всех компонентов.System убирает предупреждения стороних библиотек
     #include_directories (SYSTEM ${Boost_INCLUDE_DIRS}) 
-    target_include_directories(${project} PUBLIC ${Boost_INCLUDE_DIRS}) # Используйте Boost_INCLUDE_DIRS
+    target_include_directories(${project} PUBLIC ${Boost_INCLUDE_DIRS} ${OPENSSL_INCLUDE_DIR}) # Используйте Boost_INCLUDE_DIRS
     #target_link_libraries(${project} ${Boost_LIBRARIES}) # Связывание с библиотеками Boost
-    target_link_libraries(${project} ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} pqxx pugixml)
+    target_link_libraries(${project} ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${OPENSSL_LIBRARIES} pqxx pugixml)
     message(STATUS "Found BOOST ${Boost_VERSION_STRING}")
 else()
    message(FATAL_ERROR "Boost Not Found") # Изменено на FATAL_ERROR для остановки сборки при ошибке

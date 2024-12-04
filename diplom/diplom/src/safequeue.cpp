@@ -17,14 +17,14 @@ UrlDeep Safe_queue::popFront() {
 		throw std::runtime_error("Очередь пуста, поступил флаг освобождения потоков");
 	}
 
-	if (!task_queue.empty()) {
-		item = std::move(task_queue.front());
-		task_queue.pop();
-	}
-	else {
-		Stop();
-		throw std::runtime_error("Освобождаем потоки");
-	}
+	 if (stop && task_queue.empty()) {
+        throw std::runtime_error("Очередь пуста, поступил флаг освобождения потоков");
+    }
+
+    // Извлечение элемента из очереди
+    item = std::move(task_queue.front());
+    task_queue.pop();
+	
 	return item;
 }
 
@@ -47,6 +47,7 @@ size_t Safe_queue::Size() const {
 }
 //освобождает все потоки по флагу
 void Safe_queue::Stop() {
+	std::lock_guard<std::mutex> lock(queue_mutex);
 	stop = true;
 	condit.notify_all();
 }

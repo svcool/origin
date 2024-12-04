@@ -26,25 +26,34 @@ void worker(Safe_queue& sq, int maxDeep, manage_db& db) {
 
 	while (true) {
 		UrlDeep queueUrlDeep;// структура из url и глубины deep
-		queueUrlDeep = sq.popFront(); //безопасная очередь
-
-		if (!queueUrlDeep.url.empty()) lastpage = queueUrlDeep.url; //сохраняем последнюю страницу
+		
+				queueUrlDeep = sq.popFront(); //безопасная очередь
+		
+				if (!queueUrlDeep.url.empty()) lastpage = queueUrlDeep.url; //сохраняем последнюю страницу
 
 		if (queueUrlDeep.url.empty() || queueUrlDeep.deep > maxDeep) {
 			std::cout << "Выход из обработчика сайтов." << std::endl;
 			break;
 		}
 		try {
+
+			std::string portWeb = "443";
+		/*	std::string prefix = "http://";
+			std::string checkUrl = queueUrlDeep.url.substr(0, 7);
+			if (checkUrl == prefix)  {
+				portWeb = "80";
+			}*/
 			auto [host, target] = fixURL(queueUrlDeep.url);            // Вызов функции для парсинга URL
+			
 			std::string parserHtml;// Блокируем доступ к http_get
 			{
 				std::lock_guard<std::mutex> lock(http_mutex);
 				std::cout << "Парсинг сайта. ID" << this_id << std::endl;
 				std::this_thread::sleep_for(std::chrono::seconds(5));
-				parserHtml = http_get(host, "80", target, 11);
+				parserHtml = httpGet(host, portWeb, target, 11);
 
 				TmpFile tempFile("./tmp");
-				tempFile.writeToFile(parserHtml);
+				if (parserHtml != "") tempFile.writeToFile(parserHtml);
 				std::cout << "Имя временного файла: " << tempFile.getUniqueName() << std::endl;
 				tempFile.closeFile();
 			}
@@ -52,7 +61,7 @@ void worker(Safe_queue& sq, int maxDeep, manage_db& db) {
 			{
 				std::lock_guard<std::mutex> lock(clean_mutex);// Блокируем доступ к очистке и обработке текста
 				std::cout << "Очистка текста. ID" << this_id << std::endl;
-				cleaned_text = clean_and_process_text(parserHtml);
+				if (parserHtml != "") cleaned_text = clean_and_process_text(parserHtml);
 
 				TmpFile tempFile("./tmp/cleantext");
 				tempFile.writeToFile(cleaned_text);
@@ -63,7 +72,7 @@ void worker(Safe_queue& sq, int maxDeep, manage_db& db) {
 			{
 				std::lock_guard<std::mutex> lock(extract_mutex);// Блокируем доступ к извлечению ссылок
 				std::cout << "Извлечение ссылок. ID" << this_id << std::endl;
-				links = extractLinks(parserHtml, host);
+				if (parserHtml != "") links = extractLinks(parserHtml, host);
 			}
 			std::map<std::string, int> word_freq;
 			{
@@ -71,41 +80,37 @@ void worker(Safe_queue& sq, int maxDeep, manage_db& db) {
 				std::cout << "Подсчет частоты строк.ID" << this_id << std::endl;
 				word_freq = countWordFrequency(cleaned_text);
 
-				if (queueUrlDeep.url.substr(0, 7) != "http://") {
-					queueUrlDeep.url = "http://" + queueUrlDeep.url; // Добавляем "http://" в начало, если его нет
-				}
-
-
 				db.addDataTable("Document", "title", queueUrlDeep.url); // Добавляем документ
 				for (const auto& [word, frequency] : word_freq) {
 					db.addDataTable("Word", "name", word);
 
 					//  Получаем ID документа и ID слова (это нужно реализовать)
 					int documentId = db.select("Document", "title", queueUrlDeep.url); // Выполняем выборку
-					int wordId = db.select("Word", "name", word); // Выполняем выборку
+					int wordId = db.select("Word", "name", word); 
 					if (documentId == -1 || wordId == -1) continue;
 					db.addWordDocuments("Document_Word", documentId, wordId, frequency);// Добавляем частоту слов
 				}
 
 			}
+			  for (const auto& link : links) {
+					auto linkDeep = queueUrlDeep.deep + 1;
+					sq.push({ link, linkDeep }); // Увеличиваем глубину на 1
+				}
 
-			for (const auto& link : links) {
-				auto linkDeep = queueUrlDeep.deep + 1;
-				sq.push({ link, linkDeep }); // Увеличиваем глубину на 1
-			}
 		}
 		catch (const std::exception& e) {
 			std::cerr << "Исключение worker: " << e.what() << std::endl;
 		}
 	}
+	
 }
 
 int main() {
 	// Установка кодировки консоли на UTF-8
-	//setlocale(LC_ALL, "Russian");
-	system("chcp 65001");
-	//SetConsoleCP(CP_UTF8);
-	//SetConsoleOutputCP(CP_UTF8);
+	setlocale(LC_ALL, "Russian");
+	//system("chcp 65001");
+SetConsoleCP(CP_UTF8);
+SetConsoleOutputCP(CP_UTF8);
 
 	try {
 
@@ -162,12 +167,10 @@ int main() {
 		//создаем таблицы клиентов и телефонов
 		db.createTable("word", "document", "document_word");
 
-		auto [host, target] = fixURL(page);
-		std::cout << "Host: " << host << std::endl;
-		std::cout << "Target: " << target << std::endl;
-
+		std::cout << "Page: " << page << std::endl;
+	
 		Safe_queue sq;
-		sq.push({ host + target, 1 }); // Начальная глубина 1
+		sq.push({ page, 1 }); // Начальная глубина 1
 
 		int num_threads = std::thread::hardware_concurrency();
 		std::cout << "Количество ядер: " << num_threads << std::endl;

@@ -156,6 +156,19 @@ void http_connection::create_response() {
             << "</body>\n"
             << "</html>\n";
     }
+    else if (request_.target().starts_with("/")) {
+        std::string filepath = "." + std::string(request_.target());
+        std::ifstream file(filepath, std::ios::binary);
+        if (file) {
+            response_.set(http::field::content_type, "image/png"); // Установите правильный Content-Type
+            beast::ostream(response_.body()) << file.rdbuf();
+            response_.result(http::status::ok);
+        }
+        else {
+            response_.result(http::status::not_found);
+                 beast::ostream(response_.body()) << "Файл не найден\r\n";
+        }
+    }
     else {
         response_.result(http::status::not_found);
         response_.set(http::field::content_type, "text/plain");

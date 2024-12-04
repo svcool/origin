@@ -12,7 +12,7 @@ set(OPENSSL_ROOT_DIR "../../../OpenSSL")
 include_directories(include)
 
 # Укажите исходный файл
-add_executable(${PROJECT_NAME} "httpclient.cpp")
+add_executable(${PROJECT_NAME} "httpclient.cpp" "httpcl.cpp")
 
 # Настройка Boost
 find_package(Boost 1.86 REQUIRED COMPONENTS system thread) # Укажите требуемые модули Boost

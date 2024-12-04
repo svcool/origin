@@ -26,10 +26,17 @@ public:
 		: std::runtime_error("HttpClientError: " + message) {}
 };
 
+class HttpClientErrorSSL : public std::runtime_error {
+public:
+	explicit HttpClientErrorSSL(const std::string& message)
+		: std::runtime_error("HttpClientError: " + message) {}
+};
+
+
 class Error : public std::runtime_error {
 public:
 	explicit Error(const std::string& message)
-		: std::runtime_error("HttpClientError: " + message) {}
+		: std::runtime_error("Error: " + message) {}
 };
 
 

@@ -85,7 +85,9 @@ std::pair<std::string, std::string> fixURL(const std::string& url) {
 
 	std::string host;
 	std::string target;
+	//std::string checkHttps = url.substr(0, 5);
 	std::string cleanUrl = std::regex_replace(url, std::regex(R"(^https?://)"), "");  // Удаляем протокол (http:// или https://)
+	//cleanUrl = std::regex_replace(cleanUrl, std::regex(R"(www\.)"), "");  // Удаляем протокол (http:// или https://)
 	size_t pos = cleanUrl.find("/");// Находим позицию первого символа '/' после базового URL
 
 	if (pos == std::string::npos) { // Если '/' не найден, значит, весь URL - это хост
@@ -97,6 +99,8 @@ std::pair<std::string, std::string> fixURL(const std::string& url) {
 		host = cleanUrl.substr(0, pos); // Извлекаем базовый URL и путь
 		target = cleanUrl.substr(pos);   // Путь
 	}
+	/*if (checkHttps == "https") host = "https://" + host;
+	else host = "http://" + host;*/
 	return std::make_pair(host, target);
 }
 //*********************************************************************************************************************
