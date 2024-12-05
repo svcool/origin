@@ -14,12 +14,8 @@ UrlDeep Safe_queue::popFront() {
 	condit.wait(lock, [this] { return !task_queue.empty() || stop; });
 
 	if (stop && task_queue.empty()) {
-		throw std::runtime_error("Очередь пуста, поступил флаг освобождения потоков");
+		throw std::runtime_error("Очередь пуста");
 	}
-
-	 if (stop && task_queue.empty()) {
-        throw std::runtime_error("Очередь пуста, поступил флаг освобождения потоков");
-    }
 
     // Извлечение элемента из очереди
     item = std::move(task_queue.front());

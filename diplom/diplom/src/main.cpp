@@ -9,8 +9,9 @@
 #include <bd.h>
 #include <parserini.h>
 #include <windows.h> // Для SetConsoleCP и SetConsoleOutputCP
+#include <cstdlib> // Для system()
 
-//#pragma execution_character_set("utf-8")
+#pragma execution_character_set("utf-8")
 
 // Глобальные мьютексы для защиты функций
 std::mutex http_mutex;
@@ -20,21 +21,34 @@ std::mutex count_mutex;
 
 std::string lastpage;
 
+
+
+
 void worker(Safe_queue& sq, int maxDeep, manage_db& db) {
 	std::thread::id this_id = std::this_thread::get_id(); // Получаем идентификатор текущего потока
 	std::cout << "Старт парсинга сайтов. ID" << this_id << std::endl;
 
-	while (true) {
-		UrlDeep queueUrlDeep;// структура из url и глубины deep
-		
-				queueUrlDeep = sq.popFront(); //безопасная очередь
-		
-				if (!queueUrlDeep.url.empty()) lastpage = queueUrlDeep.url; //сохраняем последнюю страницу
+	auto last_action_time = std::chrono::steady_clock::now();
 
+
+	while (true) {
+
+		auto now = std::chrono::steady_clock::now();
+		if (std::chrono::duration_cast<std::chrono::seconds>(now - last_action_time).count() > 20) {
+			std::cout << "Таймер истек, вызываем Stop(). ID: " << this_id << std::endl;
+			sq.Stop();
+			break;
+		}
+
+		UrlDeep queueUrlDeep;// структура из url и глубины deep
+				queueUrlDeep = sq.popFront(); //безопасная очередь
+			if (!queueUrlDeep.url.empty()) lastpage = queueUrlDeep.url; //сохраняем последнюю страницу
+			last_action_time = std::chrono::steady_clock::now();  // Сбрасываем таймер
 		if (queueUrlDeep.url.empty() || queueUrlDeep.deep > maxDeep) {
 			std::cout << "Выход из обработчика сайтов." << std::endl;
 			break;
 		}
+
 		try {
 
 			std::string portWeb = "443";
@@ -50,7 +64,7 @@ void worker(Safe_queue& sq, int maxDeep, manage_db& db) {
 				std::lock_guard<std::mutex> lock(http_mutex);
 				std::cout << "Парсинг сайта. ID" << this_id << std::endl;
 				std::this_thread::sleep_for(std::chrono::seconds(5));
-				parserHtml = httpGet(host, portWeb, target, 11);
+				parserHtml = httpClientGet(host, portWeb, target, 11);//------------------------------
 
 				TmpFile tempFile("./tmp");
 				if (parserHtml != "") tempFile.writeToFile(parserHtml);
@@ -60,8 +74,14 @@ void worker(Safe_queue& sq, int maxDeep, manage_db& db) {
 			std::string cleaned_text;
 			{
 				std::lock_guard<std::mutex> lock(clean_mutex);// Блокируем доступ к очистке и обработке текста
+				
+				if (parserHtml != "") {
 				std::cout << "Очистка текста. ID" << this_id << std::endl;
-				if (parserHtml != "") cleaned_text = clean_and_process_text(parserHtml);
+					cleaned_text = clean_and_process_text(parserHtml);
+				}
+				else{
+					continue;
+				}
 
 				TmpFile tempFile("./tmp/cleantext");
 				tempFile.writeToFile(cleaned_text);
@@ -72,7 +92,14 @@ void worker(Safe_queue& sq, int maxDeep, manage_db& db) {
 			{
 				std::lock_guard<std::mutex> lock(extract_mutex);// Блокируем доступ к извлечению ссылок
 				std::cout << "Извлечение ссылок. ID" << this_id << std::endl;
-				if (parserHtml != "") links = extractLinks(parserHtml, host);
+				if (parserHtml != "") {
+				std::cout << "Извлечение ссылок. ID" << this_id << std::endl;
+
+					links = extractLinks(parserHtml, host);
+				}
+				else {
+					continue;
+				}
 			}
 			std::map<std::string, int> word_freq;
 			{
@@ -107,10 +134,10 @@ void worker(Safe_queue& sq, int maxDeep, manage_db& db) {
 
 int main() {
 	// Установка кодировки консоли на UTF-8
-	setlocale(LC_ALL, "Russian");
-	//system("chcp 65001");
-SetConsoleCP(CP_UTF8);
-SetConsoleOutputCP(CP_UTF8);
+	//setlocale(LC_ALL, "Russian");
+	system("chcp 65001");
+//SetConsoleCP(CP_UTF8);
+//SetConsoleOutputCP(CP_UTF8);
 
 	try {
 
@@ -185,13 +212,13 @@ SetConsoleOutputCP(CP_UTF8);
 			});
 		//Открытие поисковика
 		std::this_thread::sleep_for(std::chrono::seconds(1));
-		std::string relativePath = "index.html"; // файл находится в корне проекта
-		std::string urlServer = "http://localhost:" + portCrowler + relativePath;//для Windows
-		std::string command = "start " + relativePath; // Для Windows
+		
+		std::string urlServer = "http://localhost:" + std::to_string(portCrowler);//для Windows
+		std::string command = "start " + urlServer; // Для Windows
 		system(command.c_str());
-
+	
 		std::vector<std::thread> threads;
-		for (int i = 0; i < num_threads - 2; ++i) {
+		for (int i = 0; i < 3; ++i) {
 			threads.emplace_back(worker, std::ref(sq), recursion, std::ref(db));
 		}
 

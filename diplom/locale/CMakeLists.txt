@@ -12,7 +12,7 @@ project(${project})
 
 
 set(CMAKE_PREFIX_PATH "${BOOST_ROOT}")
-set(BOOST_ROOT "../../../boost_1_86_0/")
+set(BOOST_ROOT "../../../boost_1_86_0")
 add_executable(${project}  "indexatorboost.cpp")
 # ”кажите директорию с библиотеками
 link_directories("${BOOST_ROOT}/stage/lib")

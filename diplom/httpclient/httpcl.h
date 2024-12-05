@@ -1,6 +1,5 @@
 #ifndef PERFORM_REQUEST_HPP
 #define PERFORM_REQUEST_HPP
-#include "http.h"
 #include <string>
 
 #include "root_certificates.hpp"
@@ -22,6 +21,6 @@ namespace net = boost::asio;    // from <boost/asio.hpp>
 namespace ssl = net::ssl;       // from <boost/asio/ssl.hpp>
 using tcp = net::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
 // Функция для выполнения HTTPS-запроса
-void perform_request(const std::string& host, const std::string& port, const std::string& target, int version);
+std::string perform_request(const std::string& host, const std::string& port, const std::string& target, int version);
 
 #endif // PERFORM_REQUEST_HPP

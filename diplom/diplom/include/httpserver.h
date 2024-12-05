@@ -17,7 +17,6 @@
 #include <sstream>
 #include <bd.h>
 #include <except.h>
-#include <ctime>
 #include <fstream>
 
 struct SearchResult {

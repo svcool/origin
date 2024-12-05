@@ -84,108 +84,112 @@
     <div id="timeDisplay"></div>
 
     <script>
-        function performSearch() {
-            const query = document.getElementById('searchInput').value;
-            const resultsDiv = document.getElementById('results');
-            const timeDisplay = document.getElementById('timeDisplay');
+    // Определяем базовый URL на основе текущего хоста и порта
+    const baseUrl = window.location.origin;
 
-            // Очищаем вывод времени и результатов перед новым запросом
-            resultsDiv.innerHTML = '';
-            timeDisplay.innerHTML = '';
+    function performSearch() {
+        const query = document.getElementById('searchInput').value;
+        const resultsDiv = document.getElementById('results');
+        const timeDisplay = document.getElementById('timeDisplay');
 
-            if (query) {
-                resultsDiv.innerHTML = '<p class="loading">Загрузка...</p>';
+        // Очищаем вывод времени и результатов перед новым запросом
+        resultsDiv.innerHTML = '';
+        timeDisplay.innerHTML = '';
 
-                fetch(`http://localhost:8080/search?query=${encodeURIComponent(query)}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Сеть не в порядке: ' + response.statusText);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        displayResults(data);
-                    })
-                    .catch(error => {
-                        console.error('Ошибка:', error);
-                        resultsDiv.innerHTML = '<p>Произошла ошибка при выполнении запроса.</p>';
-                    });
-            } else {
-                alert('Пожалуйста, введите текст для поиска.');
-            }
+        if (query) {
+            resultsDiv.innerHTML = '<p class="loading">Загрузка...</p>';
+
+            fetch(`${baseUrl}/search?query=${encodeURIComponent(query)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Сеть не в порядке: ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    displayResults(data);
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    resultsDiv.innerHTML = '<p>Произошла ошибка при выполнении запроса.</p>';
+                });
+        } else {
+            alert('Пожалуйста, введите текст для поиска.');
+        }
+    }
+
+    function displayResults(results) {
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.innerHTML = '';
+
+        if (results.length === 0) {
+            resultsDiv.innerHTML = '<p>Результаты не найдены.</p>';
+            return;
         }
 
-        function displayResults(results) {
-            const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = '';
+        const ul = document.createElement('ul');
+        results.forEach(result => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="${result.url}" target="_blank">${result.url}</a> (Упоминаний: ${result.frequency})`;
+            ul.appendChild(li);
+        });
+        resultsDiv.appendChild(ul);
+    }
 
-            if (results.length === 0) {
-                resultsDiv.innerHTML = '<p>Результаты не найдены.</p>';
-                return;
-            }
+    function checkEnter(event) {
+        if (event.key === 'Enter') {
+            performSearch();
+        }
+    }
 
-            const ul = document.createElement('ul');
-            results.forEach(result => {
-                const li = document.createElement('li');
-                li.innerHTML = `<a href="${result.url}" target="_blank">${result.url}</a> (Упоминаний: ${result.frequency})`;
-                ul.appendChild(li);
+    function fetchTime() {
+        const timeDisplay = document.getElementById('timeDisplay');
+        const resultsDiv = document.getElementById('results');
+        // Очищаем вывод времени и результатов перед новым запросом
+        timeDisplay.innerHTML = '';
+        resultsDiv.innerHTML = '';
+
+        fetch(`${baseUrl}/time`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Сеть не отвечает: ' + response.status);
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log(data);
+                timeDisplay.innerHTML = `${data}`;
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                timeDisplay.innerHTML = 'Ошибка получения времени: ' + error.message;
             });
-            resultsDiv.appendChild(ul);
-        }
+    }
 
-        function checkEnter(event) {
-            if (event.key === 'Enter') {
-                performSearch();
-            }
-        }
+    function fetchCount() {
+        const timeDisplay = document.getElementById('timeDisplay');
+        const resultsDiv = document.getElementById('results');
+        // Очищаем вывод времени и результатов перед новым запросом
+        timeDisplay.innerHTML = '';
+        resultsDiv.innerHTML = '';
 
-        function fetchTime() {
-            const timeDisplay = document.getElementById('timeDisplay');
-            const resultsDiv = document.getElementById('results');
-            // Очищаем вывод времени и результатов перед новым запросом
-            timeDisplay.innerHTML = '';
-            resultsDiv.innerHTML = '';
+        fetch(`${baseUrl}/count`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Сеть не отвечает: ' + response.status);
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log(data);
+                timeDisplay.innerHTML = `${data}`;
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                timeDisplay.innerHTML = 'Ошибка получения количества запросов: ' + error.message;
+            });
+    }
+</script>
 
-            fetch('http://localhost:8080/time')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Сеть не отвечает: ' + response.status);
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    console.log(data);
-                    timeDisplay.innerHTML = `${data}`;
-                })
-                .catch(error => {
-                    console.error('Ошибка:', error);
-                    timeDisplay.innerHTML = 'Ошибка получения времени: ' + error.message;
-                });
-        }
-
-        function fetchCount() {
-            const timeDisplay = document.getElementById('timeDisplay');
-            const resultsDiv = document.getElementById('results');
-            // Очищаем вывод времени и результатов перед новым запросом
-            timeDisplay.innerHTML = '';
-            resultsDiv.innerHTML = '';
-
-            fetch('http://localhost:8080/count')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Сеть не отвечает: ' + response.status);
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    console.log(data);
-                    timeDisplay.innerHTML = `${data}`;
-                })
-                .catch(error => {
-                    console.error('Ошибка:', error);
-                    timeDisplay.innerHTML = 'Ошибка получения количества запросов: ' + error.message;
-                });
-        }
-    </script>
 </body>
 </html>

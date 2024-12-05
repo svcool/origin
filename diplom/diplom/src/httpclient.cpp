@@ -23,58 +23,78 @@ std::string HttpGetInternal(const std::string& host, const std::string& port, co
 
 std::string httpClientGet(const std::string& host, const std::string& port, const std::string& target, int version) {
     
-    std::cout << host << " " << port << " " << target;
+    std::cout << host << port << " " << target << std::endl;
+    // The io_context is required for all I/O
     net::io_context ioc;
+    beast::error_code ec;
+    // The SSL context is required, and holds certificates
     ssl::context ctx(ssl::context::tlsv12_client);
+
+    // This holds the root certificate used for verification
     load_root_certificates(ctx);
+
+    // Verify the remote server's certificate
     ctx.set_verify_mode(ssl::verify_peer);
 
+    // These objects perform our I/O
+    tcp::resolver resolver(ioc);
     beast::ssl_stream<beast::tcp_stream> stream(ioc, ctx);
 
-    if (port == "443" && !SSL_set_tlsext_host_name(stream.native_handle(), host.c_str())) {
+    // Set SNI Hostname (many hosts need this to handshake successfully)
+    if (!SSL_set_tlsext_host_name(stream.native_handle(), host.c_str()))
+    {
         beast::error_code ec{ static_cast<int>(::ERR_get_error()), net::error::get_ssl_category() };
         throw beast::system_error{ ec };
     }
 
-    tcp::resolver resolver(ioc);
+    // Look up the domain name
     auto const results = resolver.resolve(host, port);
 
-    // Установка таймаута на подключение
-    beast::get_lowest_layer(stream).expires_after(std::chrono::seconds(10));
+    // Make the connection on the IP address we get from a lookup
     beast::get_lowest_layer(stream).connect(results);
 
-    // SSL Handshake для HTTPS
+    // Perform the SSL handshake if it's HTTPS (port 443)
     if (port == "443") {
         stream.handshake(ssl::stream_base::client);
     }
 
+    // Set up an HTTP GET request message
     http::request<http::string_body> req{ http::verb::get, target, version };
     req.set(http::field::host, host);
     req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
 
-    // Таймаут на запись
-    beast::get_lowest_layer(stream).expires_after(std::chrono::seconds(10));
+    // Send the HTTP request to the remote host
     http::write(stream, req);
-
+       if (ec) {
+           throw HttpClientError("Ошибка при отправке запроса: " + ec.message());
+       }
+       // This buffer is used for reading and must be persisted
     beast::flat_buffer buffer;
+
+    // Declare a container to hold the response
     http::response<http::dynamic_body> res;
 
-    // Таймаут на чтение
-    beast::get_lowest_layer(stream).expires_after(std::chrono::seconds(10));
-    http::read(stream, buffer, res);
-
-    if (port == "443") {
-        beast::error_code ec;
-        stream.shutdown(ec);
-        if (ec == net::error::eof) {
-            ec = {}; 
-        }
-        if (ec) {
-            throw beast::system_error{ ec };
-        }
+    // Receive the HTTP response
+    http::read(stream, buffer, res, ec);
+    if (ec) {
+        throw HttpClientError("Ошибка при чтении ответа: " + ec.message());
     }
+    //// Write the message to standard out
+    std::cout << "Страница прочитана, парсинг..." << std::endl;
 
-    return boost::beast::buffers_to_string(res.body().data());
+    // Write the message to standard out
+    std::cout << res << std::endl;
+    stream.shutdown(ec);
+
+    if (ec == net::error::eof)
+    {
+        ec = {};
+    }
+    if (ec)
+        throw beast::system_error{ ec };
+
+    std::string response_body = boost::beast::buffers_to_string(res.body().data());//преобразуем в string
+    return response_body;
 }
 
 

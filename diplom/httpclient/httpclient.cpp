@@ -6,16 +6,12 @@ int main(int argc, char** argv)
 {
     try
     {
-        if (argc != 4 && argc != 5)
-        {
-            std::cerr <<
-                "Usage: http-client-sync-ssl <host> <port> <target> [<HTTP version: 1.0 or 1.1(default)>]\n" <<
-                "Example:\n" <<
-                "    http-client-sync-ssl www.example.com 443 /\n" <<
-                "    http-client-sync-ssl www.example.com 443 / 1.0\n";
-            return EXIT_FAILURE;
-        }
+        std::string parserHtml;// Блокируем доступ к http_get
+      
+    
+            parserHtml = perform_request("netology.ru", "443", "/" , 11);
 
+ 
         auto const host = argv[1];
         auto const target = argv[3];
         int version = argc == 5 && !std::strcmp("1.0", argv[4]) ? 10 : 11;

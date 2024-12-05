@@ -1,7 +1,6 @@
 ﻿#ifndef HTTPCLIENT_H
 #define HTTPCLIENT_H
 
-#include <string>
 #include "root_certificates.hpp"
 
 #include <boost/beast/core.hpp>
@@ -14,7 +13,7 @@
 #include <boost/asio/ssl/stream.hpp>
 #include <cstdlib>
 #include <iostream>
-#include "except.h"
+#include <except.h>
 
 namespace beast = boost::beast; // from <boost/beast.hpp>
 namespace http = beast::http;   // from <boost/beast/http.hpp>
