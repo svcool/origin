@@ -9,7 +9,7 @@ int main(int argc, char** argv)
         std::string parserHtml;// Блокируем доступ к http_get
       
     
-            parserHtml = perform_request("netology.ru", "443", "/" , 11);
+            parserHtml = perform_request("www.boost.org", "443", "/" , 11);
 
  
         auto const host = argv[1];
