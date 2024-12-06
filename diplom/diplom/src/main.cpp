@@ -1,5 +1,4 @@
-﻿#include "httpserver.h"
-#include <safequeue.h>
+﻿#include <safequeue.h>
 #include <indexator.h>
 #include <httpclient.h>
 #include <tempfile.h>
@@ -22,28 +21,16 @@ std::mutex count_mutex;
 std::string lastpage;
 
 
-
-
 void worker(Safe_queue& sq, int maxDeep, manage_db& db) {
 	std::thread::id this_id = std::this_thread::get_id(); // Получаем идентификатор текущего потока
 	std::cout << "Старт парсинга сайтов. ID" << this_id << std::endl;
 
-	auto last_action_time = std::chrono::steady_clock::now();
-
-
 	while (true) {
-
-		auto now = std::chrono::steady_clock::now();
-		if (std::chrono::duration_cast<std::chrono::seconds>(now - last_action_time).count() > 20) {
-			std::cout << "Таймер истек, вызываем Stop(). ID: " << this_id << std::endl;
-			sq.Stop();
-			break;
-		}
 
 		UrlDeep queueUrlDeep;// структура из url и глубины deep
 				queueUrlDeep = sq.popFront(); //безопасная очередь
 			if (!queueUrlDeep.url.empty()) lastpage = queueUrlDeep.url; //сохраняем последнюю страницу
-			last_action_time = std::chrono::steady_clock::now();  // Сбрасываем таймер
+
 		if (queueUrlDeep.url.empty() || queueUrlDeep.deep > maxDeep) {
 			std::cout << "Выход из обработчика сайтов." << std::endl;
 			break;
@@ -52,11 +39,11 @@ void worker(Safe_queue& sq, int maxDeep, manage_db& db) {
 		try {
 
 			std::string portWeb = "443";
-		/*	std::string prefix = "http://";
+			std::string prefix = "http://";
 			std::string checkUrl = queueUrlDeep.url.substr(0, 7);
 			if (checkUrl == prefix)  {
 				portWeb = "80";
-			}*/
+			}
 			auto [host, target] = fixURL(queueUrlDeep.url);            // Вызов функции для парсинга URL
 			
 			std::string parserHtml;// Блокируем доступ к http_get
@@ -136,8 +123,8 @@ int main() {
 	// Установка кодировки консоли на UTF-8
 	//setlocale(LC_ALL, "Russian");
 	system("chcp 65001");
-//SetConsoleCP(CP_UTF8);
-//SetConsoleOutputCP(CP_UTF8);
+	//SetConsoleCP(CP_UTF8);
+	//SetConsoleOutputCP(CP_UTF8);
 
 	try {
 
@@ -201,21 +188,6 @@ int main() {
 
 		int num_threads = std::thread::hardware_concurrency();
 		std::cout << "Количество ядер: " << num_threads << std::endl;
-
-		net::io_context ioc{ 1 };
-		tcp::acceptor acceptor{ ioc, {net::ip::make_address(addressCrowler), static_cast<unsigned short>(portCrowler)} };
-		tcp::socket socket{ ioc };
-		// Запуск HTTP сервера в отдельном потоке
-		std::thread server_thread([&]() {
-			http_server(acceptor, socket, db);
-			ioc.run();
-			});
-		//Открытие поисковика
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-		
-		std::string urlServer = "http://localhost:" + std::to_string(portCrowler);//для Windows
-		std::string command = "start " + urlServer; // Для Windows
-		system(command.c_str());
 	
 		std::vector<std::thread> threads;
 		for (int i = 0; i < 3; ++i) {
@@ -234,7 +206,6 @@ int main() {
 		writeSettings(filename, pt);
 		std::cout << "Последняя страница" << lastpage << std::endl;
 
-		server_thread.join();  // Ожидаем завершения потока сервера
 	}
 	catch (const boost::property_tree::ini_parser::ini_parser_error& e) {
 		std::cerr << "Error reading or writing INI file: " << e.what() << std::endl;
